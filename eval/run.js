@@ -22,10 +22,13 @@ const JUDGE_MODEL      = 'meta-llama/llama-3.3-70b-instruct';
 const COST_PER_1M_IN   = 0.07;
 const COST_PER_1M_OUT  = 0.30;
 const BUDGET_USD       = 0.50;
-const MASTERY_THRESHOLD      = 95;
-const NEW_CAT_THRESHOLD      = 95;
-const NEW_CAT_L2_THRESHOLD   = 90;
+const MASTERY_THRESHOLD      = 95;   // per-category avg that promotes to a harder level
+const SUITE_HEALTH_THRESHOLD = 80;   // overall avg required before ANY case generation runs
+const NEW_CAT_THRESHOLD      = 97;   // overall avg AND every-category-mastered required for new categories
 const STUCK_RUNS_THRESHOLD   = 3;
+const HARDER_CASES_PER_GEN   = 2;    // new harder cases per mastered category (was 4 — too eager)
+const NEW_CAT_CASES_PER_GEN  = 1;    // new cases per brand-new category (was 2 — too eager)
+const EASIER_CASES_PER_GEN   = 2;    // recovery cases for stuck categories (was 3 — too eager)
 
 const PATHS = {
   cases:     path.join(__dirname, 'cases.json'),
@@ -235,7 +238,7 @@ async function generateNewCategory(existingCategories) {
 
 Pick ONE new Microsoft Word feature category not in that list (e.g. line-spacing, indentation, page-numbers, hyperlink-insert, bookmark, cross-reference, drop-cap, columns-balanced, etc.).
 
-Generate exactly 2 level-1 test cases for it — simple, realistic prompts a real user would ask.
+Generate exactly ${NEW_CAT_CASES_PER_GEN} level-1 test case(s) for it — simple, realistic prompts a real user would ask.
 Each case must be solvable via Word Office JavaScript API + the available helpers (addHeading, addParagraph, addList, applyStyle, replaceText, insertTable, insertImage, insertFootnote, insertComment, toggleTrackChanges, insertTableOfContents, applyTheme, designTheme, applyTemplate, insertContentControl, mailMergeReplace, insertEquation). No PDF export, no slideshow, no chart creation, no print API.
 
 Return ONLY a valid JSON object with this shape:
@@ -325,7 +328,7 @@ async function generateHarderCases(category, currentLevel, existingCases, allCat
 The AI just scored 95+/100 on ALL these level ${currentLevel} "${category}" cases:
 ${masteredCases}
 
-Generate exactly 4 NEW test cases at level ${nextLevel} for the "${category}" category that are SIGNIFICANTLY HARDER. They must:
+Generate exactly ${HARDER_CASES_PER_GEN} NEW test cases at level ${nextLevel} for the "${category}" category that are SIGNIFICANTLY HARDER. They must:
 1. Be in the same category but test more complex, realistic, or edge-case scenarios
 2. Not repeat any existing test idea
 3. Be solvable via Word Office JavaScript API + helpers — no PDF export, slideshow, chart creation, print API
@@ -374,7 +377,7 @@ The AI has been STUCK on level ${currentLevel} of the "${category}" category acr
 These are the current cases it keeps failing:
 ${stuckCases}
 
-Generate exactly 3 NEW test cases at level ${currentLevel} for "${category}" that are EASIER and more approachable. They must:
+Generate exactly ${EASIER_CASES_PER_GEN} NEW test cases at level ${currentLevel} for "${category}" that are EASIER and more approachable. They must:
 1. Test the same core category skill but with simpler scenarios
 2. Avoid the tricky edge-cases the AI is clearly struggling with
 3. Be solvable via Word Office JavaScript API + helpers
@@ -542,11 +545,24 @@ async function main() {
     const avg          = currentItems.length ? currentItems.reduce((s, r) => s + r.score, 0) / currentItems.length : 0;
     return { cat, avg, currentLevel, mastered: avg >= MASTERY_THRESHOLD };
   });
+
+  // Suite-health gate — don't grow the eval suite while the model still flunks
+  // the basics. Generating "harder" cases for one mastered category while
+  // overall avg is 60% just bloats the suite with noise. Only let the
+  // generator run when the suite as a whole is performing well.
+  const overallAvg = results.length ? results.reduce((s, r) => s + r.score, 0) / results.length : 0;
+  const suiteHealthy = overallAvg >= SUITE_HEALTH_THRESHOLD;
+  const everyCategoryMastered = categoryStatus.length > 0 && categoryStatus.every(c => c.mastered);
+
+  if (!suiteHealthy) {
+    console.log(`\n🚧 Overall avg ${overallAvg.toFixed(1)} < ${SUITE_HEALTH_THRESHOLD} — pausing all case generation until the suite stabilises.`);
+  }
+
   for (const { cat, avg, currentLevel, mastered } of categoryStatus) {
     if (!progress[cat]) progress[cat] = { level: 1, masteredAt: null, runsAtLevel: 0 };
     progress[cat].lastScore  = Math.round(avg * 10) / 10;
     progress[cat].lastRun    = timestamp;
-    if (mastered) {
+    if (mastered && suiteHealthy) {
       console.log(`✓ "${cat}" mastered at level ${currentLevel} (avg ${avg.toFixed(1)}) — generating level ${currentLevel + 1} cases`);
       try {
         const newCases = await generateHarderCases(cat, currentLevel, allCases, categoryStatus);
@@ -558,9 +574,13 @@ async function main() {
         if (err.message.startsWith('BUDGET_EXCEEDED')) { console.log('Budget hit — skipping.'); break; }
         console.warn(`Generation failed for "${cat}": ${err.message}`);
       }
+    } else if (mastered) {
+      // Mastered but suite is sick — still mark progress but don't generate.
+      console.log(`✓ "${cat}" mastered at level ${currentLevel} (avg ${avg.toFixed(1)}) — holding generation (suite avg ${overallAvg.toFixed(1)} below ${SUITE_HEALTH_THRESHOLD}).`);
+      progress[cat].masteredAt  = timestamp;
     } else {
       progress[cat].runsAtLevel = (progress[cat].runsAtLevel ?? 0) + 1;
-      if (progress[cat].runsAtLevel >= STUCK_RUNS_THRESHOLD) {
+      if (progress[cat].runsAtLevel >= STUCK_RUNS_THRESHOLD && suiteHealthy) {
         console.log(`⚠ "${cat}" stuck at level ${currentLevel} for ${progress[cat].runsAtLevel} runs — generating easier cases`);
         try {
           const easierCases = await generateEasierCases(cat, currentLevel, allCases);
@@ -574,33 +594,33 @@ async function main() {
     }
   }
 
-  const overallAvg = results.length ? results.reduce((s, r) => s + r.score, 0) / results.length : 0;
+  // Brand-new category — the strictest gate. ONLY fire when:
+  //   • every existing category is at mastery (avg >= MASTERY_THRESHOLD), AND
+  //   • overall avg >= NEW_CAT_THRESHOLD (97 by default).
+  // Adds 1 case (configurable via NEW_CAT_CASES_PER_GEN). The old L2 path
+  // that generated new categories at just 90 overall avg has been removed —
+  // it was the main driver of suite bloat.
   const existingCategories = Object.keys(byCategory);
-  if (overallAvg >= NEW_CAT_THRESHOLD) {
-    console.log(`\n📂 Overall avg ${overallAvg.toFixed(1)} >= ${NEW_CAT_THRESHOLD} — generating a new category...`);
+  if (everyCategoryMastered && overallAvg >= NEW_CAT_THRESHOLD) {
+    console.log(`\n📂 Every category mastered AND overall avg ${overallAvg.toFixed(1)} >= ${NEW_CAT_THRESHOLD} — generating a single new category (${NEW_CAT_CASES_PER_GEN} case).`);
     try {
       const newCat = await generateNewCategory(existingCategories);
       if (newCat) {
         newCasesGenerated = [...newCasesGenerated, ...newCat.cases];
         if (!progress[newCat.category]) progress[newCat.category] = { level: 1, masteredAt: null };
-        console.log(`  Added new category: "${newCat.category}" (${newCat.cases.length} cases)`);
+        console.log(`  Added new category: "${newCat.category}" (${newCat.cases.length} case${newCat.cases.length === 1 ? '' : 's'})`);
       }
     } catch (err) {
       if (err.message.startsWith('BUDGET_EXCEEDED')) console.log('Budget hit — skipping.');
       else console.warn(`New category generation failed: ${err.message}`);
     }
-  } else if (overallAvg >= NEW_CAT_L2_THRESHOLD) {
-    console.log(`\n📂 Overall avg ${overallAvg.toFixed(1)} >= ${NEW_CAT_L2_THRESHOLD} — generating a level-2 category...`);
-    try {
-      const newCat = await generateNewCategory(existingCategories);
-      if (newCat) {
-        newCasesGenerated = [...newCasesGenerated, ...newCat.cases];
-        if (!progress[newCat.category]) progress[newCat.category] = { level: 1, masteredAt: null, runsAtLevel: 0 };
-        console.log(`  Added new category: "${newCat.category}" (${newCat.cases.length} cases)`);
-      }
-    } catch (err) {
-      if (err.message.startsWith('BUDGET_EXCEEDED')) console.log('Budget hit — skipping.');
-      else console.warn(`New category generation failed: ${err.message}`);
+  } else if (suiteHealthy) {
+    // Log why we're holding back, so the trend is visible in CI output.
+    const unmastered = categoryStatus.filter(c => !c.mastered);
+    if (unmastered.length) {
+      console.log(`\n📂 Holding new-category generation — ${unmastered.length}/${categoryStatus.length} categories not yet mastered (e.g. ${unmastered.slice(0,3).map(c => `${c.cat}=${c.avg.toFixed(0)}`).join(', ')}).`);
+    } else if (overallAvg < NEW_CAT_THRESHOLD) {
+      console.log(`\n📂 Holding new-category generation — overall avg ${overallAvg.toFixed(1)} below new-category threshold ${NEW_CAT_THRESHOLD}.`);
     }
   }
 
