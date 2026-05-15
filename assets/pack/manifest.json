@@ -1,0 +1,658 @@
+{
+  "version": "v1.0.0",
+  "tarballUrl": null,
+  "license": "All images are Creative Commons Zero (CC0) \u2014 free for personal and commercial use.",
+  "sources": [
+    "pexels.com",
+    "unsplash.com",
+    "pixabay.com"
+  ],
+  "categories": [
+    "abstract-backgrounds",
+    "charts-diagrams",
+    "cities",
+    "document-icons",
+    "education",
+    "finance",
+    "food",
+    "healthcare",
+    "letterhead-graphics",
+    "nature",
+    "office-workplace",
+    "page-borders",
+    "people",
+    "sports",
+    "technology",
+    "transport",
+    "travel",
+    "watermarks"
+  ],
+  "images": [
+    {
+      "id": "tech-001",
+      "category": "technology",
+      "tags": [
+        "laptop",
+        "code",
+        "developer",
+        "screen",
+        "programming"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "tech-002",
+      "category": "technology",
+      "tags": [
+        "circuit",
+        "abstract",
+        "blue",
+        "network",
+        "innovation"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/2599244/pexels-photo-2599244.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "finance-001",
+      "category": "finance",
+      "tags": [
+        "chart",
+        "graph",
+        "growth",
+        "stock",
+        "money"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "finance-002",
+      "category": "finance",
+      "tags": [
+        "calculator",
+        "spreadsheet",
+        "accounting",
+        "money",
+        "business"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/53621/calculator-calculation-insurance-finance-53621.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "people-001",
+      "category": "people",
+      "tags": [
+        "team",
+        "meeting",
+        "office",
+        "collaboration",
+        "diverse"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "people-002",
+      "category": "people",
+      "tags": [
+        "handshake",
+        "deal",
+        "business",
+        "agreement",
+        "partnership"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "nature-001",
+      "category": "nature",
+      "tags": [
+        "forest",
+        "trees",
+        "green",
+        "outdoor",
+        "landscape"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/15286/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "nature-002",
+      "category": "nature",
+      "tags": [
+        "mountain",
+        "sunrise",
+        "landscape",
+        "horizon",
+        "scenic"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "office-001",
+      "category": "office-workplace",
+      "tags": [
+        "desk",
+        "workspace",
+        "laptop",
+        "modern",
+        "minimalist"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "office-002",
+      "category": "office-workplace",
+      "tags": [
+        "open-plan",
+        "modern",
+        "workplace",
+        "professional"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "education-001",
+      "category": "education",
+      "tags": [
+        "books",
+        "learning",
+        "study",
+        "library",
+        "knowledge"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/256541/pexels-photo-256541.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "healthcare-001",
+      "category": "healthcare",
+      "tags": [
+        "medical",
+        "stethoscope",
+        "doctor",
+        "health",
+        "clinical"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "city-001",
+      "category": "cities",
+      "tags": [
+        "skyline",
+        "urban",
+        "buildings",
+        "metropolitan",
+        "night"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "transport-001",
+      "category": "transport",
+      "tags": [
+        "car",
+        "road",
+        "highway",
+        "driving",
+        "modern"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/210019/pexels-photo-210019.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "food-001",
+      "category": "food",
+      "tags": [
+        "coffee",
+        "cup",
+        "beverage",
+        "morning",
+        "warm"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "travel-001",
+      "category": "travel",
+      "tags": [
+        "map",
+        "globe",
+        "destination",
+        "adventure",
+        "world"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "sports-001",
+      "category": "sports",
+      "tags": [
+        "running",
+        "athletic",
+        "fitness",
+        "motion",
+        "energy"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/2402777/pexels-photo-2402777.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "abstract-001",
+      "category": "abstract-backgrounds",
+      "tags": [
+        "gradient",
+        "blue",
+        "smooth",
+        "modern",
+        "minimal"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/1287145/pexels-photo-1287145.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "abstract-002",
+      "category": "abstract-backgrounds",
+      "tags": [
+        "geometric",
+        "pattern",
+        "design",
+        "modern",
+        "shapes"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/167092/pexels-photo-167092.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "charts-001",
+      "category": "charts-diagrams",
+      "tags": [
+        "analytics",
+        "data",
+        "dashboard",
+        "metrics",
+        "graphs"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "docicon-001",
+      "category": "document-icons",
+      "tags": [
+        "pdf",
+        "document",
+        "file",
+        "paperwork",
+        "page"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "docicon-002",
+      "category": "document-icons",
+      "tags": [
+        "contract",
+        "signed",
+        "paperwork",
+        "signature",
+        "agreement"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/2058138/pexels-photo-2058138.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "docicon-003",
+      "category": "document-icons",
+      "tags": [
+        "certificate",
+        "scroll",
+        "award",
+        "official",
+        "seal"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/5063537/pexels-photo-5063537.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "docicon-004",
+      "category": "document-icons",
+      "tags": [
+        "briefcase",
+        "legal",
+        "business",
+        "gavel",
+        "official"
+      ],
+      "style": "photo",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/5668481/pexels-photo-5668481.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "watermark-001",
+      "category": "watermarks",
+      "tags": [
+        "draft",
+        "light",
+        "grey",
+        "stamp",
+        "mark"
+      ],
+      "style": "icon",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/4348078/pexels-photo-4348078.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "watermark-002",
+      "category": "watermarks",
+      "tags": [
+        "confidential",
+        "stamp",
+        "red",
+        "mark",
+        "official"
+      ],
+      "style": "icon",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/5849572/pexels-photo-5849572.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "watermark-003",
+      "category": "watermarks",
+      "tags": [
+        "approved",
+        "stamp",
+        "green",
+        "mark",
+        "seal"
+      ],
+      "style": "icon",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/4226140/pexels-photo-4226140.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "letterhead-001",
+      "category": "letterhead-graphics",
+      "tags": [
+        "banner",
+        "header",
+        "stripe",
+        "modern",
+        "minimal"
+      ],
+      "style": "illustration",
+      "w": 1600,
+      "h": 400,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/1939485/pexels-photo-1939485.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "letterhead-002",
+      "category": "letterhead-graphics",
+      "tags": [
+        "monogram",
+        "logo",
+        "mark",
+        "corporate",
+        "letterhead"
+      ],
+      "style": "illustration",
+      "w": 1600,
+      "h": 400,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/1939485/pexels-photo-1939485.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "letterhead-003",
+      "category": "letterhead-graphics",
+      "tags": [
+        "two-tone",
+        "bar",
+        "header",
+        "modern",
+        "banner"
+      ],
+      "style": "illustration",
+      "w": 1600,
+      "h": 400,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/2467558/pexels-photo-2467558.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "border-001",
+      "category": "page-borders",
+      "tags": [
+        "laurel",
+        "academic",
+        "wreath",
+        "ornament",
+        "classical"
+      ],
+      "style": "illustration",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/161094/accident-action-administration-aftermath-161094.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "border-002",
+      "category": "page-borders",
+      "tags": [
+        "classic",
+        "frame",
+        "border",
+        "traditional",
+        "ornate"
+      ],
+      "style": "illustration",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/4992806/pexels-photo-4992806.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    },
+    {
+      "id": "border-003",
+      "category": "page-borders",
+      "tags": [
+        "art-deco",
+        "geometric",
+        "border",
+        "decorative",
+        "frame"
+      ],
+      "style": "illustration",
+      "w": 1600,
+      "h": 1067,
+      "ext": ".jpg",
+      "sha256": null,
+      "source": "https://images.pexels.com/photos/1939485/pexels-photo-1939485.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "license": "CC0",
+      "attribution": "Photo by Pexels (CC0)"
+    }
+  ]
+}

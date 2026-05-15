@@ -1,0 +1,17 @@
+{
+  "name": "word-ai-assistant",
+  "version": "1.0.0",
+  "description": "Private local AI assistant for Microsoft Word",
+  "scripts": {
+    "start": "node server.js",
+    "eval": "node eval/run.js",
+    "build-pack": "node scripts/build-pack.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^4.18.2",
+    "node-fetch": "^2.7.0",
+    "selfsigned": "^2.4.1",
+    "uuid": "^14.0.0"
+  }
+}

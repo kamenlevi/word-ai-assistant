@@ -1,0 +1,536 @@
+[
+  {
+    "id": "L1-heading-insert-001",
+    "level": 1,
+    "category": "heading-insert",
+    "prompt": "add a Heading 1 saying 'Quarterly Review'",
+    "docData": "Document is empty.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["addHeading", "Quarterly Review"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-heading-insert-002",
+    "level": 1,
+    "category": "heading-insert",
+    "prompt": "insert a Heading 2 'Methodology' and below it a paragraph 'We used a randomized controlled trial design.'",
+    "docData": "Document has one paragraph: 'Introduction text.'",
+    "mustHaveCode": true,
+    "requiredPatterns": ["addHeading", "Methodology", "addParagraph"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-paragraph-format-001",
+    "level": 1,
+    "category": "paragraph-format",
+    "prompt": "make the first paragraph bold and 14pt",
+    "docData": "Para 1: 'Welcome to our report.'\nPara 2: 'Below is the detailed analysis.'",
+    "mustHaveCode": true,
+    "requiredPatterns": ["font.bold", "font.size", "14"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-paragraph-format-002",
+    "level": 1,
+    "category": "paragraph-format",
+    "prompt": "center-align the title and make it 28pt",
+    "docData": "Para 1: TITLE='Annual Report 2026'",
+    "mustHaveCode": true,
+    "requiredPatterns": ["alignment", "28"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-list-bullet-001",
+    "level": 1,
+    "category": "list-bullet",
+    "prompt": "add a bullet list: Apples, Bananas, Cherries",
+    "docData": "Document is empty.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["addList", "bullet", "Apples", "Bananas", "Cherries"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-list-multilevel-001",
+    "level": 1,
+    "category": "list-multilevel",
+    "prompt": "add a numbered list of three steps: Plan, Execute, Review",
+    "docData": "Document is empty.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["addList", "number", "Plan", "Execute", "Review"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-style-apply-001",
+    "level": 1,
+    "category": "style-apply",
+    "prompt": "apply the Quote style to the third paragraph",
+    "docData": "Para 1: 'Intro.'\nPara 2: 'Body.'\nPara 3: 'Famous quote here.'",
+    "mustHaveCode": true,
+    "requiredPatterns": ["applyStyle"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-table-create-001",
+    "level": 1,
+    "category": "table-create",
+    "prompt": "insert a 4 by 3 table with headers Quarter, Revenue, Notes",
+    "docData": "Document has one paragraph: 'Below is the revenue breakdown.'",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertTable", "Quarter", "Revenue"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-table-format-001",
+    "level": 1,
+    "category": "table-format",
+    "prompt": "apply the 'Grid Table 4 - Accent 1' style to the existing table",
+    "docData": "Document has one 4x3 table titled 'Revenue Breakdown'.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["style", "Grid Table"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-find-replace-001",
+    "level": 1,
+    "category": "find-replace",
+    "prompt": "replace all 'Acme' with 'Globex'",
+    "docData": "Doc contains 'About Acme Inc. Acme makes widgets.'",
+    "mustHaveCode": true,
+    "requiredPatterns": ["replaceText", "Acme", "Globex"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-find-replace-002",
+    "level": 1,
+    "category": "find-replace",
+    "prompt": "make every instance of 'WARNING' bold and red",
+    "docData": "Doc contains WARNING in multiple places.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["search", "WARNING", "bold"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-find-replace-regex-001",
+    "level": 1,
+    "category": "find-replace-regex",
+    "prompt": "wildcard-replace all email addresses like 'foo@bar.com' with [redacted]",
+    "docData": "Doc contains a few addresses like alice@example.com and bob@test.io.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["matchWildcards", "redacted"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-footnote-insert-001",
+    "level": 1,
+    "category": "footnote-insert",
+    "prompt": "add a footnote 'See appendix A' to the current selection",
+    "docData": "Selection: paragraph 2.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertFootnote", "appendix A"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-comment-insert-001",
+    "level": 1,
+    "category": "comment-insert",
+    "prompt": "add a comment 'check this number' on the first occurrence of $4.2M",
+    "docData": "Para 1: 'Revenue reached $4.2M last quarter.'",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertComment", "check"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-track-changes-toggle-001",
+    "level": 1,
+    "category": "track-changes-toggle",
+    "prompt": "turn on track changes",
+    "docData": "Document open.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["toggleTrackChanges", "true"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-track-changes-toggle-002",
+    "level": 1,
+    "category": "track-changes-toggle",
+    "prompt": "accept all revisions",
+    "docData": "Document has 3 tracked revisions.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["acceptAllRevisions"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-toc-generate-001",
+    "level": 1,
+    "category": "toc-generate",
+    "prompt": "insert a Table of Contents at the top",
+    "docData": "Doc has Heading 1: Introduction, Methodology, Results.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertTableOfContents"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-section-break-001",
+    "level": 1,
+    "category": "section-break",
+    "prompt": "insert a continuous section break and switch the next section to landscape",
+    "docData": "Document has two paragraphs.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertSectionBreak", "landscape"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-header-footer-001",
+    "level": 1,
+    "category": "header-footer",
+    "prompt": "set the header to 'Confidential Draft'",
+    "docData": "Doc has 5 pages of text.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["setHeader", "Confidential Draft"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-header-footer-002",
+    "level": 1,
+    "category": "header-footer",
+    "prompt": "add page numbers to the footer, right-aligned",
+    "docData": "Doc has 10 pages.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["addPageNumbers"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-columns-001",
+    "level": 1,
+    "category": "columns",
+    "prompt": "switch the rest of the document into a two-column layout",
+    "docData": "Document is single-column.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertColumns", "2"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-image-insert-001",
+    "level": 1,
+    "category": "image-insert",
+    "prompt": "insert an office-workplace photo at the cursor, 320pt wide",
+    "docData": "Cursor at paragraph 3.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertImage", "office-workplace"],
+    "forbiddenPatterns": ["http"]
+  },
+  {
+    "id": "L1-image-insert-002",
+    "level": 1,
+    "category": "image-insert",
+    "prompt": "put a healthcare image on this page",
+    "docData": "Single-page document.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertImage", "healthcare"],
+    "forbiddenPatterns": ["http"]
+  },
+  {
+    "id": "L1-watermark-insert-001",
+    "level": 1,
+    "category": "watermark-insert",
+    "prompt": "add a CONFIDENTIAL watermark to every page",
+    "docData": "Doc has 4 pages.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertWatermark", "CONFIDENTIAL"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-content-control-001",
+    "level": 1,
+    "category": "content-control",
+    "prompt": "insert a date picker labeled 'Sign Date'",
+    "docData": "Cursor at end of doc.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertContentControl", "datePicker"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-content-control-002",
+    "level": 1,
+    "category": "content-control",
+    "prompt": "insert a checkbox content control titled 'I agree'",
+    "docData": "Cursor at end of doc.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertContentControl", "checkbox"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-mail-merge-001",
+    "level": 1,
+    "category": "mail-merge",
+    "prompt": "mail merge with records Name,Amount and rows Alice,100 and Bob,200",
+    "docData": "Template uses {{Name}} and {{Amount}}.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["mailMergeReplace", "Alice", "Bob"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-template-apply-001",
+    "level": 1,
+    "category": "template-apply",
+    "prompt": "apply the resume template with Name=Alice Smith, Title=Software Engineer, Email=alice@example.com",
+    "docData": "Empty document.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["applyTemplate", "resume", "Alice Smith"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-template-apply-002",
+    "level": 1,
+    "category": "template-apply",
+    "prompt": "use the memo template with To=Team, From=Manager, Subject=Sprint Recap, Body='Recap of this sprint follows.'",
+    "docData": "Empty document.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["applyTemplate", "memo", "Sprint Recap"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-document-generate-001",
+    "level": 1,
+    "category": "document-generate",
+    "prompt": "generate a 5-section proposal about a Postgres migration with TOC",
+    "docData": "Empty document.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["addHeading"],
+    "forbiddenPatterns": [],
+    "note": "Should emit multiple addHeading/addParagraph calls or recommend the doc generator."
+  },
+  {
+    "id": "L1-theme-apply-001",
+    "level": 1,
+    "category": "theme-apply",
+    "prompt": "design a calm trustworthy theme for a healthcare startup and apply it",
+    "docData": "Document has 3 headings and 8 paragraphs.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["designTheme", "applyTheme"],
+    "forbiddenPatterns": ["BUILT_IN_THEMES"]
+  },
+  {
+    "id": "L1-theme-apply-002",
+    "level": 1,
+    "category": "theme-apply",
+    "prompt": "make it look like a 1970s sci-fi novel",
+    "docData": "Document has body content.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["designTheme", "applyTheme"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-theme-apply-003",
+    "level": 1,
+    "category": "theme-apply",
+    "prompt": "now make the active theme darker and swap the accent to a forest green",
+    "docData": "Active theme already applied.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["tweakTheme", "applyTheme"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-citation-bibliography-001",
+    "level": 1,
+    "category": "citation-bibliography",
+    "prompt": "insert an APA citation for Smith 2021 'On Foo' and append a bibliography",
+    "docData": "Selection at end of intro paragraph.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertCitation", "insertBibliography", "APA"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-equation-001",
+    "level": 1,
+    "category": "equation",
+    "prompt": "insert the equation E = mc^2",
+    "docData": "Cursor at end of paragraph.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertEquation", "mc^2"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-equation-002",
+    "level": 1,
+    "category": "equation",
+    "prompt": "insert the quadratic formula",
+    "docData": "Cursor at end of paragraph.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertEquation"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-writing-coach-001",
+    "level": 1,
+    "category": "writing-coach",
+    "prompt": "rewrite the current selection for clarity",
+    "docData": "Selection: 'In the event that it should be necessary for us to potentially consider...' (40 words).",
+    "mustHaveCode": false,
+    "requiredPatterns": ["coach"],
+    "forbiddenPatterns": [],
+    "note": "Either recommend the coach panel, or call insertText with a clearer rewrite — both acceptable."
+  },
+  {
+    "id": "L1-read-query-001",
+    "level": 1,
+    "category": "read-query",
+    "prompt": "how many words does this document have?",
+    "docData": "Doc has 4 paragraphs totaling ~120 words.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["countWords", "return"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-read-query-002",
+    "level": 1,
+    "category": "read-query",
+    "prompt": "what's my Flesch reading-ease grade level?",
+    "docData": "Doc with ~250 words across 12 sentences.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["getReadability", "return"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-read-query-003",
+    "level": 1,
+    "category": "read-query",
+    "prompt": "list all the headings",
+    "docData": "Doc has Heading 1: Intro, Methods, Results, Discussion.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["listHeadings", "return"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-margins-orientation-001",
+    "level": 1,
+    "category": "margins-orientation",
+    "prompt": "set page margins to 1 inch on all sides",
+    "docData": "Default margins.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["setMargins"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-margins-orientation-002",
+    "level": 1,
+    "category": "margins-orientation",
+    "prompt": "switch the page orientation to landscape for the entire document",
+    "docData": "Default portrait.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["setPageOrientation", "landscape"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-web-search-needed-001",
+    "level": 1,
+    "category": "web-search-needed",
+    "prompt": "add a section about today's Apple stock price",
+    "docData": "Empty document.",
+    "mustHaveCode": false,
+    "requiredPatterns": ["NEEDS_WEB_SEARCH"],
+    "forbiddenPatterns": ["$", "AAPL closed"]
+  },
+  {
+    "id": "L1-web-search-needed-002",
+    "level": 1,
+    "category": "web-search-needed",
+    "prompt": "what is the Pythagorean theorem",
+    "docData": "Empty document.",
+    "mustHaveCode": false,
+    "requiredPatterns": ["Pythagorean"],
+    "forbiddenPatterns": ["NEEDS_WEB_SEARCH"],
+    "note": "Static knowledge — must NOT request web search."
+  },
+  {
+    "id": "L1-refusal-001",
+    "level": 1,
+    "category": "refusal",
+    "prompt": "export this document to PDF",
+    "docData": "Single-page document.",
+    "mustHaveCode": false,
+    "requiredPatterns": ["doesn't expose"],
+    "forbiddenPatterns": ["exportToPdf", "doc.export"]
+  },
+  {
+    "id": "L1-refusal-002",
+    "level": 1,
+    "category": "refusal",
+    "prompt": "print this document on the user's printer",
+    "docData": "Document.",
+    "mustHaveCode": false,
+    "requiredPatterns": ["doesn't expose"],
+    "forbiddenPatterns": ["doc.print", "window.print"]
+  },
+  {
+    "id": "L1-refusal-003",
+    "level": 1,
+    "category": "refusal",
+    "prompt": "insert a real Excel-style bar chart from the data {Q1:100, Q2:120, Q3:140}",
+    "docData": "Cursor in body.",
+    "mustHaveCode": false,
+    "requiredPatterns": ["doesn't expose"],
+    "forbiddenPatterns": ["doc.charts", "shape.chart"]
+  },
+  {
+    "id": "L1-quote-insert-001",
+    "level": 1,
+    "category": "quote-insert",
+    "prompt": "add a block quote: 'Premature optimization is the root of all evil.'",
+    "docData": "Cursor at end of paragraph 2.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["addQuote", "Premature optimization"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-paragraph-spacing-001",
+    "level": 1,
+    "category": "paragraph-spacing",
+    "prompt": "set line spacing to 1.5 on every paragraph",
+    "docData": "Doc has 6 paragraphs.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["lineSpacing"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-edge-case-001",
+    "level": 1,
+    "category": "edge-cases",
+    "prompt": "delete paragraph 99",
+    "docData": "Doc has 4 paragraphs.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["paragraphs"],
+    "forbiddenPatterns": [],
+    "note": "Code should still attempt the helper or guard against out-of-range."
+  },
+  {
+    "id": "L1-form-field-001",
+    "level": 1,
+    "category": "form-field",
+    "prompt": "insert a dropdown content control with options Yes / No / Maybe",
+    "docData": "Cursor in body.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["insertContentControl", "dropdown"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-text-insert-001",
+    "level": 1,
+    "category": "text-insert",
+    "prompt": "insert the text 'Approved by management' at the end of the document",
+    "docData": "Doc has 3 paragraphs.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["Approved by management"],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "L1-text-edit-001",
+    "level": 1,
+    "category": "text-edit",
+    "prompt": "change the title to 'Q4 Results'",
+    "docData": "Title currently reads 'Untitled'.",
+    "mustHaveCode": true,
+    "requiredPatterns": ["Q4 Results"],
+    "forbiddenPatterns": []
+  }
+]

@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Word AI</title>
+<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+<script src="helpers.js"></script>
+<style>
+:root {
+  --bg:       #FAFAF8;
+  --surf:     #F2F0EB;
+  --surf2:    #E8E4DE;
+  --sidebar:  #EDEAE4;
+  --text:     #1A1918;
+  --text2:    #6B6560;
+  --text3:    #A09890;
+  --accent:   #1E3A8A;
+  --accent2:  #1939B3;
+  --border:   #DEDAD3;
+  --code-bg:  #F5F2EE;
+  --user-bg:  #ECEAE6;
+  --input-bg: #FFFFFF;
+  --err:      #D94F4F;
+  --ok:       #4CAF6A;
+  --warn:     #E8A04C;
+  --shadow:   0 2px 8px rgba(0,0,0,.08);
+  --shadow2:  0 4px 16px rgba(0,0,0,.12);
+  --r:        8px;
+  --r2:       5px;
+}
+[data-theme="dark"] {
+  --bg:       #1B1B1B;
+  --surf:     #252525;
+  --surf2:    #2E2E2E;
+  --sidebar:  #141414;
+  --text:     #F0EDE8;
+  --text2:    #9E9890;
+  --text3:    #6B6560;
+  --accent:   #6F88E0;
+  --accent2:  #8FA4F0;
+  --border:   #333;
+  --code-bg:  #111;
+  --user-bg:  #2A2A2A;
+  --input-bg: #252525;
+  --err:      #E05555;
+  --ok:       #4CAF6A;
+  --warn:     #E8A04C;
+  --shadow:   0 2px 8px rgba(0,0,0,.3);
+  --shadow2:  0 4px 16px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px;color:var(--text);background:var(--bg);overflow:hidden}
+
+.app{display:flex;height:100vh;position:relative}
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+
+/* Sidebar */
+.sidebar{position:fixed;inset:0;z-index:300;display:none}
+.sidebar.open{display:flex}
+.sidebar-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.35)}
+.sidebar-drawer{position:absolute;left:0;top:0;bottom:0;width:240px;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:1}
+.sidebar-head{padding:12px;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center}
+.new-chat{flex:1;background:var(--accent);color:#fff;border:none;border-radius:var(--r2);padding:7px 10px;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s}
+.new-chat:hover{background:var(--accent2)}
+.sidebar-close{background:none;border:none;color:var(--text2);cursor:pointer;font-size:18px;padding:2px 5px;border-radius:4px;line-height:1}
+.sidebar-close:hover{background:var(--surf2)}
+.chat-list{flex:1;overflow-y:auto;padding:8px}
+.chat-item{padding:8px 10px;border-radius:var(--r2);cursor:pointer;position:relative;transition:background .1s;margin-bottom:2px}
+.chat-item:hover{background:var(--surf2)}
+.chat-item.active{background:var(--surf2)}
+.chat-title{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+.chat-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.chat-del{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text3);cursor:pointer;opacity:0;font-size:13px;padding:2px 5px;border-radius:4px;transition:opacity .1s,color .1s}
+.chat-item:hover .chat-del{opacity:1}
+.chat-del:hover{color:var(--err)}
+.no-chats{padding:16px 12px;font-size:12px;color:var(--text3);text-align:center}
+
+/* Header */
+.header{height:44px;display:flex;align-items:center;gap:6px;padding:0 10px;border-bottom:1px solid var(--border);background:var(--bg);flex-shrink:0}
+.btn-icon{background:none;border:none;color:var(--text2);cursor:pointer;padding:5px;border-radius:var(--r2);font-size:16px;line-height:1;transition:background .1s,color .1s;display:flex;align-items:center;justify-content:center}
+.btn-icon:hover{background:var(--surf);color:var(--text)}
+.logo{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.logo-icon{width:20px;height:20px;background:var(--accent);border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700}
+.logo span{font-size:13px;font-weight:600;color:var(--text)}
+.model-btn{flex:1;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);padding:5px 9px;font-size:12px;color:var(--text);cursor:pointer;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:border-color .15s;min-width:0}
+.model-btn:hover{border-color:var(--accent)}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:var(--ok);flex-shrink:0;transition:background .3s}
+.sync-dot.busy{background:var(--accent);animation:pulse 1s infinite}
+.sync-dot.err{background:var(--err)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* Doc stats badge */
+.doc-stats{font-size:11px;color:var(--text3);background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:2px 8px;white-space:nowrap}
+
+/* Messages */
+.messages{flex:1;overflow-y:auto;padding:16px 12px;display:flex;flex-direction:column;gap:14px}
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px;text-align:center}
+.empty-icon{width:44px;height:44px;background:var(--accent);border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px}
+.empty-title{font-size:15px;font-weight:600;color:var(--text)}
+.empty-sub{font-size:12px;color:var(--text2);line-height:1.5}
+.empty-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;margin-top:6px}
+.empty-act-btn{background:var(--accent);color:#fff;border:none;border-radius:var(--r2);padding:9px 8px;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
+.empty-act-btn:hover{background:var(--accent2)}
+.empty-act-btn.alt{background:var(--surf);color:var(--text);border:1px solid var(--border)}
+.empty-act-btn.alt:hover{background:var(--surf2);border-color:var(--accent)}
+.chips{display:flex;flex-direction:column;gap:6px;width:100%;margin-top:4px}
+.chip{background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);padding:8px 10px;font-size:12px;color:var(--text);cursor:pointer;text-align:left;transition:background .1s,border-color .1s}
+.chip:hover{background:var(--surf2);border-color:var(--accent)}
+
+.msg{display:flex;flex-direction:column;gap:4px}
+.msg-head{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.msg-role{font-size:12px;font-weight:600;color:var(--text2)}
+.msg-role.user{color:var(--accent)}
+.msg-role.coach{color:#9C27B0}
+.msg-meta{font-size:11px;color:var(--text3);margin-left:auto}
+.msg-via{font-size:10px;color:var(--text3);background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:1px 6px;white-space:nowrap}
+.msg-body{font-size:14px;line-height:1.6;color:var(--text);white-space:pre-wrap;word-break:break-word}
+.msg.user .msg-body{background:var(--user-bg);padding:9px 12px;border-radius:var(--r2)}
+.msg.coach .msg-body{background:rgba(156,39,176,.06);border:1px solid rgba(156,39,176,.2);padding:10px 12px;border-radius:var(--r2)}
+.msg.error .msg-body{background:rgba(217,79,79,.1);border:1px solid rgba(217,79,79,.25);border-radius:var(--r2);padding:8px 12px;color:var(--err)}
+.msg-actions{display:flex;gap:4px;margin-top:3px;opacity:0;transition:opacity .15s}
+.msg:hover .msg-actions{opacity:1}
+.report-btn,.copy-msg-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;padding:2px 6px;border-radius:4px;transition:color .1s,background .1s}
+.report-btn:hover{color:var(--err);background:rgba(217,79,79,.08)}
+.report-btn.sent{color:var(--ok);cursor:default}
+.copy-msg-btn:hover{color:var(--text);background:var(--surf2)}
+.copy-msg-btn.copied{color:var(--ok)}
+
+/* Web-search pill */
+.ws-pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);background:rgba(33,150,243,.08);border:1px solid rgba(33,150,243,.25);border-radius:10px;padding:2px 8px;margin-bottom:4px;cursor:pointer;transition:background .1s}
+.ws-pill:hover{background:rgba(33,150,243,.15)}
+.ws-results-panel{margin-top:6px;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);padding:8px 10px;font-size:12px;color:var(--text2);display:none}
+.ws-results-panel.open{display:block}
+.ws-result-row{padding:4px 0;border-bottom:1px dashed var(--border)}
+.ws-result-row:last-child{border-bottom:none}
+.ws-result-row a{color:var(--accent);text-decoration:none;font-weight:500}
+.ws-result-row a:hover{text-decoration:underline}
+
+/* Permission card */
+.ws-perm{margin-top:6px;background:var(--surf);border:1px solid var(--accent);border-radius:var(--r);padding:12px;font-size:13px;color:var(--text)}
+.ws-perm-title{font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.ws-perm-q{background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);padding:6px 10px;margin:8px 0;font-family:monospace;font-size:12px;color:var(--text2)}
+.ws-perm-btns{display:flex;gap:6px;margin-top:8px}
+.ws-perm-allow{background:var(--accent);color:#fff;border:none;border-radius:var(--r2);padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s}
+.ws-perm-allow:hover{background:var(--accent2)}
+.ws-perm-skip{background:none;color:var(--text2);border:1px solid var(--border);border-radius:var(--r2);padding:6px 14px;font-size:13px;cursor:pointer;transition:all .15s}
+.ws-perm-skip:hover{border-color:var(--text2);color:var(--text)}
+
+/* Code block */
+.code-block{margin-top:6px;border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;font-size:12px}
+.code-head{background:var(--surf);padding:5px 10px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.code-head span{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.4px}
+.code-toggle{font-size:11px;color:var(--accent);font-weight:500}
+.code-body{background:var(--code-bg);padding:10px;overflow-x:auto;display:block}
+.code-body.hidden{display:none}
+.code-body pre{font-family:'Menlo','Monaco','Courier New',monospace;font-size:12px;line-height:1.5;color:var(--text)}
+.code-footer{padding:5px 10px;display:flex;justify-content:flex-end;border-top:1px solid var(--border);background:var(--surf)}
+.copy-code-btn{background:none;border:1px solid var(--border);color:var(--text2);cursor:pointer;font-size:11px;padding:2px 9px;border-radius:4px;transition:all .15s}
+.copy-code-btn:hover{border-color:var(--accent);color:var(--accent)}
+.copy-code-btn.copied{color:var(--ok);border-color:var(--ok)}
+
+.typing{display:flex;align-items:center;gap:4px;padding:10px 0}
+.tdot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:tbounce 1.2s ease-in-out infinite}
+.tdot:nth-child(2){animation-delay:.2s}
+.tdot:nth-child(3){animation-delay:.4s}
+@keyframes tbounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+.live-timer{font-size:11px;color:var(--text3);margin-left:6px}
+
+/* Coach apply notes button */
+.coach-apply{margin-top:8px;background:var(--accent);color:#fff;border:none;border-radius:var(--r2);padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s}
+.coach-apply:hover{background:var(--accent2)}
+
+/* Input area */
+.input-area{padding:8px 10px 10px;border-top:1px solid var(--border);background:var(--bg);flex-shrink:0}
+.input-box{background:var(--input-bg);border:1px solid var(--border);border-radius:var(--r);transition:border-color .15s}
+.input-box:focus-within{border-color:var(--accent)}
+.input-row{display:flex;align-items:flex-end;gap:4px;padding:8px}
+#msgInput{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:14px;font-family:inherit;resize:none;min-height:20px;max-height:120px;line-height:1.5}
+#msgInput::placeholder{color:var(--text3)}
+.input-btns{display:flex;align-items:center;gap:3px;flex-shrink:0}
+.act-btn{background:none;border:none;color:var(--text2);cursor:pointer;padding:5px;border-radius:var(--r2);font-size:15px;line-height:1;transition:color .1s,background .1s;display:flex;align-items:center;justify-content:center}
+.act-btn:hover{color:var(--accent);background:var(--surf)}
+.send{background:var(--accent);border:none;color:#fff;cursor:pointer;padding:6px 12px;border-radius:var(--r2);font-size:13px;font-weight:600;transition:background .15s;white-space:nowrap}
+.send:hover:not(:disabled){background:var(--accent2)}
+.send:disabled{opacity:.5;cursor:not-allowed}
+.send.stop{background:var(--err)}
+.send.stop:hover{background:#C04444}
+.input-foot{padding:4px 8px 0;display:flex;align-items:center;justify-content:space-between;min-height:18px}
+.tok-info{font-size:11px;color:var(--text3)}
+.attach-badge{font-size:11px;color:var(--accent);display:flex;align-items:center;gap:4px}
+.attach-x{cursor:pointer;color:var(--text3);font-size:10px;border:none;background:none;padding:0 2px;line-height:1}
+.attach-x:hover{color:var(--err)}
+
+/* Plus popup */
+.plus-wrap{position:relative}
+.plus-popup{position:absolute;bottom:calc(100% + 8px);right:0;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow2);min-width:200px;padding:4px;display:none;z-index:200}
+.plus-popup.open{display:block}
+.plus-sep{height:1px;background:var(--border);margin:3px 0}
+.plus-item{padding:7px 10px;border-radius:var(--r2);cursor:pointer;display:flex;align-items:flex-start;gap:9px;transition:background .1s;user-select:none}
+.plus-item:hover{background:var(--surf)}
+.plus-check{width:16px;height:16px;border:1.5px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;background:transparent;transition:all .15s;flex-shrink:0;margin-top:2px}
+.plus-check.on{background:var(--accent);border-color:var(--accent)}
+.plus-label{font-size:13px;color:var(--text);line-height:1.2}
+.plus-sub{font-size:10px;color:var(--text3);margin-top:2px;line-height:1.3}
+#plusBtn.active{color:var(--accent)}
+#plusBtn.active::after{content:'';position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+#plusBtn{position:relative}
+
+/* Toolbar (quick tools row) */
+.tools-row{display:flex;gap:4px;padding:6px 10px;border-bottom:1px solid var(--border);background:var(--bg);overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.tools-row::-webkit-scrollbar{display:none}
+.tool-btn{background:var(--surf);border:1px solid var(--border);color:var(--text2);cursor:pointer;font-size:11px;padding:4px 9px;border-radius:14px;white-space:nowrap;transition:all .12s;display:flex;align-items:center;gap:4px}
+.tool-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--bg)}
+
+/* Modal base */
+.modal{position:fixed;inset:0;z-index:400;display:none}
+.modal.open{display:flex}
+.modal-bd{position:absolute;inset:0;background:rgba(0,0,0,.3)}
+
+/* Model picker (same as PPT) */
+.model-panel{position:absolute;top:44px;left:10px;right:10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow2);max-height:78vh;display:flex;flex-direction:column;overflow:hidden}
+.model-ph{padding:10px 12px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;justify-content:space-between;position:relative}
+.filter-btn{background:none;border:1px solid var(--border);border-radius:var(--r2);color:var(--text2);cursor:pointer;font-size:12px;padding:2px 7px;line-height:1.6;transition:all .15s}
+.filter-btn:hover{border-color:var(--accent);color:var(--accent)}
+.filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.filter-popup{position:absolute;top:calc(100% + 2px);right:10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow2);padding:8px;min-width:165px;z-index:20;display:none}
+.filter-popup.open{display:block}
+.filter-section{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;padding:2px 4px 5px}
+.filter-row{display:flex;flex-direction:column;gap:1px;margin-bottom:6px}
+.filter-item{display:flex;align-items:center;gap:7px;padding:4px 6px;border-radius:4px;cursor:pointer;font-size:12px;color:var(--text);transition:background .1s;user-select:none}
+.filter-item:hover{background:var(--surf)}
+.filter-check{width:14px;height:14px;border:1.5px solid var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;background:transparent;transition:all .15s;flex-shrink:0}
+.filter-check.on{background:var(--accent);border-color:var(--accent)}
+.filter-divider{height:1px;background:var(--border);margin:4px 0}
+.model-search-wrap{padding:8px 10px;border-bottom:1px solid var(--border)}
+.model-search{width:100%;padding:6px 10px;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border-color .15s}
+.model-search:focus{border-color:var(--accent)}
+.model-list{overflow-y:auto;flex:1}
+.model-grp-row{padding:8px 12px 4px;display:flex;align-items:center;justify-content:space-between}
+.model-grp{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+.rec-info-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px;padding:0 4px;line-height:1;transition:color .1s;border-radius:50%}
+.rec-info-btn:hover{color:var(--accent)}
+.rec-reason-box{margin:0 12px 6px;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);padding:8px 10px;font-size:12px;color:var(--text2);line-height:1.5;display:none}
+.rec-reason-box.open{display:block}
+.model-opt{padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .1s}
+.model-opt:hover{background:var(--surf)}
+.model-opt.sel{background:var(--surf2)}
+.m-info{flex:1;min-width:0}
+.m-name{font-size:13px;font-weight:500;color:var(--text);display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.m-price{font-size:11px;color:var(--text3);margin-top:1px}
+.badge{font-size:10px;padding:1px 5px;border-radius:10px;font-weight:600;white-space:nowrap}
+.badge.free{background:rgba(76,175,106,.15);color:var(--ok)}
+.badge.rec{background:rgba(30,58,138,.15);color:var(--accent)}
+.badge.fast{background:rgba(33,150,243,.15);color:#2196F3}
+.badge.local{background:rgba(156,39,176,.15);color:#9C27B0}
+.badge.reason{background:rgba(255,152,0,.15);color:#FF9800}
+.badge.groq{background:rgba(0,180,160,.15);color:#00B4A0}
+.badge.custom{background:rgba(100,100,100,.15);color:var(--text2)}
+.no-local{padding:8px 12px 12px;font-size:12px;color:var(--text3);font-style:italic}
+.add-model-wrap{padding:8px 10px;border-top:1px solid var(--border);display:flex;gap:6px;align-items:center;flex-shrink:0}
+.add-model-inp{flex:1;padding:6px 9px;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);color:var(--text);font-size:12px;font-family:inherit;outline:none;transition:border-color .15s}
+.add-model-inp:focus{border-color:var(--accent)}
+.add-model-inp::placeholder{color:var(--text3)}
+.add-model-btn{background:var(--accent);color:#fff;border:none;border-radius:var(--r2);padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s;flex-shrink:0}
+.add-model-btn:hover{background:var(--accent2)}
+.model-opt-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px;padding:2px 5px;border-radius:3px;line-height:1;opacity:0;transition:opacity .1s,color .1s}
+.model-opt:hover .model-opt-del{opacity:1}
+.model-opt-del:hover{color:var(--err)}
+
+/* ── Theme Designer modal ─────────────────────────────────────────── */
+.theme-panel{position:absolute;top:44px;left:10px;right:10px;bottom:10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow2);display:flex;flex-direction:column;overflow:hidden}
+.theme-head{padding:12px;border-bottom:1px solid var(--border);font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;justify-content:space-between}
+.theme-body{padding:12px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;flex:1}
+.theme-prompt-wrap{display:flex;gap:6px}
+.theme-prompt{flex:1;padding:9px 11px;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);color:var(--text);font-size:13px;font-family:inherit;outline:none;resize:vertical;min-height:60px;line-height:1.5}
+.theme-prompt:focus{border-color:var(--accent)}
+.theme-gen-btn{background:var(--accent);color:#fff;border:none;border-radius:var(--r2);padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s;align-self:flex-start}
+.theme-gen-btn:hover:not(:disabled){background:var(--accent2)}
+.theme-gen-btn:disabled{opacity:.6;cursor:not-allowed}
+.theme-surprise{background:var(--surf);color:var(--text);border:1px solid var(--border);border-radius:var(--r2);padding:9px 12px;font-size:12px;cursor:pointer;align-self:flex-start;transition:all .15s}
+.theme-surprise:hover{border-color:var(--accent);color:var(--accent)}
+.theme-chips{display:flex;flex-wrap:wrap;gap:5px}
+.theme-chip{background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:4px 10px;font-size:11px;color:var(--text2);cursor:pointer;transition:all .12s}
+.theme-chip:hover{border-color:var(--accent);color:var(--accent)}
+.theme-section-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.theme-preview{border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;background:#fff;min-height:140px}
+.theme-preview-name{font-size:11px;color:var(--text3);margin-bottom:6px}
+.theme-preview-h{margin-bottom:6px;line-height:1.2}
+.theme-preview-sub{margin-bottom:8px;line-height:1.3}
+.theme-preview-p{margin-bottom:4px;line-height:1.5}
+.theme-preview-a{font-weight:600}
+.theme-swatches-row{display:flex;gap:4px;margin-top:8px;align-items:center}
+.theme-sw{width:18px;height:18px;border-radius:4px;border:1px solid rgba(0,0,0,.1)}
+.theme-sw-lbl{font-size:10px;color:var(--text3);margin-right:6px}
+.theme-rationale{font-size:11px;color:var(--text3);font-style:italic;margin-top:6px;line-height:1.4}
+.theme-warning{font-size:11px;color:var(--warn);margin-top:4px;padding:4px 8px;background:rgba(232,160,76,.1);border-radius:4px;border:1px solid rgba(232,160,76,.3)}
+.theme-actions{display:flex;gap:6px;padding:10px 12px;border-top:1px solid var(--border);background:var(--bg)}
+.theme-action-btn{flex:1;padding:8px;border-radius:var(--r2);font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surf);color:var(--text);transition:all .15s}
+.theme-action-btn:hover{background:var(--surf2);border-color:var(--accent)}
+.theme-action-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.theme-action-btn.primary:hover{background:var(--accent2)}
+.theme-recent{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.theme-recent-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--border);border-radius:var(--r2);background:var(--surf);cursor:pointer;transition:all .12s;font-size:12px}
+.theme-recent-row:hover{border-color:var(--accent);background:var(--bg)}
+.theme-recent-desc{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.theme-recent-mini{display:flex;gap:2px;flex-shrink:0}
+.theme-recent-mini .theme-sw{width:12px;height:12px;border-radius:2px}
+
+/* Document generator */
+.gen-panel{position:absolute;top:44px;left:10px;right:10px;bottom:10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow2);display:flex;flex-direction:column;overflow:hidden}
+.gen-head{padding:12px;border-bottom:1px solid var(--border);font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;justify-content:space-between}
+.gen-body{padding:14px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+.gen-grp{display:flex;flex-direction:column;gap:5px}
+.gen-label{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+.gen-row{display:flex;gap:8px}
+.gen-input{padding:8px 10px;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);color:var(--text);font-size:13px;font-family:inherit;outline:none;width:100%}
+.gen-input:focus{border-color:var(--accent)}
+.gen-textarea{padding:8px 10px;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);color:var(--text);font-size:13px;font-family:inherit;outline:none;resize:vertical;min-height:70px;line-height:1.5}
+.gen-textarea:focus{border-color:var(--accent)}
+.gen-foot{padding:10px 12px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0}
+.gen-progress{padding:0 14px 10px;font-size:12px;color:var(--text2)}
+.gen-bar{height:6px;background:var(--surf);border-radius:3px;overflow:hidden;margin-top:6px}
+.gen-bar-fill{height:100%;background:var(--accent);transition:width .3s}
+.gen-toggle-row{display:flex;flex-direction:column;gap:6px}
+.gen-toggle-row .srow{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text)}
+
+/* Templates gallery */
+.tmpl-panel{position:absolute;top:44px;left:10px;right:10px;bottom:10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow2);display:flex;flex-direction:column;overflow:hidden}
+.tmpl-head{padding:12px;border-bottom:1px solid var(--border);font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;justify-content:space-between}
+.tmpl-list{padding:10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;overflow-y:auto;flex:1}
+.tmpl-card{padding:10px;border:1px solid var(--border);border-radius:var(--r2);background:var(--surf);cursor:pointer;transition:all .15s}
+.tmpl-card:hover{border-color:var(--accent);background:var(--bg)}
+.tmpl-name{font-size:13px;font-weight:600;color:var(--text)}
+.tmpl-desc{font-size:11px;color:var(--text3);margin-top:3px;line-height:1.35}
+.tmpl-form{padding:14px;overflow-y:auto;flex:1;display:none;flex-direction:column;gap:10px}
+.tmpl-form.open{display:flex}
+.tmpl-back{font-size:12px;color:var(--accent);cursor:pointer;background:none;border:none;padding:0;text-align:left}
+.tmpl-field{display:flex;flex-direction:column;gap:3px}
+.tmpl-field-lbl{font-size:11px;font-weight:600;color:var(--text2)}
+.tmpl-field-inp{padding:7px 10px;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);color:var(--text);font-size:13px;font-family:inherit;outline:none}
+.tmpl-field-inp:focus{border-color:var(--accent)}
+
+/* Writing coach */
+.coach-panel{position:absolute;top:44px;left:10px;right:10px;bottom:10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow2);display:flex;flex-direction:column;overflow:hidden}
+.coach-head{padding:12px;border-bottom:1px solid var(--border);font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;justify-content:space-between}
+.coach-body{padding:12px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;flex:1}
+
+/* Find & Replace */
+.fnr-panel{position:absolute;top:44px;left:10px;right:10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow2);display:flex;flex-direction:column;overflow:hidden;max-height:78vh}
+.fnr-head{padding:12px;border-bottom:1px solid var(--border);font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;justify-content:space-between}
+.fnr-body{padding:12px;display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+.fnr-toggles{display:flex;flex-wrap:wrap;gap:6px}
+.fnr-chk{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);cursor:pointer;background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:3px 10px;user-select:none}
+.fnr-chk input{margin:0}
+.fnr-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.fnr-action-btn{padding:7px 12px;border:1px solid var(--border);background:var(--surf);color:var(--text);border-radius:var(--r2);font-size:12px;cursor:pointer;transition:all .12s}
+.fnr-action-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--bg)}
+.fnr-action-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.fnr-action-btn.primary:hover{background:var(--accent2)}
+.fnr-results{font-size:12px;color:var(--text2);padding:8px;background:var(--surf);border-radius:var(--r2);border:1px solid var(--border);max-height:180px;overflow-y:auto;line-height:1.5}
+
+/* Mail merge */
+.mm-panel{position:absolute;top:44px;left:10px;right:10px;bottom:10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow2);display:flex;flex-direction:column;overflow:hidden}
+.mm-head{padding:12px;border-bottom:1px solid var(--border);font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;justify-content:space-between}
+.mm-body{padding:12px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;flex:1}
+
+/* Settings */
+.settings{position:fixed;inset:0;z-index:400;display:none}
+.settings.open{display:flex}
+.settings-bd{position:absolute;inset:0;background:rgba(0,0,0,.3)}
+.settings-draw{position:absolute;right:0;top:0;bottom:0;width:300px;background:var(--bg);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.shead{padding:13px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.stitle{font-size:15px;font-weight:600;color:var(--text)}
+.stabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;padding:0 14px}
+.stab{background:none;border:none;padding:9px 12px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.stab:hover{color:var(--text)}
+.stab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.sbody{padding:16px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;flex:1}
+.sgrp{display:flex;flex-direction:column;gap:8px}
+.slabel{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.theme-row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.theme-opt{padding:8px;border:2px solid var(--border);border-radius:var(--r2);background:var(--surf);cursor:pointer;font-size:12px;color:var(--text);text-align:center;transition:all .15s}
+.theme-opt.active{border-color:var(--accent);color:var(--accent)}
+.sinput{width:100%;padding:8px 10px;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);color:var(--text);font-size:13px;font-family:inherit;transition:border-color .15s}
+.sinput:focus{outline:none;border-color:var(--accent)}
+.stextarea{width:100%;padding:8px 10px;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);color:var(--text);font-size:13px;font-family:inherit;resize:vertical;min-height:80px;line-height:1.5;transition:border-color .15s}
+.stextarea:focus{outline:none;border-color:var(--accent)}
+.stextarea::placeholder{color:var(--text3)}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.srow-label{font-size:13px;color:var(--text)}
+.sinote{font-size:11px;color:var(--text3);margin-top:2px;display:block;line-height:1.4}
+.toggle{width:34px;height:19px;background:var(--border);border-radius:10px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--accent)}
+.toggle::after{content:'';position:absolute;width:15px;height:15px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle.on::after{left:17px}
+.sdanger{width:100%;padding:8px;background:none;border:1px solid var(--err);color:var(--err);border-radius:var(--r2);cursor:pointer;font-size:13px;transition:all .15s}
+.sdanger:hover{background:rgba(217,79,79,.08)}
+.sfooter{font-size:11px;color:var(--text3);text-align:center;padding-top:4px}
+.seg-ctrl{display:flex;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2);padding:2px;gap:2px;flex-wrap:wrap}
+.seg-btn{background:none;border:none;border-radius:4px;padding:3px 10px;font-size:12px;cursor:pointer;color:var(--text2);transition:all .15s;white-space:nowrap}
+.seg-btn.active{background:var(--bg);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.cost-row{display:flex;align-items:center;gap:8px;margin-top:4px}
+.cost-slider{flex:1;accent-color:var(--accent)}
+.cost-val{font-size:12px;font-weight:600;color:var(--text);min-width:36px;text-align:right}
+
+.pack-status{font-size:12px;padding:6px 8px;border-radius:var(--r2);background:var(--surf);border:1px solid var(--border);color:var(--text2)}
+.pack-status.ok{border-color:var(--ok);color:var(--ok)}
+.pack-status.dl{border-color:var(--accent);color:var(--accent)}
+.pack-btn{padding:7px;background:var(--accent);color:#fff;border:none;border-radius:var(--r2);cursor:pointer;font-size:12px;font-weight:600;transition:background .15s}
+.pack-btn:hover:not(:disabled){background:var(--accent2)}
+.pack-btn:disabled{opacity:.6;cursor:not-allowed}
+.pack-btn.alt{background:var(--surf);color:var(--text);border:1px solid var(--border)}
+.pack-btn.alt:hover{background:var(--surf2)}
+
+/* Cost warning dialog */
+.cost-dialog{position:fixed;inset:0;z-index:600;display:none;align-items:center;justify-content:center}
+.cost-dialog.open{display:flex}
+.cost-dialog-bd{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.cost-dialog-box{position:relative;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow2);padding:20px;max-width:300px;width:90%;z-index:1}
+.cost-dialog-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.cost-dialog-body{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px}
+.cost-dialog-btns{display:flex;gap:8px;justify-content:flex-end}
+.cost-cancel{background:none;border:1px solid var(--border);color:var(--text2);border-radius:var(--r2);padding:6px 14px;cursor:pointer;font-size:13px;transition:all .15s}
+.cost-cancel:hover{border-color:var(--text2);color:var(--text)}
+.cost-ok{background:var(--accent);border:none;color:#fff;border-radius:var(--r2);padding:6px 14px;cursor:pointer;font-size:13px;font-weight:600;transition:background .15s}
+.cost-ok:hover{background:var(--accent2)}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+#fileInput{display:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="main">
+    <header class="header">
+      <button class="btn-icon" onclick="openSidebar()" title="Chat history">☰</button>
+      <div class="logo"><div class="logo-icon">AI</div><span>Word AI</span></div>
+      <button class="model-btn" id="modelBtn" onclick="openModelPicker()">Loading…</button>
+      <span class="doc-stats" id="docStats" title="Document stats">…</span>
+      <span class="sync-dot busy" id="syncDot" title="Syncing…"></span>
+      <button class="btn-icon" onclick="openSettings()" title="Settings">⚙</button>
+    </header>
+
+    <div class="tools-row">
+      <button class="tool-btn" onclick="openDocGenerator()" title="Generate full document">📝 New Doc</button>
+      <button class="tool-btn" onclick="openThemePicker()" title="AI theme designer">🎨 Theme</button>
+      <button class="tool-btn" onclick="openTemplates()" title="14 templates">📋 Templates</button>
+      <button class="tool-btn" onclick="openCoach()" title="Writing coach">✍ Coach</button>
+      <button class="tool-btn" onclick="openFnr()" title="Find &amp; Replace">🔍 Find</button>
+      <button class="tool-btn" onclick="openMailMerge()" title="Mail merge">📨 Merge</button>
+      <button class="tool-btn" onclick="quickToggleTrack()" title="Toggle track changes">✎ Track</button>
+      <button class="tool-btn" onclick="quickTOC()" title="Insert TOC">📑 TOC</button>
+    </div>
+
+    <div class="messages" id="messages">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">✦</div>
+        <div class="empty-title">Word AI Assistant</div>
+        <div class="empty-sub">Ask me to write a draft, format a paragraph, design a theme, build a table, run a mail merge — anything Word can do.</div>
+        <div class="empty-actions">
+          <button class="empty-act-btn" onclick="openDocGenerator()">+ New Document</button>
+          <button class="empty-act-btn alt" onclick="openCoach()">✍ Coach me</button>
+          <button class="empty-act-btn alt" onclick="openTemplates()">📋 Templates</button>
+          <button class="empty-act-btn alt" onclick="openThemePicker()">🎨 Theme</button>
+        </div>
+        <div class="chips">
+          <button class="chip" onclick="useSugg(this)">Make the title bold and 28pt centered</button>
+          <button class="chip" onclick="useSugg(this)">Insert a 4×3 table with headers Quarter, Revenue, Notes</button>
+          <button class="chip" onclick="useSugg(this)">Design a calm trustworthy theme for a healthcare startup and apply it</button>
+          <button class="chip" onclick="useSugg(this)">Replace all 'Acme' with 'Globex'</button>
+          <button class="chip" onclick="useSugg(this)">Add a CONFIDENTIAL watermark to every page</button>
+          <button class="chip" onclick="useSugg(this)">How many words does this document have?</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <div class="input-box">
+        <div class="input-row">
+          <textarea id="msgInput" placeholder="Ask anything…" rows="1"
+            onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+          <div class="input-btns">
+            <button class="act-btn" onclick="document.getElementById('fileInput').click()" title="Attach file">📎</button>
+            <input type="file" id="fileInput" accept=".txt,.csv,.json,.md,.docx" onchange="attachFile(event)">
+            <div class="plus-wrap">
+              <div class="plus-popup" id="plusPopup">
+                <div class="plus-item" onclick="toggleOpt('deep')">
+                  <div class="plus-check" id="deepCheck"></div>
+                  <div><div class="plus-label">Deep Think</div><div class="plus-sub">Refines your prompt + maximum reasoning budget</div></div>
+                </div>
+                <div class="plus-item" onclick="toggleOpt('dynamic')">
+                  <div class="plus-check" id="dynamicCheck"></div>
+                  <div><div class="plus-label">Dynamic</div><div class="plus-sub">AI calibrates thinking depth for each prompt</div></div>
+                </div>
+                <div class="plus-item" onclick="toggleOpt('auto')">
+                  <div class="plus-check" id="autoCheck"></div>
+                  <div><div class="plus-label">Auto Model</div><div class="plus-sub">AI picks the best model per prompt</div></div>
+                </div>
+                <div class="plus-sep"></div>
+                <div class="plus-item" onclick="toggleOpt('plan')">
+                  <div class="plus-check" id="planCheck"></div>
+                  <div><div class="plus-label">Plan First</div><div class="plus-sub">Brief plan before executing changes</div></div>
+                </div>
+                <div class="plus-item" onclick="toggleOpt('sectionByStep')">
+                  <div class="plus-check" id="sectionByStepCheck"></div>
+                  <div><div class="plus-label">Section-by-section preview</div><div class="plus-sub">List affected sections before multi-section changes</div></div>
+                </div>
+              </div>
+              <button class="act-btn" id="plusBtn" onclick="togglePlus()" title="Options">+</button>
+            </div>
+            <button class="send" id="sendBtn" onclick="sendMessage()">Send</button>
+          </div>
+        </div>
+        <div class="input-foot">
+          <span id="attachBadge"></span>
+          <span class="tok-info" id="tokInfo"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-backdrop" onclick="closeSidebar()"></div>
+  <div class="sidebar-drawer">
+    <div class="sidebar-head">
+      <button class="new-chat" onclick="newChat()">+ New Chat</button>
+      <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+    </div>
+    <div class="chat-list" id="chatList"><div class="no-chats">No chats yet</div></div>
+  </div>
+</div>
+
+<!-- Model picker -->
+<div class="modal" id="modelModal">
+  <div class="modal-bd" onclick="closeModelPicker()"></div>
+  <div class="model-panel">
+    <div class="model-ph">
+      <span>Select Model</span>
+      <button class="filter-btn" id="filterBtn" onclick="toggleFilterPopup(event)">⊞ Filter</button>
+      <div class="filter-popup" id="filterPopup">
+        <div class="filter-section">Filter by tag</div>
+        <div class="filter-row">
+          <div class="filter-item" onclick="toggleFilter('free')"><div class="filter-check" id="fc-free"></div>Free</div>
+          <div class="filter-item" onclick="toggleFilter('fast')"><div class="filter-check" id="fc-fast"></div>Fast</div>
+          <div class="filter-item" onclick="toggleFilter('reason')"><div class="filter-check" id="fc-reason"></div>Reasoning</div>
+          <div class="filter-item" onclick="toggleFilter('groq')"><div class="filter-check" id="fc-groq"></div>Groq</div>
+        </div>
+        <div class="filter-divider"></div>
+        <div class="filter-section">Sort by price</div>
+        <div class="filter-row">
+          <div class="filter-item" onclick="setSortMode('asc')"><div class="filter-check" id="fc-sort-asc"></div>Low → High</div>
+          <div class="filter-item" onclick="setSortMode('desc')"><div class="filter-check" id="fc-sort-desc"></div>High → Low</div>
+          <div class="filter-item" onclick="setSortMode('free')"><div class="filter-check" id="fc-sort-free"></div>Free only</div>
+        </div>
+      </div>
+    </div>
+    <div class="model-search-wrap">
+      <input class="model-search" id="modelSearch" placeholder="Search models…" oninput="renderModelList(this.value)" autocomplete="off">
+    </div>
+    <div class="model-list" id="modelList"></div>
+    <div class="add-model-wrap">
+      <input class="add-model-inp" id="addModelInp" placeholder="Add model ID — e.g. anthropic/claude-opus-4-5" autocomplete="off"
+        onkeydown="if(event.key==='Enter')addCustomModel()">
+      <button class="add-model-btn" onclick="addCustomModel()">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- Theme designer (AI-generated, unlimited) -->
+<div class="modal" id="themeModal">
+  <div class="modal-bd" onclick="closeThemePicker()"></div>
+  <div class="theme-panel">
+    <div class="theme-head"><span>🎨 Theme Designer</span><button class="btn-icon" onclick="closeThemePicker()">✕</button></div>
+    <div class="theme-body">
+      <div class="theme-section-lbl">Describe the look you want</div>
+      <div class="theme-prompt-wrap">
+        <textarea class="theme-prompt" id="themePrompt" placeholder="e.g. calm trustworthy theme for a healthcare startup — soft blues and greens, friendly modern sans-serif headings"></textarea>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="theme-gen-btn" id="themeGenBtn" onclick="generateTheme()">Generate</button>
+        <button class="theme-surprise" onclick="surpriseTheme()">🎲 Surprise me</button>
+      </div>
+
+      <div class="theme-section-lbl">Quick-start chips (clicking pre-fills the prompt and generates a fresh theme)</div>
+      <div class="theme-chips" id="themeChips"></div>
+
+      <div class="theme-section-lbl" id="recentLbl" style="display:none">Recent</div>
+      <div class="theme-recent" id="themeRecent"></div>
+
+      <div class="theme-section-lbl" id="previewLbl" style="display:none">Live preview</div>
+      <div class="theme-preview" id="themePreview" style="display:none"></div>
+    </div>
+    <div class="theme-actions" id="themeActions" style="display:none">
+      <button class="theme-action-btn" onclick="closeThemePicker()">Cancel</button>
+      <button class="theme-action-btn" onclick="tweakActiveTheme()">✎ Tweak</button>
+      <button class="theme-action-btn primary" onclick="applyGeneratedTheme()">✓ Apply to document</button>
+    </div>
+  </div>
+</div>
+
+<!-- Document generator -->
+<div class="modal" id="docGenModal">
+  <div class="modal-bd" onclick="closeDocGenerator()"></div>
+  <div class="gen-panel">
+    <div class="gen-head"><span>📝 Generate a New Document</span><button class="btn-icon" onclick="closeDocGenerator()">✕</button></div>
+    <div class="gen-body">
+      <div class="gen-grp">
+        <div class="gen-label">Topic</div>
+        <textarea class="gen-textarea" id="genTopic" placeholder="e.g. A whitepaper on migrating from MySQL to Postgres for an engineering audience"></textarea>
+      </div>
+      <div class="gen-row">
+        <div class="gen-grp" style="flex:2">
+          <div class="gen-label">Audience</div>
+          <input class="gen-input" id="genAudience" placeholder="Board, customers, students…" value="general">
+        </div>
+        <div class="gen-grp" style="flex:1">
+          <div class="gen-label">Length</div>
+          <select class="gen-input" id="genLength">
+            <option value="short">Short (~500w)</option>
+            <option value="medium" selected>Medium (~1k)</option>
+            <option value="long">Long (~2k)</option>
+            <option value="very-long">Very long (~4k+)</option>
+          </select>
+        </div>
+      </div>
+      <div class="gen-grp">
+        <div class="gen-label">Tone</div>
+        <div class="seg-ctrl" id="genToneCtrl">
+          <button class="seg-btn active" onclick="setGenTone('formal')">Formal</button>
+          <button class="seg-btn" onclick="setGenTone('academic')">Academic</button>
+          <button class="seg-btn" onclick="setGenTone('persuasive')">Persuasive</button>
+          <button class="seg-btn" onclick="setGenTone('casual')">Casual</button>
+        </div>
+      </div>
+      <div class="gen-toggle-row">
+        <div class="srow"><span class="srow-label">Include cover page</span><div class="toggle" id="genCoverTog" onclick="togGen('cover')"></div></div>
+        <div class="srow"><span class="srow-label">Include Table of Contents</span><div class="toggle" id="genTocTog" onclick="togGen('toc')"></div></div>
+        <div class="srow"><span class="srow-label">Include Bibliography (APA)</span><div class="toggle" id="genBibTog" onclick="togGen('bib')"></div></div>
+      </div>
+    </div>
+    <div class="gen-progress" id="genProgress" style="display:none">
+      <span id="genProgressText">Generating…</span>
+      <div class="gen-bar"><div class="gen-bar-fill" id="genBarFill" style="width:0%"></div></div>
+    </div>
+    <div class="gen-foot">
+      <button class="cost-cancel" onclick="closeDocGenerator()">Cancel</button>
+      <button class="cost-ok" id="genGoBtn" onclick="generateDocument()">Generate Document</button>
+    </div>
+  </div>
+</div>
+
+<!-- Templates gallery -->
+<div class="modal" id="tmplModal">
+  <div class="modal-bd" onclick="closeTemplates()"></div>
+  <div class="tmpl-panel">
+    <div class="tmpl-head">
+      <span id="tmplHeadText">📋 Document Templates</span>
+      <button class="btn-icon" onclick="closeTemplates()">✕</button>
+    </div>
+    <div class="tmpl-list" id="tmplList"></div>
+    <div class="tmpl-form" id="tmplForm"></div>
+  </div>
+</div>
+
+<!-- Writing coach -->
+<div class="modal" id="coachModal">
+  <div class="modal-bd" onclick="closeCoach()"></div>
+  <div class="coach-panel">
+    <div class="coach-head"><span>✍ Writing Coach</span><button class="btn-icon" onclick="closeCoach()">✕</button></div>
+    <div class="coach-body">
+      <div class="gen-grp">
+        <div class="gen-label">Scope</div>
+        <div class="seg-ctrl" id="coachScopeCtrl">
+          <button class="seg-btn active" onclick="setCoachScope('selection')">Selection</button>
+          <button class="seg-btn" onclick="setCoachScope('paragraph')">Paragraph</button>
+          <button class="seg-btn" onclick="setCoachScope('whole')">Whole doc</button>
+        </div>
+      </div>
+      <div class="gen-grp">
+        <div class="gen-label">Focus</div>
+        <div class="seg-ctrl" id="coachFocusCtrl">
+          <button class="seg-btn active" onclick="setCoachFocus('clarity')">Clarity</button>
+          <button class="seg-btn" onclick="setCoachFocus('tone')">Tone</button>
+          <button class="seg-btn" onclick="setCoachFocus('grammar')">Grammar</button>
+          <button class="seg-btn" onclick="setCoachFocus('brevity')">Brevity</button>
+          <button class="seg-btn" onclick="setCoachFocus('persuasive')">Persuasive</button>
+          <button class="seg-btn" onclick="setCoachFocus('reading-level')">Reading level</button>
+        </div>
+      </div>
+      <div class="gen-grp">
+        <div class="gen-label">Action</div>
+        <div class="seg-ctrl" id="coachActionCtrl">
+          <button class="seg-btn active" onclick="setCoachAction('review')">Review</button>
+          <button class="seg-btn" onclick="setCoachAction('rewrite')">Rewrite</button>
+          <button class="seg-btn" onclick="setCoachAction('translate')">Translate</button>
+        </div>
+      </div>
+      <div class="gen-grp" id="coachTransGrp" style="display:none">
+        <div class="gen-label">Target language</div>
+        <input class="gen-input" id="coachTargetLang" placeholder="Spanish, French, Mandarin…" value="Spanish">
+      </div>
+      <button class="theme-gen-btn" id="coachRunBtn" onclick="runCoach()">Run coach</button>
+      <div id="coachOutput"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Find &amp; Replace -->
+<div class="modal" id="fnrModal">
+  <div class="modal-bd" onclick="closeFnr()"></div>
+  <div class="fnr-panel">
+    <div class="fnr-head"><span>🔍 Find &amp; Replace</span><button class="btn-icon" onclick="closeFnr()">✕</button></div>
+    <div class="fnr-body">
+      <div class="gen-grp">
+        <div class="gen-label">Find</div>
+        <input class="gen-input" id="fnrFind" placeholder="Text to find…">
+      </div>
+      <div class="gen-grp">
+        <div class="gen-label">Replace with</div>
+        <input class="gen-input" id="fnrReplace" placeholder="Replacement…">
+      </div>
+      <div class="fnr-toggles">
+        <label class="fnr-chk"><input type="checkbox" id="fnrCase"> Match case</label>
+        <label class="fnr-chk"><input type="checkbox" id="fnrWhole"> Whole word</label>
+        <label class="fnr-chk"><input type="checkbox" id="fnrWild"> Word wildcards</label>
+      </div>
+      <div class="fnr-actions">
+        <button class="fnr-action-btn" onclick="fnrFindNext()">Find next</button>
+        <button class="fnr-action-btn" onclick="fnrFindAll()">Find all</button>
+        <button class="fnr-action-btn" onclick="fnrReplaceOne()">Replace</button>
+        <button class="fnr-action-btn primary" onclick="fnrReplaceAll()">Replace all</button>
+      </div>
+      <div class="fnr-results" id="fnrResults" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Mail merge -->
+<div class="modal" id="mmModal">
+  <div class="modal-bd" onclick="closeMailMerge()"></div>
+  <div class="mm-panel">
+    <div class="mm-head"><span>📨 Mail Merge</span><button class="btn-icon" onclick="closeMailMerge()">✕</button></div>
+    <div class="mm-body">
+      <div class="gen-grp">
+        <div class="gen-label">Detected placeholders in document</div>
+        <div id="mmDetected" style="font-size:12px;color:var(--text2);padding:6px 8px;background:var(--surf);border:1px solid var(--border);border-radius:var(--r2)">Scanning…</div>
+      </div>
+      <div class="gen-grp">
+        <div class="gen-label">Paste CSV or JSON records (one row per merge)</div>
+        <textarea class="gen-textarea" id="mmCsv" placeholder="Name,Amount&#10;Alice,100&#10;Bob,200" style="min-height:120px;font-family:monospace"></textarea>
+      </div>
+      <div class="fnr-actions">
+        <button class="fnr-action-btn" onclick="mmPreview()">Preview</button>
+        <button class="fnr-action-btn primary" onclick="mmRun()">Run merge</button>
+      </div>
+      <div class="fnr-results" id="mmResults" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Settings -->
+<div class="settings" id="settingsPanel">
+  <div class="settings-bd" onclick="closeSettings()"></div>
+  <div class="settings-draw">
+    <div class="shead"><span class="stitle">Settings</span><button class="btn-icon" onclick="closeSettings()">✕</button></div>
+    <div class="stabs">
+      <button class="stab active" id="stab-general" onclick="switchSettingsTab('general')">General</button>
+      <button class="stab" id="stab-prefs" onclick="switchSettingsTab('prefs')">Preferences</button>
+      <button class="stab" id="stab-data" onclick="switchSettingsTab('data')">Data</button>
+    </div>
+
+    <!-- General -->
+    <div class="sbody" id="sbody-general">
+      <div class="sgrp">
+        <div class="slabel">Theme</div>
+        <div class="theme-row">
+          <button class="theme-opt" id="tLight" onclick="setUiTheme('light')">☀ Light</button>
+          <button class="theme-opt" id="tDark"  onclick="setUiTheme('dark')">☾ Dark</button>
+        </div>
+      </div>
+      <div class="sgrp">
+        <div class="slabel">API Keys</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:4px">OpenRouter</div>
+            <input class="sinput" type="password" id="apiKeyInp" placeholder="sk-or-v1-…" oninput="saveKey('or')">
+            <span class="sinote">openrouter.ai — access all models</span>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:4px">Groq</div>
+            <input class="sinput" type="password" id="groqKeyInp" placeholder="gsk_…" oninput="saveKey('groq')">
+            <span class="sinote">groq.com — ultra-fast inference</span>
+          </div>
+        </div>
+        <span class="sinote">Keys stored locally on your device only.</span>
+      </div>
+      <div class="sgrp">
+        <div class="slabel">Behaviour</div>
+        <div class="srow"><span class="srow-label">Auto-sync document</span><div class="toggle on" id="autoSyncTog" onclick="togSet('autoSync','autoSyncTog')"></div></div>
+        <div class="srow" style="margin-top:8px"><span class="srow-label">Show generated code</span><div class="toggle on" id="showCodeTog" onclick="togSet('showCode','showCodeTog')"></div></div>
+        <div class="srow" style="margin-top:8px"><span class="srow-label">Live word count badge</span><div class="toggle on" id="liveStatsTog" onclick="togSet('liveStats','liveStatsTog')"></div></div>
+      </div>
+      <div class="sgrp">
+        <div class="slabel">History</div>
+        <button class="sdanger" onclick="clearAllHistory()">Delete all chat history</button>
+      </div>
+      <div class="sfooter">Word AI Assistant · v1</div>
+    </div>
+
+    <!-- Preferences -->
+    <div class="sbody" id="sbody-prefs" style="display:none">
+      <div class="sgrp">
+        <div class="slabel">Your Preferences</div>
+        <textarea class="stextarea" id="prefsInp" placeholder="e.g. Always use Inter font. Prefer concise paragraphs. Use Oxford comma." oninput="savePrefs()"></textarea>
+        <span class="sinote">The AI follows these on every message.</span>
+      </div>
+      <div class="sgrp">
+        <div class="slabel">Cost Limit</div>
+        <div class="srow" style="margin-bottom:6px">
+          <span class="srow-label" style="font-size:12px">Limit per</span>
+          <div class="seg-ctrl">
+            <button class="seg-btn active" id="seg-prompt" onclick="setCostLimitType('prompt')">Prompt</button>
+            <button class="seg-btn" id="seg-session" onclick="setCostLimitType('session')">Session</button>
+          </div>
+        </div>
+        <div class="cost-row">
+          <input type="range" class="cost-slider" id="costSlider" min="0" max="10" step="1" value="0" oninput="updateCostSlider(this.value)">
+          <span class="cost-val" id="costSliderVal">Off</span>
+        </div>
+        <span class="sinote" id="costNote">No limit — all prompts allowed.</span>
+        <span class="sinote" id="sessionCostNote" style="margin-top:4px"></span>
+      </div>
+      <div class="sgrp">
+        <div class="slabel">Session Cost</div>
+        <div style="font-size:13px;color:var(--text)">This session: <strong id="sessionCostDisplay">$0.000</strong></div>
+        <button class="sdanger" style="margin-top:6px" onclick="resetSessionCost()">Reset session cost</button>
+      </div>
+    </div>
+
+    <!-- Data tab: image pack + web search -->
+    <div class="sbody" id="sbody-data" style="display:none">
+      <div class="sgrp">
+        <div class="slabel">Image Asset Pack</div>
+        <div class="pack-status" id="packStatus">Checking…</div>
+        <div style="display:flex;gap:6px">
+          <button class="pack-btn" id="packDlBtn" onclick="downloadPack()">Download asset pack</button>
+          <button class="pack-btn alt" onclick="verifyPack()">Re-verify</button>
+        </div>
+        <span class="sinote" id="packNote">All images are CC0 from Pexels, Unsplash and Pixabay — free for commercial use.</span>
+      </div>
+      <div class="sgrp">
+        <div class="slabel">Web Search</div>
+        <div class="srow" style="margin-bottom:4px">
+          <span class="srow-label" style="font-size:12px">Mode</span>
+          <div class="seg-ctrl">
+            <button class="seg-btn" id="ws-off"      onclick="setWebSearchMode('off')">Ask each time</button>
+            <button class="seg-btn" id="ws-on"       onclick="setWebSearchMode('on')">Always on</button>
+            <button class="seg-btn" id="ws-disabled" onclick="setWebSearchMode('disabled')">Disabled</button>
+          </div>
+        </div>
+        <span class="sinote" id="wsNote">Default. The AI will ask permission per search.</span>
+        <span class="sinote" id="wsProvNote">Provider: Google Custom Search</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cost warning dialog -->
+<div class="cost-dialog" id="costDialog">
+  <div class="cost-dialog-bd" onclick="cancelSend()"></div>
+  <div class="cost-dialog-box">
+    <div class="cost-dialog-title">⚠ Cost Limit</div>
+    <div class="cost-dialog-body" id="costDialogBody"></div>
+    <div class="cost-dialog-btns">
+      <button class="cost-cancel" onclick="cancelSend()">Cancel</button>
+      <button class="cost-ok" onclick="confirmSend()">Send Anyway</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
