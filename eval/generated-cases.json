@@ -1,0 +1,50 @@
+[
+  {
+    "id": "gen-L2-form-field-001",
+    "level": 2,
+    "category": "form-field",
+    "prompt": "insert a checkbox content control with label 'I agree' and a date picker content control below it",
+    "docData": "Section 1: HEADING1=\"Terms and Conditions\" | TEXT=\"Please review and agree to the terms below\"",
+    "mustHaveCode": true,
+    "requiredPatterns": [
+      "ContentControl"
+    ],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "gen-L2-form-field-002",
+    "level": 2,
+    "category": "form-field",
+    "prompt": "replace existing plain text 'Name: _______' with a rich text content control and add a building block gallery control to the document",
+    "docData": "Section 1: HEADING1=\"Application Form\" | TEXT=\"Name: _______\\nAddress: _______\"",
+    "mustHaveCode": true,
+    "requiredPatterns": [
+      "RichTextContentControl"
+    ],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "gen-L2-form-field-003",
+    "level": 2,
+    "category": "form-field",
+    "prompt": "insert a group content control containing two dropdown content controls with options 'Red' / 'Green' / 'Blue' and 'Small' / 'Medium' / 'Large'",
+    "docData": "Section 1: HEADING1=\"Product Options\" | TEXT=\"Select your preferred color and size\"",
+    "mustHaveCode": true,
+    "requiredPatterns": [
+      "GroupContentControl"
+    ],
+    "forbiddenPatterns": []
+  },
+  {
+    "id": "gen-L2-form-field-004",
+    "level": 2,
+    "category": "form-field",
+    "prompt": "add a repeating section content control to the document with a table containing two columns and two rows",
+    "docData": "Section 1: HEADING1=\"Order Form\" | TEXT=\"Please add your order items below\"",
+    "mustHaveCode": true,
+    "requiredPatterns": [
+      "RepeatingSectionContentControl"
+    ],
+    "forbiddenPatterns": []
+  }
+]

@@ -1,0 +1,87 @@
+To center-align the title and make it 28pt, use the following code:
+```javascript
+const title = doc.paragraphs.getFirst();
+title.alignment = Word.Alignment.center;
+title.font.size = 28;
+await context.sync();
+```
+
+For adding a numbered list of three steps, utilize the `addList` method with the correct API:
+```javascript
+const list = [
+  "Plan",
+  "Execute",
+  "Review"
+];
+const para = doc.paragraphs.add();
+para.listItem = {
+  level: 0,
+  startAt: 1,
+  style: "Number"
+};
+list.forEach(item => {
+  const run = para.addRun(item);
+  run.font.size = 24;
+});
+await context.sync();
+```
+
+To insert a 4 by 3 table with headers, use the following code:
+```javascript
+const table = doc.tables.add();
+table.rows.add(4);
+table.columns.add(3);
+table.cell(0, 0).text = "Quarter";
+table.cell(0, 1).text = "Revenue";
+table.cell(0, 2).text = "Notes";
+await context.sync();
+```
+
+For applying the 'Grid Table 4 - Accent 1' style to the existing table, use the following code:
+```javascript
+const table = doc.tables.getFirst();
+table.style = "Grid Table 4 - Accent 1";
+await context.sync();
+```
+
+To add a footnote, use the `insertFootnote` method with the correct API:
+```javascript
+const range = doc.getSelection();
+const footnote = range.insertFootnote();
+footnote.text = "See appendix A.";
+await context.sync();
+```
+
+To turn on track changes, use the following code:
+```javascript
+await toggleTrackChanges(true);
+await context.sync();
+```
+
+For inserting a Table of Contents, use the following code:
+```javascript
+const toc = doc.tablesOfContents.add();
+toc.title = "Table of Contents";
+toc.minLevel = 1;
+toc.maxLevel = 3;
+await context.sync();
+```
+
+To insert an image, use the following code:
+```javascript
+const image = doc.inlinePictures.add();
+image.src = "healthcare.jpg";
+image.width = 320;
+await context.sync();
+```
+
+For adding a watermark, use the following code:
+```javascript
+const section = doc.sections.getFirst();
+const watermark = section.headers.first.addParagraph();
+watermark.text = "CONFIDENTIAL";
+watermark.font.color = "gray";
+await context.sync();
+```
+
+To
