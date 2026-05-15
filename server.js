@@ -169,6 +169,35 @@ RULES FOR YOUR CODE:
 - Always call "await context.sync();" after .load() and after writes.
 - NEVER use console.log. Throw errors with throw new Error("...").
 - Use Word.js 1.1–1.4 APIs only (Word on the web compatible).
+- DO NOT INVENT HELPERS. Only call functions named in the list above. If you need something not in the list (e.g. "setBold", "addNumberedList", "createTable", "writeHeading"), use the closest match from the list instead. The list IS the complete API surface available to you.
+- HELPER SIGNATURE QUICK REFERENCE (positional args, in order):
+    addHeading(text, level, opts?)              addParagraph(text, opts?)
+    addTitle(text, opts?)                        addSubtitle(text, opts?)
+    addQuote(text, opts?)                        addList(items[], type, opts?)        // items MUST be an array
+    applyStyle(target, styleName)                replaceText(find, replace, opts?)
+    findText(query, opts?)                       insertPageBreak()
+    insertSectionBreak(kind?)                    insertColumns(count)
+    setHeader(text, opts?)                       setFooter(text, opts?)
+    addPageNumbers(opts?)                        insertTableOfContents(opts?)
+    setMargins({top,bottom,left,right})          setPageOrientation("portrait"|"landscape")
+    insertTable(rows, cols, values?, opts?)      setTableCell(tableIndex,row,col,text)
+    styleTable(tableIndex, styleName)            insertImage(category, keywordOrTags, opts?)
+    insertWatermark(text, opts?)                 insertFootnote(text)
+    insertEndnote(text)                          insertComment(targetQuery, text)
+    toggleTrackChanges(true|false)               acceptAllRevisions()
+    rejectAllRevisions()                         insertCitation({author,year,title,source,page?,style?})
+    insertBibliography(style)                    insertEquation(latex)
+    insertContentControl(kind, opts?)            insertFormField(kind, opts?)
+    mailMergeReplace(records[])                  applyTheme(themeObjectOrName)
+    designTheme(description)                     tweakTheme(prevTheme, instruction)
+    recolorDocument(palette)                     applyTemplate(id, fields)
+    countWords()                                 countCharacters()
+    countParagraphs()                            getReadability()
+    getSelectionText()                           getSelectionHtml()
+    listSections()                               listHeadings()
+    getDocumentSummary()
+- ALL helpers are async — always \`await\` them.
+- Arrays are arrays. For addList, ALWAYS pass items as a JS array literal (\`["a","b","c"]\`), not a comma-separated string.
 
 WHAT YOU CAN DO (use helpers — they wrap the messy parts):
 - Insert headings, paragraphs, titles, subtitles, quotes, bullet lists, numbered lists.
@@ -283,8 +312,8 @@ There are NO preset theme names. Every theme is generated on demand from a natur
 Or, in a single line if you want to chain:
   await applyTheme(await designTheme("brutalist black-and-yellow legal contract"));
 
-Tweaking an applied theme:
-  await applyTheme(await tweakTheme(currentTheme, "same but darker, with a green accent"));
+Tweaking an applied theme — the most recently applied palette is injected as the variable \`activeTheme\` (may be null on first turn):
+  await applyTheme(await tweakTheme(activeTheme, "same but darker, with a green accent"));
 
 recolorDocument(palette) applies an explicit palette object you've already built:
   await recolorDocument({ primary:"#0F4C81", secondary:"#3A6FA0", accent:"#D4A017", bg:"#FFFFFF", text:"#1A1A1A", headingFont:"Inter", bodyFont:"Inter" });

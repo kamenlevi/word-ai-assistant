@@ -1449,10 +1449,17 @@ async function execCode(code) {
         return p;
       }
       async function addList(items, type, opts) {
-        items = Array.isArray(items) ? items : [String(items)];
-        type = (type || 'bullet').toLowerCase();
+        // Forgiving: accept a single string, a CSV-ish string, or an array.
+        if (typeof items === 'string') {
+          items = items.includes('\n') ? items.split(/\n+/) : items.split(/,\s*/);
+        }
+        if (!Array.isArray(items)) items = [String(items)];
+        items = items.map(x => String(x).trim()).filter(Boolean);
+        // Forgiving: type can be "bullet"/"number"/"numbered"/"ol"/"ul" or even omitted.
+        const t = String(type || 'bullet').toLowerCase();
+        const isNumber = /^(num|number|numbered|ol|ordered|1|decimal)/.test(t);
         opts = opts || {};
-        const built = type === 'number' ? 'ListNumber' : 'ListBullet';
+        const built = isNumber ? 'ListNumber' : 'ListBullet';
         const lv = Math.max(0, Math.min(8, safeNum(opts.level, 0)));
         for (const it of items) {
           const p = doc.body.insertParagraph(String(it), 'End');
@@ -1463,6 +1470,16 @@ async function execCode(code) {
       }
 
       async function applyStyle(target, styleName) {
+        // Forgiving: if called with a single arg, treat it as the style name on the selection.
+        if (styleName === undefined && typeof target === 'string') {
+          styleName = target;
+          target = 'selection';
+        }
+        // Forgiving: tolerate "Heading 1" / "heading-1" → "Heading1".
+        if (typeof styleName === 'string') {
+          styleName = styleName.trim().replace(/[\s_-]+/g, '');
+          styleName = styleName.charAt(0).toUpperCase() + styleName.slice(1);
+        }
         if (target === 'selection') {
           const sel = doc.getSelection();
           try { sel.styleBuiltIn = styleName; } catch { sel.style = styleName; }
@@ -1718,7 +1735,12 @@ async function execCode(code) {
         await ctx.sync();
       }
       async function toggleTrackChanges(on) {
-        try { doc.changeTrackingMode = on === false ? 'Off' : 'TrackAll'; }
+        // Forgiving: accept truthy/falsy, 'on'/'off', 'true'/'false', undefined → on.
+        const truthy = on === undefined ? true
+                     : typeof on === 'string'
+                       ? !/^(off|false|no|0)$/i.test(on)
+                       : !!on;
+        try { doc.changeTrackingMode = truthy ? 'TrackAll' : 'Off'; }
         catch (e) { throw new Error('Track changes not available: ' + e.message); }
         await ctx.sync();
       }
@@ -1801,6 +1823,17 @@ async function execCode(code) {
       // ── Content controls / form fields ──────────────────────────────────
       async function insertContentControl(kind, opts) {
         opts = opts || {};
+        // Forgiving: normalize common kind aliases.
+        const k = String(kind || 'richText').toLowerCase().replace(/[\s_-]+/g, '');
+        const ALIAS = {
+          rich:'richText', richtext:'richText',
+          plain:'plainText', plaintext:'plainText', text:'plainText',
+          check:'checkbox', checkbox:'checkbox',
+          drop:'dropdown', dropdown:'dropdown', dropdownlist:'dropdown',
+          combo:'comboBox', combobox:'comboBox',
+          date:'datePicker', datepicker:'datePicker',
+        };
+        kind = ALIAS[k] || kind;
         const sel = doc.getSelection();
         if ((kind || 'richText').toLowerCase() === 'richtext' || (kind || '').toLowerCase() === 'rich-text') {
           // Native Word.js content control
@@ -2007,6 +2040,45 @@ async function execCode(code) {
         return { wordCount: w, paragraphCount: p, readability: r, headings: h };
       }
 
+      // ── Common-mistake aliases — if the AI invents an "intuitive" helper name,
+      // route it to the real one rather than throwing ReferenceError. ──
+      async function setBold(on) {
+        const sel = doc.getSelection(); sel.font.bold = on === false ? false : true; await ctx.sync();
+      }
+      async function setItalic(on) {
+        const sel = doc.getSelection(); sel.font.italic = on === false ? false : true; await ctx.sync();
+      }
+      async function setUnderline(on) {
+        const sel = doc.getSelection(); sel.font.underline = on === false ? 'None' : 'Single'; await ctx.sync();
+      }
+      async function setFontColor(color) {
+        const sel = doc.getSelection(); sel.font.color = String(color); await ctx.sync();
+      }
+      async function setFontSize(size) {
+        const sel = doc.getSelection(); sel.font.size = safeNum(size, 11); await ctx.sync();
+      }
+      async function setFontName(name) {
+        const sel = doc.getSelection(); sel.font.name = sanitizeFont(name).font; await ctx.sync();
+      }
+      async function setAlignment(a) {
+        const sel = doc.getSelection(); const p = sel.paragraphs.getFirst();
+        try { p.alignment = alignToWord(a); } catch {} await ctx.sync();
+      }
+      const insertHeading = addHeading;
+      const insertParagraph = addParagraph;
+      const insertText = async (t) => { doc.getSelection().insertText(String(t || ''), 'After'); await ctx.sync(); };
+      const insertBulletList = (items, opts) => addList(items, 'bullet', opts);
+      const insertNumberedList = (items, opts) => addList(items, 'number', opts);
+      const insertList = addList;
+      const find = findText;
+      const replaceAll = replaceText;
+      const setTrackChanges = toggleTrackChanges;
+      const acceptRevisions = acceptAllRevisions;
+      const rejectRevisions = rejectAllRevisions;
+      const insertTOC = insertTableOfContents;
+      const insertToc = insertTableOfContents;
+      const setOrientation = setPageOrientation;
+
       // ── Execute AI code ─────────────────────────────────────────────────
       const fn = new Function(
         'context','doc','Word',
@@ -2020,6 +2092,10 @@ async function execCode(code) {
         'countWords','countCharacters','countParagraphs','getReadability',
         'getSelectionText','getSelectionHtml','listSections','listHeadings','getDocumentSummary',
         'applyTemplate','activeTheme','TEMPLATES','OOXML',
+        // forgiving aliases
+        'setBold','setItalic','setUnderline','setFontColor','setFontSize','setFontName','setAlignment',
+        'insertHeading','insertParagraph','insertText','insertBulletList','insertNumberedList','insertList',
+        'find','replaceAll','setTrackChanges','acceptRevisions','rejectRevisions','insertTOC','insertToc','setOrientation',
         'return (async()=>{ ' + code + ' })();'
       );
       const rv = await fn(
@@ -2033,7 +2109,10 @@ async function execCode(code) {
         mailMergeReplace, applyTheme, recolorDocument, tweakTheme, designTheme,
         countWords, countCharacters, countParagraphs, getReadability,
         getSelectionText, getSelectionHtml, listSections, listHeadings, getDocumentSummary,
-        applyTemplate, currentTheme, TEMPLATES, OOXML
+        applyTemplate, currentTheme, TEMPLATES, OOXML,
+        setBold, setItalic, setUnderline, setFontColor, setFontSize, setFontName, setAlignment,
+        insertHeading, insertParagraph, insertText, insertBulletList, insertNumberedList, insertList,
+        find, replaceAll, setTrackChanges, acceptRevisions, rejectRevisions, insertTOC, insertToc, setOrientation
       );
       if (rv !== undefined && rv !== null) ret = String(rv);
     });
@@ -2161,7 +2240,12 @@ async function runChatTurn() {
         else if(!reply){addMsg('assistant','✓ Done.');}
       }else{
         addMsg('assistant','⚠ Error: '+r.err,true);
-        history.push({role:'user',content:'The code failed: "'+r.err+'". Fix it with a corrected CODE_JS block.'});
+        // If it's a ReferenceError on a helper name, give the model the full helper list to ground its retry.
+        const refMatch = /(\w+) is not defined/.exec(r.err || '');
+        const hint = refMatch
+          ? `The code failed: "${r.err}". You called a helper that doesn't exist. The ONLY helpers you may use are: addHeading, addParagraph, addTitle, addSubtitle, addQuote, addList, applyStyle, replaceText, findText, insertPageBreak, insertSectionBreak, insertColumns, setHeader, setFooter, addPageNumbers, insertTableOfContents, setMargins, setPageOrientation, insertTable, setTableCell, styleTable, insertImage, insertWatermark, insertFootnote, insertEndnote, insertComment, toggleTrackChanges, acceptAllRevisions, rejectAllRevisions, insertCitation, insertBibliography, insertEquation, insertContentControl, insertFormField, mailMergeReplace, applyTheme, designTheme, tweakTheme, recolorDocument, applyTemplate, countWords, countCharacters, countParagraphs, getReadability, getSelectionText, listSections, listHeadings, getDocumentSummary. Pick the closest existing helper and emit a corrected CODE_JS block.`
+          : `The code failed: "${r.err}". Fix it with a corrected CODE_JS block.`;
+        history.push({role:'user',content:hint});
         const rr=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},signal:ctrl.signal,body:JSON.stringify({messages:history.slice(-8),docData,selectionInfo,summary,model:modelId,useOllama:isOllama,useGroq:isGroq,apiKey,groqKey,settings:{allowWebSearch:webSearchMode}})});
         const rd=await rr.json();
         if(rd.code){const rres=await execCode(rd.code);if(rd.response)history.push({role:'assistant',content:rd.response});addMsg('assistant',rres.ok?'✓ Fixed.':'⚠ Retry failed: '+rres.err,!rres.ok);}
