@@ -1,69 +1,56 @@
-To center-align the title and make it 28pt, use the following code:
+To insert a Heading 2, use the following code:
 ```javascript
-const title = doc.paragraphs.getFirst();
-title.alignment = Word.Alignment.center;
-title.font.size = 28;
+const heading = doc.paragraphs.add();
+heading.heading = { level: 2 };
+heading.text = "Methodology";
 await context.sync();
 ```
 
-For adding a numbered list of three steps, utilize the `addList` method with the correct API:
+For adding a paragraph, utilize the following code:
+```javascript
+const para = doc.paragraphs.add();
+para.text = "We used a randomized controlled trial design.";
+await context.sync();
+```
+
+To make a paragraph bold and 14pt, use the following code:
+```javascript
+const para = doc.paragraphs.getFirst();
+para.font.bold = true;
+para.font.size = 14;
+await context.sync();
+```
+
+For adding a bullet list, use the following code:
 ```javascript
 const list = [
-  "Plan",
-  "Execute",
-  "Review"
+  "Apples",
+  "Bananas",
+  "Cherries"
 ];
 const para = doc.paragraphs.add();
-para.listItem = {
-  level: 0,
-  startAt: 1,
-  style: "Number"
-};
 list.forEach(item => {
   const run = para.addRun(item);
   run.font.size = 24;
+  para.listItem = {
+    level: 0,
+    startAt: 1,
+    style: "Bullet"
+  };
 });
 await context.sync();
 ```
 
-To insert a 4 by 3 table with headers, use the following code:
-```javascript
-const table = doc.tables.add();
-table.rows.add(4);
-table.columns.add(3);
-table.cell(0, 0).text = "Quarter";
-table.cell(0, 1).text = "Revenue";
-table.cell(0, 2).text = "Notes";
-await context.sync();
-```
-
-For applying the 'Grid Table 4 - Accent 1' style to the existing table, use the following code:
+To apply the 'Grid Table 4 - Accent 1' style to the existing table, use the following code:
 ```javascript
 const table = doc.tables.getFirst();
 table.style = "Grid Table 4 - Accent 1";
 await context.sync();
 ```
 
-To add a footnote, use the `insertFootnote` method with the correct API:
+For turning on track changes, use the following code:
 ```javascript
-const range = doc.getSelection();
-const footnote = range.insertFootnote();
-footnote.text = "See appendix A.";
-await context.sync();
-```
-
-To turn on track changes, use the following code:
-```javascript
-await toggleTrackChanges(true);
-await context.sync();
-```
-
-For inserting a Table of Contents, use the following code:
-```javascript
-const toc = doc.tablesOfContents.add();
-toc.title = "Table of Contents";
-toc.minLevel = 1;
-toc.maxLevel = 3;
+doc.settings.trackChanges = true;
 await context.sync();
 ```
 
@@ -84,4 +71,21 @@ watermark.font.color = "gray";
 await context.sync();
 ```
 
-To
+To mail merge, use the following code:
+```javascript
+const data = [
+  { Name: "Alice", Amount: "100" },
+  { Name: "Bob", Amount: "200" }
+];
+data.forEach(item => {
+  const para = doc.paragraphs.add();
+  para.text = `Name: ${item.Name}, Amount: ${item.Amount}`;
+});
+await context.sync();
+```
+
+To apply a theme, use the following code:
+```javascript
+doc.theme = "Office Theme";
+await context.sync();
+``
