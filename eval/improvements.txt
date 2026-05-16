@@ -1,32 +1,9 @@
-To insert a Heading 2, use the following code:
-```javascript
-const heading = doc.paragraphs.add();
-heading.heading = { level: 2 };
-heading.text = "Methodology";
-await context.sync();
-```
-
-For adding a paragraph, utilize the following code:
-```javascript
-const para = doc.paragraphs.add();
-para.text = "We used a randomized controlled trial design.";
-await context.sync();
-```
-
-To make a paragraph bold and 14pt, use the following code:
-```javascript
-const para = doc.paragraphs.getFirst();
-para.font.bold = true;
-para.font.size = 14;
-await context.sync();
-```
-
-For adding a bullet list, use the following code:
+To insert a numbered list, use the following code:
 ```javascript
 const list = [
-  "Apples",
-  "Bananas",
-  "Cherries"
+  "Plan",
+  "Execute",
+  "Review"
 ];
 const para = doc.paragraphs.add();
 list.forEach(item => {
@@ -35,57 +12,80 @@ list.forEach(item => {
   para.listItem = {
     level: 0,
     startAt: 1,
-    style: "Bullet"
+    style: "Numbered"
   };
 });
 await context.sync();
 ```
 
-To apply the 'Grid Table 4 - Accent 1' style to the existing table, use the following code:
+To replace text, use the following code:
 ```javascript
-const table = doc.tables.getFirst();
-table.style = "Grid Table 4 - Accent 1";
+const para = doc.paragraphs.getFirst();
+para.text = para.text.replace("Acme", "Globex");
 await context.sync();
 ```
 
-For turning on track changes, use the following code:
+To add a comment, use the following code:
 ```javascript
-doc.settings.trackChanges = true;
+const range = doc.body.getRange("$4.2M");
+const comment = range.insertComment("check this number");
 await context.sync();
 ```
 
-To insert an image, use the following code:
-```javascript
-const image = doc.inlinePictures.add();
-image.src = "healthcare.jpg";
-image.width = 320;
-await context.sync();
-```
-
-For adding a watermark, use the following code:
+To add page numbers to the footer, use the following code:
 ```javascript
 const section = doc.sections.getFirst();
-const watermark = section.headers.first.addParagraph();
-watermark.text = "CONFIDENTIAL";
-watermark.font.color = "gray";
+const footer = section.headers.first;
+const para = footer.paragraphs.add();
+para.text = "Page {page}";
+para.alignment = "right";
 await context.sync();
 ```
 
-To mail merge, use the following code:
+To insert an equation, use the following code:
 ```javascript
-const data = [
-  { Name: "Alice", Amount: "100" },
-  { Name: "Bob", Amount: "200" }
-];
-data.forEach(item => {
-  const para = doc.paragraphs.add();
-  para.text = `Name: ${item.Name}, Amount: ${item.Amount}`;
-});
+const para = doc.paragraphs.add();
+const run = para.addRun();
+run.font.subscript = true;
+run.text = "E = mc^2";
 await context.sync();
 ```
 
-To apply a theme, use the following code:
+To count words, use the following code:
 ```javascript
-doc.theme = "Office Theme";
+const text = doc.body.getText();
+const wordCount = text.split(" ").length;
+return "Your document has " + wordCount + " words.";
+```
+
+To list headings, use the following code:
+```javascript
+const headings = doc.body.getHeadings();
+const headingTexts = headings.map(heading => heading.text);
+return headingTexts;
+```
+
+To insert a block quote, use the following code:
+```javascript
+const para = doc.paragraphs.add();
+para.text = "\"Premature optimization is the root of all evil.\"";
+para.leftIndent = 36;
 await context.sync();
-``
+```
+
+To delete a paragraph, use the following code:
+```javascript
+const para = doc.paragraphs.getItem(98);
+para.delete();
+await context.sync();
+```
+
+To change the title, use the following code:
+```javascript
+const title = doc.paragraphs.getFirst();
+title.text = "Q4 Results";
+await context.sync();
+```
+
+To insert a group content control, use the following code:
+```
