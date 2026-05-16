@@ -1,91 +1,95 @@
-To insert a numbered list, use the following code:
+To add a heading, use the following code:
+```javascript
+const para = doc.paragraphs.add();
+para.heading = 1;
+para.text = "Quarterly Review";
+await context.sync();
+```
+
+To format a paragraph, use the following code:
+```javascript
+const para = doc.paragraphs.getFirst();
+para.runs.forEach(run => {
+  run.font.bold = true;
+  run.font.size = 14;
+});
+await context.sync();
+```
+
+To add a bullet list, use the following code:
 ```javascript
 const list = [
-  "Plan",
-  "Execute",
-  "Review"
+  "Apples",
+  "Bananas",
+  "Cherries"
 ];
 const para = doc.paragraphs.add();
 list.forEach(item => {
   const run = para.addRun(item);
-  run.font.size = 24;
   para.listItem = {
     level: 0,
-    startAt: 1,
-    style: "Numbered"
+    style: "Bullet"
   };
 });
 await context.sync();
 ```
 
-To replace text, use the following code:
-```javascript
-const para = doc.paragraphs.getFirst();
-para.text = para.text.replace("Acme", "Globex");
-await context.sync();
-```
+To add page numbers to the footer, use the existing code example.
 
-To add a comment, use the following code:
-```javascript
-const range = doc.body.getRange("$4.2M");
-const comment = range.insertComment("check this number");
-await context.sync();
-```
-
-To add page numbers to the footer, use the following code:
-```javascript
-const section = doc.sections.getFirst();
-const footer = section.headers.first;
-const para = footer.paragraphs.add();
-para.text = "Page {page}";
-para.alignment = "right";
-await context.sync();
-```
-
-To insert an equation, use the following code:
+To insert an image, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
 const run = para.addRun();
-run.font.subscript = true;
-run.text = "E = mc^2";
+run.addPicture("healthcare.jpg", {
+  width: 320,
+  height: 240
+});
 await context.sync();
 ```
 
-To count words, use the following code:
+To add a watermark, use the following code:
 ```javascript
-const text = doc.body.getText();
-const wordCount = text.split(" ").length;
-return "Your document has " + wordCount + " words.";
+const section = doc.sections.getFirst();
+const header = section.headers.first;
+const para = header.paragraphs.add();
+para.text = "CONFIDENTIAL";
+para.font.color = "gray";
+await context.sync();
 ```
 
-To list headings, use the following code:
+To apply a template, use the following code:
 ```javascript
-const headings = doc.body.getHeadings();
-const headingTexts = headings.map(heading => heading.text);
-return headingTexts;
-```
-
-To insert a block quote, use the following code:
-```javascript
+const template = "resume";
+const values = {
+  Name: "Alice Smith",
+  Title: "Software Engineer",
+  Email: "alice@example.com"
+};
+doc.body.clear();
 const para = doc.paragraphs.add();
-para.text = "\"Premature optimization is the root of all evil.\"";
-para.leftIndent = 36;
+para.text = template;
+replaceText(template, values);
 await context.sync();
 ```
 
-To delete a paragraph, use the following code:
+To generate a document, use the following code:
 ```javascript
-const para = doc.paragraphs.getItem(98);
-para.delete();
-await context.sync();
+const sections = 5;
+for (let i = 0; i < sections; i++) {
+  const para = doc.paragraphs.add();
+  para.text = `Section ${i + 1}`;
+  await context.sync();
+}
 ```
 
-To change the title, use the following code:
+To apply a theme, use the following code:
 ```javascript
-const title = doc.paragraphs.getFirst();
-title.text = "Q4 Results";
+const theme = "calm trustworthy theme";
+doc.body.styles.add("theme", theme);
 await context.sync();
 ```
 
-To insert a group content control, use the following code:
-```
+To tweak a theme, use the following code:
+```javascript
+const theme = "darker theme";
+doc.body.styles.add("theme", theme
