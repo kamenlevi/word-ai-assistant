@@ -1,95 +1,89 @@
-To add a heading, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-para.heading = 1;
-para.text = "Quarterly Review";
-await context.sync();
-```
-
-To format a paragraph, use the following code:
-```javascript
-const para = doc.paragraphs.getFirst();
-para.runs.forEach(run => {
-  run.font.bold = true;
-  run.font.size = 14;
-});
-await context.sync();
-```
-
-To add a bullet list, use the following code:
+To add a numbered list, use the following code:
 ```javascript
 const list = [
-  "Apples",
-  "Bananas",
-  "Cherries"
+  "Plan",
+  "Execute",
+  "Review"
 ];
 const para = doc.paragraphs.add();
 list.forEach(item => {
   const run = para.addRun(item);
   para.listItem = {
     level: 0,
-    style: "Bullet"
+    style: "Number"
   };
 });
 await context.sync();
 ```
 
-To add page numbers to the footer, use the existing code example.
-
-To insert an image, use the following code:
+To insert a section break and switch to landscape, use the following code:
 ```javascript
-const para = doc.paragraphs.add();
-const run = para.addRun();
-run.addPicture("healthcare.jpg", {
-  width: 320,
-  height: 240
+const section = doc.sections.add();
+section.orientation = "landscape";
+await context.sync();
+```
+
+To add page numbers to the footer, use the following code:
+```javascript
+const section = doc.sections.getFirst();
+const footer = section.footer;
+const para = footer.paragraphs.add();
+para.text = "Page ";
+para.addField("page", " ");
+await context.sync();
+```
+
+To mail merge, use the following code:
+```javascript
+const values = [
+  { Name: "Alice", Amount: "100" },
+  { Name: "Bob", Amount: "200" }
+];
+values.forEach(value => {
+  const para = doc.paragraphs.add();
+  para.text = `Name: ${value.Name}, Amount: ${value.Amount}`;
 });
 await context.sync();
 ```
 
-To add a watermark, use the following code:
+To apply a template with values, use the following code:
 ```javascript
-const section = doc.sections.getFirst();
-const header = section.headers.first;
-const para = header.paragraphs.add();
-para.text = "CONFIDENTIAL";
-para.font.color = "gray";
-await context.sync();
-```
-
-To apply a template, use the following code:
-```javascript
-const template = "resume";
+const template = "memo";
 const values = {
-  Name: "Alice Smith",
-  Title: "Software Engineer",
-  Email: "alice@example.com"
+  To: "Team",
+  From: "Manager",
+  Subject: "Sprint Recap",
+  Body: "Recap of this sprint follows."
 };
 doc.body.clear();
 const para = doc.paragraphs.add();
-para.text = template;
 replaceText(template, values);
 await context.sync();
 ```
 
-To generate a document, use the following code:
+To insert a citation and bibliography, use the following code:
 ```javascript
-const sections = 5;
-for (let i = 0; i < sections; i++) {
-  const para = doc.paragraphs.add();
-  para.text = `Section ${i + 1}`;
-  await context.sync();
-}
-```
-
-To apply a theme, use the following code:
-```javascript
-const theme = "calm trustworthy theme";
-doc.body.styles.add("theme", theme);
+const citation = {
+  author: "Smith",
+  year: 2021,
+  title: "On Foo"
+};
+const para = doc.paragraphs.add();
+para.text = `${citation.author} (${citation.year})`;
 await context.sync();
 ```
 
-To tweak a theme, use the following code:
+To get the word count, use the following code:
 ```javascript
-const theme = "darker theme";
-doc.body.styles.add("theme", theme
+const wordCount = doc.body.text.split(" ").length;
+return `Your document has ${wordCount} words.`;
+await context.sync();
+```
+
+To get the readability score, use the following code:
+```javascript
+const text = doc.body.text;
+const sentences = text.split(".").length;
+const words = text.split(" ").length;
+const syllables = text.split("").filter(char => char.match(/[aeiou]/i)).length;
+const score
