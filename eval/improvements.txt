@@ -1,87 +1,86 @@
-To insert a heading, use the following code:
+To insert a heading with a specific level, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.text = "Quarterly Review";
-para.heading = "Heading1";
+para.text = "Methodology";
+para.heading = "Heading2";
 await context.sync();
 ```
 
-To add a paragraph below a heading, use the following code:
+To add a bullet list, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.text = "We used a randomized controlled trial design.";
+const list = para.list;
+list.startAt(1);
+list.items.add("Apples");
+list.items.add("Bananas");
+list.items.add("Cherries");
 await context.sync();
 ```
 
-To apply a table style, use the following code:
+To add a numbered list, use the following code:
 ```javascript
-const table = doc.tables.add();
-table.style = "Grid Table 4 - Accent 1";
+const para = doc.paragraphs.add();
+const list = para.list;
+list.startAt(1);
+list.items.add("Plan");
+list.items.add("Execute");
+list.items.add("Review");
 await context.sync();
 ```
 
-To set the header, use the following code:
+To replace text, use the following code:
+```javascript
+const results = doc.body.search("Acme", { matchCase: true });
+results.load("text");
+await context.sync();
+results.items.forEach(r => { r.text = "Globex"; });
+await context.sync();
+```
+
+To make text bold and red, use the following code:
+```javascript
+const results = doc.body.search("WARNING", { matchCase: true });
+results.load("font");
+await context.sync();
+results.items.forEach(r => { r.font.bold = true; r.font.color = "#FF0000"; });
+await context.sync();
+```
+
+To add a comment, use the following code:
+```javascript
+const results = doc.body.search("$4.2M", { matchCase: true });
+results.load("text");
+await context.sync();
+results.items[0].comments.add("check this number");
+await context.sync();
+```
+
+To add page numbers to the footer, use the following code:
 ```javascript
 const section = doc.sections.getFirst();
-const header = section.headers.getFirst();
-const para = header.paragraphs.add();
-para.text = "Confidential Draft";
+const footer = section.footer;
+const para = footer.paragraphs.add();
+para.text = "Page ";
+para.addField("page");
 await context.sync();
 ```
 
-To insert an image, use the following code:
+To switch to a two-column layout, use the following code:
+```javascript
+const section = doc.sections.getFirst();
+section.columns = 2;
+await context.sync();
+```
+
+To insert an image at the cursor, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
 const run = para.addRun();
-run.addPicture("healthcare.jpg", {
+run.addPicture("office-workplace.jpg", {
   width: 320
 });
 await context.sync();
 ```
 
-To add a watermark, use the following code:
+To add a watermark to every page, use the following code:
 ```javascript
-const section = doc.sections.getFirst();
-const header = section.headers.getFirst();
-const para = header.paragraphs.add();
-para.text = "CONFIDENTIAL";
-para.font.color = "gray";
-para.font.size = 48;
-await context.sync();
-```
-
-To apply a template, use the following code:
-```javascript
-const template = "resume";
-doc.template = template;
-const fields = {
-  Name: "Alice Smith",
-  Title: "Software Engineer",
-  Email: "alice@example.com"
-};
-Object.keys(fields).forEach(field => {
-  const para = doc.paragraphs.add();
-  para.text = `${field}: ${fields[field]}`;
-});
-await context.sync();
-```
-
-To design a theme, use the following code:
-```javascript
-const theme = {
-  name: "calm trustworthy theme for a healthcare startup",
-  colors: ["#4567b7", "#6495ed", "#87ceeb"],
-  fonts: ["Calibri", "Arial"]
-};
-doc.theme = theme;
-await context.sync();
-```
-
-To tweak a theme, use the following code:
-```javascript
-const theme = doc.theme;
-theme.colors = ["#2f4f7f", "#4682b4", "#6495ed"];
-theme.fonts = ["Calibri", "Arial"];
-doc.theme = theme;
-await context.sync();
-``
