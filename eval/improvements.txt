@@ -1,82 +1,87 @@
 To insert a heading, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.text = "Methodology";
-para.heading = "Heading2";
+para.text = "Quarterly Review";
+para.heading = "Heading1";
 await context.sync();
 ```
 
-To add a bullet list, use the following code:
+To add a paragraph below a heading, use the following code:
 ```javascript
-const list = [
-  "Apples",
-  "Bananas",
-  "Cherries"
-];
 const para = doc.paragraphs.add();
-list.forEach(item => {
-  const run = para.addRun(item);
-  para.listItem = {
-    level: 0,
-    style: "Bullet"
-  };
-});
+para.text = "We used a randomized controlled trial design.";
 await context.sync();
 ```
 
-To add page numbers to the footer, use the existing code example.
+To apply a table style, use the following code:
+```javascript
+const table = doc.tables.add();
+table.style = "Grid Table 4 - Accent 1";
+await context.sync();
+```
+
+To set the header, use the following code:
+```javascript
+const section = doc.sections.getFirst();
+const header = section.headers.getFirst();
+const para = header.paragraphs.add();
+para.text = "Confidential Draft";
+await context.sync();
+```
 
 To insert an image, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
 const run = para.addRun();
-run.addPicture("healthcare.jpg");
+run.addPicture("healthcare.jpg", {
+  width: 320
+});
 await context.sync();
 ```
 
-To apply a theme, use the following code:
+To add a watermark, use the following code:
 ```javascript
-const theme = "calm trustworthy theme for a healthcare startup — soft blues and greens, generous spacing, friendly modern sans-serif headings";
+const section = doc.sections.getFirst();
+const header = section.headers.getFirst();
+const para = header.paragraphs.add();
+para.text = "CONFIDENTIAL";
+para.font.color = "gray";
+para.font.size = 48;
+await context.sync();
+```
+
+To apply a template, use the following code:
+```javascript
+const template = "resume";
+doc.template = template;
+const fields = {
+  Name: "Alice Smith",
+  Title: "Software Engineer",
+  Email: "alice@example.com"
+};
+Object.keys(fields).forEach(field => {
+  const para = doc.paragraphs.add();
+  para.text = `${field}: ${fields[field]}`;
+});
+await context.sync();
+```
+
+To design a theme, use the following code:
+```javascript
+const theme = {
+  name: "calm trustworthy theme for a healthcare startup",
+  colors: ["#4567b7", "#6495ed", "#87ceeb"],
+  fonts: ["Calibri", "Arial"]
+};
 doc.theme = theme;
 await context.sync();
 ```
 
-To insert a citation and bibliography, use the existing code example and extend it with the following:
+To tweak a theme, use the following code:
 ```javascript
-const para = doc.paragraphs.add();
-para.text = `${citation.author} (${citation.year}) ${citation.title}`;
-const bibPara = doc.paragraphs.add();
-bibPara.text = `${citation.author}. (${citation.year}). ${citation.title}.`;
+const theme = doc.theme;
+theme.colors = ["#2f4f7f", "#4682b4", "#6495ed"];
+theme.fonts = ["Calibri", "Arial"];
+doc.theme = theme;
 await context.sync();
-```
-
-To get the word count, use the existing code example.
-
-To get the readability score, use the following code:
-```javascript
-const text = doc.body.text;
-const sentences = text.split(".").length;
-const words = text.split(" ").length;
-const score = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
-return `Readability score: ${score}`;
-await context.sync();
-```
-
-To list all headings, use the following code:
-```javascript
-const headings = [];
-doc.paragraphs.items.forEach(para => {
-  if (para.heading) {
-    headings.push(para.text);
-  }
-});
-return headings;
-await context.sync();
-```
-
-To add a section about today's Apple stock price, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-para.text = "Today's Apple stock price is not available in this context.";
-await context.sync();
-```
+``
