@@ -1,89 +1,82 @@
-To add a numbered list, use the following code:
+To insert a heading, use the following code:
+```javascript
+const para = doc.paragraphs.add();
+para.text = "Methodology";
+para.heading = "Heading2";
+await context.sync();
+```
+
+To add a bullet list, use the following code:
 ```javascript
 const list = [
-  "Plan",
-  "Execute",
-  "Review"
+  "Apples",
+  "Bananas",
+  "Cherries"
 ];
 const para = doc.paragraphs.add();
 list.forEach(item => {
   const run = para.addRun(item);
   para.listItem = {
     level: 0,
-    style: "Number"
+    style: "Bullet"
   };
 });
 await context.sync();
 ```
 
-To insert a section break and switch to landscape, use the following code:
-```javascript
-const section = doc.sections.add();
-section.orientation = "landscape";
-await context.sync();
-```
+To add page numbers to the footer, use the existing code example.
 
-To add page numbers to the footer, use the following code:
+To insert an image, use the following code:
 ```javascript
-const section = doc.sections.getFirst();
-const footer = section.footer;
-const para = footer.paragraphs.add();
-para.text = "Page ";
-para.addField("page", " ");
-await context.sync();
-```
-
-To mail merge, use the following code:
-```javascript
-const values = [
-  { Name: "Alice", Amount: "100" },
-  { Name: "Bob", Amount: "200" }
-];
-values.forEach(value => {
-  const para = doc.paragraphs.add();
-  para.text = `Name: ${value.Name}, Amount: ${value.Amount}`;
-});
-await context.sync();
-```
-
-To apply a template with values, use the following code:
-```javascript
-const template = "memo";
-const values = {
-  To: "Team",
-  From: "Manager",
-  Subject: "Sprint Recap",
-  Body: "Recap of this sprint follows."
-};
-doc.body.clear();
 const para = doc.paragraphs.add();
-replaceText(template, values);
+const run = para.addRun();
+run.addPicture("healthcare.jpg");
 await context.sync();
 ```
 
-To insert a citation and bibliography, use the following code:
+To apply a theme, use the following code:
 ```javascript
-const citation = {
-  author: "Smith",
-  year: 2021,
-  title: "On Foo"
-};
+const theme = "calm trustworthy theme for a healthcare startup — soft blues and greens, generous spacing, friendly modern sans-serif headings";
+doc.theme = theme;
+await context.sync();
+```
+
+To insert a citation and bibliography, use the existing code example and extend it with the following:
+```javascript
 const para = doc.paragraphs.add();
-para.text = `${citation.author} (${citation.year})`;
+para.text = `${citation.author} (${citation.year}) ${citation.title}`;
+const bibPara = doc.paragraphs.add();
+bibPara.text = `${citation.author}. (${citation.year}). ${citation.title}.`;
 await context.sync();
 ```
 
-To get the word count, use the following code:
-```javascript
-const wordCount = doc.body.text.split(" ").length;
-return `Your document has ${wordCount} words.`;
-await context.sync();
-```
+To get the word count, use the existing code example.
 
 To get the readability score, use the following code:
 ```javascript
 const text = doc.body.text;
 const sentences = text.split(".").length;
 const words = text.split(" ").length;
-const syllables = text.split("").filter(char => char.match(/[aeiou]/i)).length;
-const score
+const score = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
+return `Readability score: ${score}`;
+await context.sync();
+```
+
+To list all headings, use the following code:
+```javascript
+const headings = [];
+doc.paragraphs.items.forEach(para => {
+  if (para.heading) {
+    headings.push(para.text);
+  }
+});
+return headings;
+await context.sync();
+```
+
+To add a section about today's Apple stock price, use the following code:
+```javascript
+const para = doc.paragraphs.add();
+para.text = "Today's Apple stock price is not available in this context.";
+await context.sync();
+```
