@@ -1,29 +1,61 @@
 To insert a heading, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.text = "Quarterly Review";
-para.heading = "Heading1";
+para.text = "Methodology";
+para.heading = "Heading2";
 await context.sync();
 ```
 
-To apply a style to a paragraph, use the following code:
+To make a paragraph bold and 14pt, use the following code:
 ```javascript
-const para = doc.paragraphs.getItem(2);
-para.style = "Quote";
+const para = doc.paragraphs.getItem(0);
+para.font.bold = true;
+para.font.size = 14;
 await context.sync();
 ```
 
-To insert an image, use the following code:
+To add a bullet list, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-const run = para.addRun();
-run.addPicture("healthcare.jpg", {
-  width: 320
-});
+const list = para.lists.add();
+list.listType = "bullet";
+list.addItem("Apples");
+list.addItem("Bananas");
+list.addItem("Cherries");
 await context.sync();
 ```
 
-To add a watermark to every page, use the following code:
+To add a numbered list, use the following code:
+```javascript
+const para = doc.paragraphs.add();
+const list = para.lists.add();
+list.listType = "number";
+list.addItem("Plan");
+list.addItem("Execute");
+list.addItem("Review");
+await context.sync();
+```
+
+To insert a Table of Contents, use the following code:
+```javascript
+const toc = doc.tablesOfContents.add();
+toc.title = "Table of Contents";
+toc.minLevel = 1;
+toc.maxLevel = 3;
+await context.sync();
+```
+
+To add page numbers to the footer, use the following code:
+```javascript
+const section = doc.sections.getFirst();
+const footer = section.footer;
+const para = footer.paragraphs.add();
+para.text = "Page ";
+para.alignment = "right";
+await context.sync();
+```
+
+To insert a watermark, use the following code:
 ```javascript
 const section = doc.sections.getFirst();
 const header = section.header;
@@ -55,29 +87,4 @@ const data = {
   Title: "Software Engineer",
   Email: "alice@example.com",
 };
-const para = doc.paragraphs.add();
-para.text = `Name: ${data.Name}, Title: ${data.Title}, Email: ${data.Email}`;
-await context.sync();
-```
-
-To design a theme, use the following code:
-```javascript
-const theme = {
-  name: "Calm Trustworthy Theme",
-  colors: ["#4567b7", "#6495ed", "#7a8484"],
-  fonts: ["Calibri", "Arial"],
-};
-// Note: Theme design is limited in Word Office.js API
-```
-
-To count words, use the following code:
-```javascript
-const wordCount = doc.body.text.split(" ").length;
-return `Your document has ${wordCount} words.`;
-```
-
-To get readability, use the following code:
-```javascript
-const sentences = doc.body.text.split(". ");
-const wordCount = doc.body.text.split(" ").length;
-const readability = {
+const para = doc
