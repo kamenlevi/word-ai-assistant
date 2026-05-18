@@ -1,82 +1,23 @@
-To insert a heading with a specific level, use the following code:
+To insert a heading, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.text = "Methodology";
-para.heading = "Heading2";
+para.text = "Quarterly Review";
+para.heading = "Heading1";
 await context.sync();
 ```
 
-To add a bullet list, use the following code:
+To apply a style to a paragraph, use the following code:
 ```javascript
-const para = doc.paragraphs.add();
-const list = para.list;
-list.startAt(1);
-list.items.add("Apples");
-list.items.add("Bananas");
-list.items.add("Cherries");
+const para = doc.paragraphs.getItem(2);
+para.style = "Quote";
 await context.sync();
 ```
 
-To add a numbered list, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-const list = para.list;
-list.startAt(1);
-list.items.add("Plan");
-list.items.add("Execute");
-list.items.add("Review");
-await context.sync();
-```
-
-To replace text, use the following code:
-```javascript
-const results = doc.body.search("Acme", { matchCase: true });
-results.load("text");
-await context.sync();
-results.items.forEach(r => { r.text = "Globex"; });
-await context.sync();
-```
-
-To make text bold and red, use the following code:
-```javascript
-const results = doc.body.search("WARNING", { matchCase: true });
-results.load("font");
-await context.sync();
-results.items.forEach(r => { r.font.bold = true; r.font.color = "#FF0000"; });
-await context.sync();
-```
-
-To add a comment, use the following code:
-```javascript
-const results = doc.body.search("$4.2M", { matchCase: true });
-results.load("text");
-await context.sync();
-results.items[0].comments.add("check this number");
-await context.sync();
-```
-
-To add page numbers to the footer, use the following code:
-```javascript
-const section = doc.sections.getFirst();
-const footer = section.footer;
-const para = footer.paragraphs.add();
-para.text = "Page ";
-para.addField("page");
-await context.sync();
-```
-
-To switch to a two-column layout, use the following code:
-```javascript
-const section = doc.sections.getFirst();
-section.columns = 2;
-await context.sync();
-```
-
-To insert an image at the cursor, use the following code:
+To insert an image, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
 const run = para.addRun();
-run.addPicture("office-workplace.jpg", {
+run.addPicture("healthcare.jpg", {
   width: 320
 });
 await context.sync();
@@ -84,3 +25,59 @@ await context.sync();
 
 To add a watermark to every page, use the following code:
 ```javascript
+const section = doc.sections.getFirst();
+const header = section.header;
+const para = header.paragraphs.add();
+para.text = "CONFIDENTIAL";
+para.alignment = "center";
+await context.sync();
+```
+
+To mail merge, use the following code:
+```javascript
+const template = doc;
+const data = [
+  { Name: "Alice", Amount: "100" },
+  { Name: "Bob", Amount: "200" },
+];
+data.forEach((item) => {
+  const para = template.paragraphs.add();
+  para.text = `Name: ${item.Name}, Amount: ${item.Amount}`;
+});
+await context.sync();
+```
+
+To apply a template, use the following code:
+```javascript
+const template = "resume";
+const data = {
+  Name: "Alice Smith",
+  Title: "Software Engineer",
+  Email: "alice@example.com",
+};
+const para = doc.paragraphs.add();
+para.text = `Name: ${data.Name}, Title: ${data.Title}, Email: ${data.Email}`;
+await context.sync();
+```
+
+To design a theme, use the following code:
+```javascript
+const theme = {
+  name: "Calm Trustworthy Theme",
+  colors: ["#4567b7", "#6495ed", "#7a8484"],
+  fonts: ["Calibri", "Arial"],
+};
+// Note: Theme design is limited in Word Office.js API
+```
+
+To count words, use the following code:
+```javascript
+const wordCount = doc.body.text.split(" ").length;
+return `Your document has ${wordCount} words.`;
+```
+
+To get readability, use the following code:
+```javascript
+const sentences = doc.body.text.split(". ");
+const wordCount = doc.body.text.split(" ").length;
+const readability = {
