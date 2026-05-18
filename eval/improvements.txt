@@ -1,90 +1,80 @@
-To insert a heading, use the following code:
+To insert a footnote, use the following code:
 ```javascript
-const para = doc.paragraphs.add();
-para.text = "Methodology";
-para.heading = "Heading2";
+const range = doc.getSelection();
+const footnote = range-footnotes.add();
+footnote.text = "See appendix A.";
 await context.sync();
 ```
 
-To make a paragraph bold and 14pt, use the following code:
+To insert an equation, use the following code:
+```javascript
+const para = doc.paragraphs.add();
+const equation = para.equations.add();
+equation.text = "E = mc^2";
+await context.sync();
+```
+
+To count words in a document, use the following code:
+```javascript
+const wordCount = doc.body.text.split(" ").length;
+return "Your document has " + wordCount + " words.";
+```
+
+To get the Flesch reading-ease grade level, use the following code:
+```javascript
+const sentences = doc.body.sentences;
+const words = doc.body.text.split(" ");
+const syllables = words.reduce((sum, word) => sum + getSyllableCount(word), 0);
+const gradeLevel = calculateFleschGradeLevel(sentences.length, words.length, syllables);
+return "Flesch: " + gradeLevel;
+```
+
+To list all headings, use the following code:
+```javascript
+const headings = doc.body.paragraphs.filter(p => p.heading);
+return headings.map(h => h.text);
+```
+
+To insert a block quote, use the following code:
+```javascript
+const para = doc.paragraphs.add();
+para.text = "Premature optimization is the root of all evil.";
+para.leftIndent = 40;
+await context.sync();
+```
+
+To delete a paragraph, use the following code:
+```javascript
+const para = doc.paragraphs.getItem(99);
+if (para) {
+  para.delete();
+  await context.sync();
+} else {
+  throw new Error("Paragraph 99 does not exist in the document.");
+}
+```
+
+To change the title, use the following code:
 ```javascript
 const para = doc.paragraphs.getItem(0);
-para.font.bold = true;
-para.font.size = 14;
+para.text = "Q4 Results";
 await context.sync();
 ```
 
-To add a bullet list, use the following code:
+To insert a citation, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-const list = para.lists.add();
-list.listType = "bullet";
-list.addItem("Apples");
-list.addItem("Bananas");
-list.addItem("Cherries");
+const citation = para.citations.add();
+citation.author = "Smith";
+citation.year = 2021;
+citation.title = "On Foo";
 await context.sync();
 ```
 
-To add a numbered list, use the following code:
+To insert a bibliography, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-const list = para.lists.add();
-list.listType = "number";
-list.addItem("Plan");
-list.addItem("Execute");
-list.addItem("Review");
+const bibliography = para.bibliographies.add();
+bibliography.citationStyle = "APA";
 await context.sync();
 ```
-
-To insert a Table of Contents, use the following code:
-```javascript
-const toc = doc.tablesOfContents.add();
-toc.title = "Table of Contents";
-toc.minLevel = 1;
-toc.maxLevel = 3;
-await context.sync();
-```
-
-To add page numbers to the footer, use the following code:
-```javascript
-const section = doc.sections.getFirst();
-const footer = section.footer;
-const para = footer.paragraphs.add();
-para.text = "Page ";
-para.alignment = "right";
-await context.sync();
-```
-
-To insert a watermark, use the following code:
-```javascript
-const section = doc.sections.getFirst();
-const header = section.header;
-const para = header.paragraphs.add();
-para.text = "CONFIDENTIAL";
-para.alignment = "center";
-await context.sync();
-```
-
-To mail merge, use the following code:
-```javascript
-const template = doc;
-const data = [
-  { Name: "Alice", Amount: "100" },
-  { Name: "Bob", Amount: "200" },
-];
-data.forEach((item) => {
-  const para = template.paragraphs.add();
-  para.text = `Name: ${item.Name}, Amount: ${item.Amount}`;
-});
-await context.sync();
-```
-
-To apply a template, use the following code:
-```javascript
-const template = "resume";
-const data = {
-  Name: "Alice Smith",
-  Title: "Software Engineer",
-  Email: "alice@example.com",
-};
-const para = doc
