@@ -1,80 +1,85 @@
-To insert a footnote, use the following code:
-```javascript
-const range = doc.getSelection();
-const footnote = range-footnotes.add();
-footnote.text = "See appendix A.";
-await context.sync();
-```
-
-To insert an equation, use the following code:
+To add a bullet list, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-const equation = para.equations.add();
-equation.text = "E = mc^2";
+para.listItem = {
+  level: 0,
+  alignment: "left",
+  startAt: 1,
+  format: "bullet"
+};
+para.text = "Apples, Bananas, Cherries";
 await context.sync();
 ```
 
-To count words in a document, use the following code:
-```javascript
-const wordCount = doc.body.text.split(" ").length;
-return "Your document has " + wordCount + " words.";
-```
-
-To get the Flesch reading-ease grade level, use the following code:
-```javascript
-const sentences = doc.body.sentences;
-const words = doc.body.text.split(" ");
-const syllables = words.reduce((sum, word) => sum + getSyllableCount(word), 0);
-const gradeLevel = calculateFleschGradeLevel(sentences.length, words.length, syllables);
-return "Flesch: " + gradeLevel;
-```
-
-To list all headings, use the following code:
-```javascript
-const headings = doc.body.paragraphs.filter(p => p.heading);
-return headings.map(h => h.text);
-```
-
-To insert a block quote, use the following code:
+To add a numbered list, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.text = "Premature optimization is the root of all evil.";
-para.leftIndent = 40;
+para.listItem = {
+  level: 0,
+  alignment: "left",
+  startAt: 1,
+  format: "number"
+};
+para.text = "Plan, Execute, Review";
 await context.sync();
 ```
 
-To delete a paragraph, use the following code:
+To apply a style to a specific paragraph, use the following code:
 ```javascript
-const para = doc.paragraphs.getItem(99);
-if (para) {
-  para.delete();
-  await context.sync();
-} else {
-  throw new Error("Paragraph 99 does not exist in the document.");
-}
-```
-
-To change the title, use the following code:
-```javascript
-const para = doc.paragraphs.getItem(0);
-para.text = "Q4 Results";
+const para = doc.paragraphs.getItem(2);
+para.style = "Quote";
 await context.sync();
 ```
 
-To insert a citation, use the following code:
+To set the header, use the following code:
 ```javascript
-const para = doc.paragraphs.add();
-const citation = para.citations.add();
-citation.author = "Smith";
-citation.year = 2021;
-citation.title = "On Foo";
+const section = doc.sections.getFirst();
+const header = section.headers.getFirst();
+header.paragraphs.getFirst().text = "Confidential Draft";
 await context.sync();
 ```
 
-To insert a bibliography, use the following code:
+To add page numbers to the footer, use the following code:
 ```javascript
-const para = doc.paragraphs.add();
-const bibliography = para.bibliographies.add();
-bibliography.citationStyle = "APA";
+const section = doc.sections.getFirst();
+const footer = section.headers.getLast();
+const para = footer.paragraphs.add();
+para.alignment = "right";
+para.text = "Page {page}";
 await context.sync();
 ```
+
+To add a watermark, use the following code:
+```javascript
+const section = doc.sections.getFirst();
+const header = section.headers.getFirst();
+const shape = header.insertShape("text");
+shape.text = "CONFIDENTIAL";
+shape.rotation = 45;
+shape.width = 300;
+shape.height = 100;
+await context.sync();
+```
+
+To apply a template, use the following code:
+```javascript
+await doc.templates.load("memo");
+const template = doc.templates.get("memo");
+template.fields.forEach((field) => {
+  if (field.label === "To") field.text = "Team";
+  if (field.label === "From") field.text = "Manager";
+  if (field.label === "Subject") field.text = "Sprint Recap";
+  if (field.label === "Body") field.text = "Recap of this sprint follows.";
+});
+await context.sync();
+```
+
+To apply a theme, use the following code:
+```javascript
+doc.theme = "Office";
+await context.sync();
+```
+
+To insert a citation and bibliography, use the following code:
+```javascript
+const para = doc.par
