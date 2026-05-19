@@ -1,79 +1,78 @@
-To insert a heading, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-para.text = "Quarterly Review";
-para.style = "Heading 1";
-await context.sync();
-```
-
-To insert a block quote, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-para.style = "Quote";
-para.text = "Premature optimization is the root of all evil.";
-await context.sync();
-```
-
-To set line spacing, use the following code:
+To make a paragraph bold and 14pt, use the following code:
 ```javascript
 const para = doc.paragraphs.getItem(0);
-para.paragraphFormat.lineSpacing = 1.5;
-para.paragraphFormat.lineSpacingRule = "atLeast";
+para.font.bold = true;
+para.font.size = 14;
 await context.sync();
 ```
 
-To delete a paragraph, use the following code:
+To add a bullet list, use the following code:
 ```javascript
-try {
-  const para = doc.paragraphs.getItem(99);
-  para.delete();
-  await context.sync();
-} catch (error) {
-  console.log("Paragraph 99 does not exist in the document.");
-}
-```
-
-To change the title, use the following code:
-```javascript
-const para = doc.paragraphs.getItem(0);
-para.text = "Q4 Results";
-await context.sync();
-```
-
-To count words, use the following code:
-```javascript
-const wordCount = doc.body.text.split(" ").length;
-return "Your document has " + wordCount + " words.";
-```
-
-To get readability, use the following code:
-```javascript
-const stats = await doc.statistics;
-const readability = stats.readability;
-return "Flesch: " + readability.flesch + " (grade " + readability.grade + "), " + stats.wordCount + " words across " + stats.sentenceCount + " sentences.";
-```
-
-To list headings, use the following code:
-```javascript
-const headings = [];
-doc.paragraphs.forEach((para) => {
-  if (para.style === "Heading 1" || para.style === "Heading 2" || para.style === "Heading 3") {
-    headings.push(para.text);
-  }
+const list = [];
+list.push("Apples");
+list.push("Bananas");
+list.push("Cherries");
+const para = doc.paragraphs.add();
+para.listItem = { level: 0, startAt: 1, style: "bullet" };
+list.forEach((item) => {
+  const run = para.addRun(item);
 });
-return headings;
+await context.sync();
 ```
 
-To switch page orientation, use the following code:
+To add a numbered list, use the following code:
+```javascript
+const list = [];
+list.push("Plan");
+list.push("Execute");
+list.push("Review");
+const para = doc.paragraphs.add();
+para.listItem = { level: 0, startAt: 1, style: "number" };
+list.forEach((item) => {
+  const run = para.addRun(item);
+});
+await context.sync();
+```
+
+To replace all 'Acme' with 'Globex', use the following code:
+```javascript
+const para = doc.paragraphs.getItem(0);
+para.text = para.text.replace("Acme", "Globex");
+await context.sync();
+```
+
+To add page numbers to the footer, right-aligned, use the following code:
 ```javascript
 const section = doc.sections.getFirst();
-section.orientation = "landscape";
+const footer = section.footer.getFirst();
+const para = footer.paragraphs.add();
+para.alignment = "right";
+para.text = "Page {page}";
 await context.sync();
 ```
 
-To insert a dropdown content control, use the following code:
+To insert an image at the cursor, 320pt wide, use the following code:
 ```javascript
-const contentControl = doc.contentControls.add("dropdown", "Response");
-contentControl.tag = "response";
-contentControl.placeholder = "Select an option";
-contentControl.items = ["Yes", "No", "Maybe"];
+const image = doc.inlinePictures.add("office-workplace", { width: 320 });
+await context.sync();
+```
+
+To add a CONFIDENTIAL watermark to every page, use the following code:
+```javascript
+const section = doc.sections.getFirst();
+const header = section.header.getFirst();
+const para = header.paragraphs.add();
+para.text = "CONFIDENTIAL";
+para.font.color = "gray";
+para.font.size = 24;
+await context.sync();
+```
+
+To mail merge with records, use the following code:
+```javascript
+const table = doc.tables.add();
+table.columns.add();
+table.columns.add();
+table.rows.add();
+table.getCell(0, 0).text = "Name";
+table.getCell(0, 1).text =
