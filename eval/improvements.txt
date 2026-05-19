@@ -1,85 +1,79 @@
-To add a bullet list, use the following code:
+To insert a heading, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.listItem = {
-  level: 0,
-  alignment: "left",
-  startAt: 1,
-  format: "bullet"
-};
-para.text = "Apples, Bananas, Cherries";
+para.text = "Quarterly Review";
+para.style = "Heading 1";
 await context.sync();
 ```
 
-To add a numbered list, use the following code:
+To insert a block quote, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.listItem = {
-  level: 0,
-  alignment: "left",
-  startAt: 1,
-  format: "number"
-};
-para.text = "Plan, Execute, Review";
-await context.sync();
-```
-
-To apply a style to a specific paragraph, use the following code:
-```javascript
-const para = doc.paragraphs.getItem(2);
 para.style = "Quote";
+para.text = "Premature optimization is the root of all evil.";
 await context.sync();
 ```
 
-To set the header, use the following code:
+To set line spacing, use the following code:
 ```javascript
-const section = doc.sections.getFirst();
-const header = section.headers.getFirst();
-header.paragraphs.getFirst().text = "Confidential Draft";
+const para = doc.paragraphs.getItem(0);
+para.paragraphFormat.lineSpacing = 1.5;
+para.paragraphFormat.lineSpacingRule = "atLeast";
 await context.sync();
 ```
 
-To add page numbers to the footer, use the following code:
+To delete a paragraph, use the following code:
 ```javascript
-const section = doc.sections.getFirst();
-const footer = section.headers.getLast();
-const para = footer.paragraphs.add();
-para.alignment = "right";
-para.text = "Page {page}";
+try {
+  const para = doc.paragraphs.getItem(99);
+  para.delete();
+  await context.sync();
+} catch (error) {
+  console.log("Paragraph 99 does not exist in the document.");
+}
+```
+
+To change the title, use the following code:
+```javascript
+const para = doc.paragraphs.getItem(0);
+para.text = "Q4 Results";
 await context.sync();
 ```
 
-To add a watermark, use the following code:
+To count words, use the following code:
 ```javascript
-const section = doc.sections.getFirst();
-const header = section.headers.getFirst();
-const shape = header.insertShape("text");
-shape.text = "CONFIDENTIAL";
-shape.rotation = 45;
-shape.width = 300;
-shape.height = 100;
-await context.sync();
+const wordCount = doc.body.text.split(" ").length;
+return "Your document has " + wordCount + " words.";
 ```
 
-To apply a template, use the following code:
+To get readability, use the following code:
 ```javascript
-await doc.templates.load("memo");
-const template = doc.templates.get("memo");
-template.fields.forEach((field) => {
-  if (field.label === "To") field.text = "Team";
-  if (field.label === "From") field.text = "Manager";
-  if (field.label === "Subject") field.text = "Sprint Recap";
-  if (field.label === "Body") field.text = "Recap of this sprint follows.";
+const stats = await doc.statistics;
+const readability = stats.readability;
+return "Flesch: " + readability.flesch + " (grade " + readability.grade + "), " + stats.wordCount + " words across " + stats.sentenceCount + " sentences.";
+```
+
+To list headings, use the following code:
+```javascript
+const headings = [];
+doc.paragraphs.forEach((para) => {
+  if (para.style === "Heading 1" || para.style === "Heading 2" || para.style === "Heading 3") {
+    headings.push(para.text);
+  }
 });
+return headings;
+```
+
+To switch page orientation, use the following code:
+```javascript
+const section = doc.sections.getFirst();
+section.orientation = "landscape";
 await context.sync();
 ```
 
-To apply a theme, use the following code:
+To insert a dropdown content control, use the following code:
 ```javascript
-doc.theme = "Office";
-await context.sync();
-```
-
-To insert a citation and bibliography, use the following code:
-```javascript
-const para = doc.par
+const contentControl = doc.contentControls.add("dropdown", "Response");
+contentControl.tag = "response";
+contentControl.placeholder = "Select an option";
+contentControl.items = ["Yes", "No", "Maybe"];
