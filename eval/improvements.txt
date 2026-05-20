@@ -1,75 +1,84 @@
-To center-align a paragraph, use the following code:
-```javascript
-const para = doc.paragraphs.getItem(0);
-para.alignment = "center";
-await context.sync();
-```
-
-To set line spacing to 1.5 on every paragraph, use the following code:
-```javascript
-const paras = doc.paragraphs;
-for (let i = 0; i < paras.items.length; i++) {
-  paras.items[i].paragraphFormat.lineSpacing = 1.5;
-}
-await context.sync();
-```
-
-To delete a paragraph, use the following code:
-```javascript
-const para = doc.paragraphs.getItem(99);
-para.delete();
-await context.sync();
-```
-
-To change the title, use the following code:
-```javascript
-const para = doc.paragraphs.getItem(0);
-para.text = "Q4 Results";
-await context.sync();
-```
-
-To insert a block quote, use the following code:
+To insert a heading, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.leftIndent = 36;
-para.firstLineIndent = -36;
-para.text = "Premature optimization is the root of all evil.";
+para.headingStyle = "heading1";
+para.text = "Quarterly Review";
 await context.sync();
 ```
 
-To switch the page orientation to landscape, use the following code:
+To insert a paragraph and a heading, use the following code:
+```javascript
+const heading = doc.paragraphs.add();
+heading.headingStyle = "heading2";
+heading.text = "Methodology";
+const para = doc.paragraphs.add();
+para.text = "We used a randomized controlled trial design.";
+await context.sync();
+```
+
+To format a paragraph, use the following code:
+```javascript
+const para = doc.paragraphs.getItem(0);
+para.font.bold = true;
+para.font.size = 14;
+await context.sync();
+```
+
+To insert a bullet list, use the following code:
+```javascript
+const list = [];
+list.push("Apples");
+list.push("Bananas");
+list.push("Cherries");
+for (let i = 0; i < list.length; i++) {
+  const para = doc.paragraphs.add();
+  para.listItem = true;
+  para.text = list[i];
+}
+await context.sync();
+```
+
+To apply a table style, use the following code:
+```javascript
+const table = doc.tables.getItem(0);
+table.style = "Grid Table 4 - Accent 1";
+await context.sync();
+```
+
+To insert an image, use the following code:
+```javascript
+const para = doc.paragraphs.add();
+const image = para.inlinePictures.add();
+image.src = "healthcare.jpg";
+image.width = 320;
+await context.sync();
+```
+
+To add a watermark, use the following code:
 ```javascript
 const section = doc.sections.getFirst();
-section.pageOrientation = "landscape";
+const watermark = section.headers.first.addWatermark();
+watermark.text = "CONFIDENTIAL";
 await context.sync();
 ```
 
-To get the word count, use the following code:
+To perform mail merge, use the following code:
 ```javascript
-const wordCount = doc.body.text.split(" ").length;
-return "Your document has " + wordCount + " words.";
-```
-
-To get the Flesch reading-ease grade level, use the following code:
-```javascript
-const sentences = doc.body.text.split(". ");
-const words = doc.body.text.split(" ");
-const syllables = words.reduce((sum, word) => sum + getSyllableCount(word), 0);
-const flesch = 206.835 - 1.015 * (words.length / sentences.length) - 84.6 * (syllables / words.length);
-return "Flesch: " + flesch;
-```
-
-To list all headings, use the following code:
-```javascript
-const headings = [];
-for (let i = 0; i < doc.paragraphs.items.length; i++) {
-  if (doc.paragraphs.items[i].headingStyle) {
-    headings.push(doc.paragraphs.items[i].text);
-  }
+const template = doc;
+const data = [
+  { Name: "Alice", Amount: "100" },
+  { Name: "Bob", Amount: "200" },
+];
+for (let i = 0; i < data.length; i++) {
+  const para = template.paragraphs.add();
+  para.text = `Name: ${data[i].Name}, Amount: ${data[i].Amount}`;
 }
-return headings;
+await context.sync();
 ```
 
-To insert a citation, use the following code:
+To apply a template, use the following code:
 ```javascript
-const para = doc.par
+const template = "resume";
+const data = {
+  Name: "Alice Smith",
+  Title: "
