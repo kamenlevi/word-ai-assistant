@@ -1,14 +1,53 @@
-To insert a section break and switch to landscape orientation, use the following code:
+To insert a heading, use the following code:
 ```javascript
-const section = doc.sections.add();
-section.orientation = "landscape";
+const para = doc.paragraphs.add();
+para.headingStyle = "Heading 2";
+para.text = "Methodology";
 await context.sync();
 ```
 
-To set the header, use the following code:
+To format a paragraph, use the following code:
 ```javascript
-const header = doc.sections.getFirst().headers.first;
-header.text = "Confidential Draft";
+const para = doc.paragraphs.getFirst();
+para.font.bold = true;
+para.font.size = 14;
+await context.sync();
+```
+
+To add a bullet list, use the following code:
+```javascript
+const list = [];
+list.push("Apples");
+list.push("Bananas");
+list.push("Cherries");
+for (let i = 0; i < list.length; i++) {
+  const para = doc.paragraphs.add();
+  para.listItem = true;
+  para.text = list[i];
+  para.font.size = 12;
+}
+await context.sync();
+```
+
+To add a numbered list, use the following code:
+```javascript
+const list = [];
+list.push("Plan");
+list.push("Execute");
+list.push("Review");
+for (let i = 0; i < list.length; i++) {
+  const para = doc.paragraphs.add();
+  para.listItem = true;
+  para.text = (i + 1) + ". " + list[i];
+  para.font.size = 12;
+}
+await context.sync();
+```
+
+To apply a table style, use the following code:
+```javascript
+const table = doc.tables.add();
+table.style = "Grid Table 4 - Accent 1";
 await context.sync();
 ```
 
@@ -16,50 +55,33 @@ To add page numbers to the footer, use the following code:
 ```javascript
 const footer = doc.sections.getFirst().footers.first;
 const para = footer.paragraphs.add();
+para.alignment = "right";
 para.text = "Page ";
-para.font.size = 12;
 const field = para.fields.add("page");
 await context.sync();
 ```
 
-To insert a citation and bibliography, use the following code:
+To insert an image, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.text = "According to Smith (2021),...";
-const citation = para.citations.add("APA");
-citation.source = "Smith, 2021";
-const bib = doc.sections.getFirst().footers.first;
-const bibPara = bib.paragraphs.add();
-bibPara.text = "References: ";
-const bibField = bibPara.fields.add("bibliography");
+const image = para.inlinePictures.add();
+image.src = "office-workplace";
+image.width = 320;
 await context.sync();
 ```
 
-To count the words in a document, use the following code:
+To add a watermark, use the following code:
 ```javascript
-const body = doc.body;
-const text = body.getText();
-const wordCount = text.split(" ").length;
-return `Your document has ${wordCount} words.`;
+const section = doc.sections.getFirst();
+const header = section.headers.first;
+const para = header.paragraphs.add();
+para.text = "CONFIDENTIAL";
+para.font.color = "gray";
+await context.sync();
 ```
 
-To get the Flesch reading-ease grade level, use the following code:
+To mail merge, use the following code:
 ```javascript
-const body = doc.body;
-const text = body.getText();
-const sentences = text.split(".");
-const sentenceCount = sentences.length;
-const words = text.split(" ");
-const wordCount = words.length;
-const syllables = words.reduce((sum, word) => sum + countSyllables(word), 0);
-const flesch = 206.835 - 1.015 * (wordCount / sentenceCount) - 84.6 * (syllables / wordCount);
-return `Flesch: ${flesch} (grade ${getGrade(flesch)}), ${wordCount} words across ${sentenceCount} sentences.`;
-```
-
-To list all headings, use the following code:
-```javascript
-const headings = [];
-for (let i = 0; i < doc.paragraphs.items.length; i++) {
-  const para = doc.paragraphs.items[i];
-  if (para.headingStyle) {
-    headings.push(para.text);
+const template = doc;
+const records = [
+  { Name: "Alice
