@@ -1,53 +1,36 @@
-To insert a heading, use the following code:
+To center-align a paragraph, use the following code:
 ```javascript
-const para = doc.paragraphs.add();
-para.headingStyle = "Heading 2";
-para.text = "Methodology";
+const para = doc.paragraphs.getFirst();
+para.alignment = "center";
 await context.sync();
 ```
 
-To format a paragraph, use the following code:
+To change the font size of a paragraph, use the following code:
 ```javascript
 const para = doc.paragraphs.getFirst();
-para.font.bold = true;
-para.font.size = 14;
+para.font.size = 28;
 await context.sync();
 ```
 
 To add a bullet list, use the following code:
 ```javascript
-const list = [];
-list.push("Apples");
-list.push("Bananas");
-list.push("Cherries");
+const list = ["Apples", "Bananas", "Cherries"];
 for (let i = 0; i < list.length; i++) {
   const para = doc.paragraphs.add();
   para.listItem = true;
   para.text = list[i];
-  para.font.size = 12;
 }
 await context.sync();
 ```
 
 To add a numbered list, use the following code:
 ```javascript
-const list = [];
-list.push("Plan");
-list.push("Execute");
-list.push("Review");
+const list = ["Plan", "Execute", "Review"];
 for (let i = 0; i < list.length; i++) {
   const para = doc.paragraphs.add();
   para.listItem = true;
   para.text = (i + 1) + ". " + list[i];
-  para.font.size = 12;
 }
-await context.sync();
-```
-
-To apply a table style, use the following code:
-```javascript
-const table = doc.tables.add();
-table.style = "Grid Table 4 - Accent 1";
 await context.sync();
 ```
 
@@ -65,7 +48,7 @@ To insert an image, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
 const image = para.inlinePictures.add();
-image.src = "office-workplace";
+image.src = "healthcare";
 image.width = 320;
 await context.sync();
 ```
@@ -84,4 +67,20 @@ To mail merge, use the following code:
 ```javascript
 const template = doc;
 const records = [
-  { Name: "Alice
+  { Name: "Alice", Amount: "100" },
+  { Name: "Bob", Amount: "200" },
+];
+```
+
+To apply a template, use the following code:
+```javascript
+const template = "resume";
+const values = {
+  Name: "Alice Smith",
+  Title: "Software Engineer",
+  Email: "alice@example.com",
+};
+```
+
+To design a theme, use the following code:
+```
