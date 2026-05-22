@@ -1,82 +1,81 @@
-To insert a heading, use the following code:
+To insert a bullet list, use the following code:
 ```javascript
-const heading = doc.paragraphs.add();
-heading.heading = 2;
-heading.text = "Methodology";
+const list = [];
+list.push("Apples");
+list.push("Bananas");
+list.push("Cherries");
+for (let i = 0; i < list.length; i++) {
+  const para = doc.paragraphs.add();
+  para.listItem = true;
+  para.text = list[i];
+}
 await context.sync();
 ```
 
-To make a paragraph bold and 14pt, use the following code:
+To add page numbers to the footer, use the following code:
 ```javascript
-const para = doc.paragraphs.getFirst();
-para.font.bold = true;
-para.font.size = 14;
+const section = doc.sections.getFirst();
+const footer = section.footer.getFirst();
+const para = footer.paragraphs.add();
+para.text = "Page {page}";
+para.alignment = "right";
 await context.sync();
 ```
 
-To apply a table style, use the following code:
-```javascript
-const table = doc.tables.getFirst();
-table.styleBuiltIn = "Grid Table 4 - Accent 1";
-await context.sync();
-```
-
-To insert an equation, use the following code:
+To insert an image, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-const equation = para.inlinePictures.add();
-equation.src = "E = mc^2";
+const image = para.inlinePictures.add();
+image.src = "office-workplace.jpg";
+image.width = 320;
 await context.sync();
 ```
 
-To count words in a document, use the following code:
+To apply a template, use the following code:
 ```javascript
-const wordCount = doc.body.text.split(" ").length;
-return "Your document has " + wordCount + " words.";
+const template = "memo";
+const para = doc.paragraphs.add();
+para.text = "To: Team\nFrom: Manager\nSubject: Sprint Recap\nBody: Recap of this sprint follows.";
+await context.sync();
 ```
 
-To list all headings, use the following code:
+To design a theme, use the following code:
 ```javascript
-const headings = [];
+const theme = {
+  font: "Calibri",
+  color: "blue",
+  size: 12,
+};
 for (let i = 0; i < doc.paragraphs.items.length; i++) {
-  if (doc.paragraphs.items[i].heading) {
-    headings.push(doc.paragraphs.items[i].text);
-  }
+  doc.paragraphs.items[i].font.name = theme.font;
+  doc.paragraphs.items[i].font.color = theme.color;
+  doc.paragraphs.items[i].font.size = theme.size;
 }
-return headings;
+await context.sync();
 ```
 
-To insert a block quote, use the following code:
+To tweak a theme, use the following code:
+```javascript
+const theme = {
+  font: "Calibri",
+  color: "blue",
+  size: 12,
+};
+for (let i = 0; i < doc.paragraphs.items.length; i++) {
+  doc.paragraphs.items[i].font.name = theme.font;
+  doc.paragraphs.items[i].font.color = "forestgreen";
+}
+await context.sync();
+```
+
+To insert a citation, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.leftIndent = 36;
-para.rightIndent = 36;
-para.text = "Premature optimization is the root of all evil.";
+para.text = "(Smith, 2021)";
 await context.sync();
 ```
 
-To set line spacing, use the following code:
+To insert a bibliography, use the following code:
 ```javascript
-for (let i = 0; i < doc.paragraphs.items.length; i++) {
-  doc.paragraphs.items[i].spacing.lineSpacing = 1.5;
-}
-await context.sync();
-```
-
-To delete a paragraph, use the following code:
-```javascript
-try {
-  const para = doc.paragraphs.getItem(98);
-  para.delete();
-  await context.sync();
-} catch (error) {
-  throw new Error("Paragraph does not exist in the document.");
-}
-```
-
-To change the title, use the following code:
-```javascript
-const para = doc.paragraphs.getFirst();
-para.text = "Q4 Results";
-await context.sync();
-```
+const para = doc.paragraphs.add();
+para.text
