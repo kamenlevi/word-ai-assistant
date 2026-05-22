@@ -1,17 +1,26 @@
-To insert a heading, use the following code:
+To make the first paragraph bold and 14pt, use the following code:
 ```javascript
-const para = doc.paragraphs.add();
-para.heading = 1;
-para.text = "Quarterly Review";
+const para = doc.paragraphs.getFirst();
+para.font.bold = true;
+para.font.size = 14;
 await context.sync();
 ```
 
-To insert a numbered list, use the following code:
+To add a bullet list, use the following code:
 ```javascript
-const list = [];
-list.push("Plan");
-list.push("Execute");
-list.push("Review");
+const list = ["Apples", "Bananas", "Cherries"];
+for (let i = 0; i < list.length; i++) {
+  const para = doc.paragraphs.add();
+  para.listItem = true;
+  para.listLevel = 1;
+  para.text = list[i];
+}
+await context.sync();
+```
+
+To add a numbered list, use the following code:
+```javascript
+const list = ["Plan", "Execute", "Review"];
 for (let i = 0; i < list.length; i++) {
   const para = doc.paragraphs.add();
   para.listItem = true;
@@ -21,66 +30,49 @@ for (let i = 0; i < list.length; i++) {
 await context.sync();
 ```
 
-To apply a table style, use the following code:
+To accept all revisions, use the following code:
 ```javascript
-const table = doc.tables.getFirst();
-table.style = "Grid Table 4 - Accent 1";
-await context.sync();
-```
-
-To replace text, use the following code:
-```javascript
-const para = doc.paragraphs.getFirst();
-para.text = para.text.replace("Acme", "Globex");
-await context.sync();
-```
-
-To insert a table of contents, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-const toc = para.tablesOfContents.add();
-toc.title = "Table of Contents";
-await context.sync();
-```
-
-To insert a section break, use the following code:
-```javascript
-const section = doc.sections.add();
-section.orientation = "landscape";
-await context.sync();
-```
-
-To insert a watermark, use the following code:
-```javascript
-const section = doc.sections.getFirst();
-const header = section.header.getFirst();
-const para = header.paragraphs.add();
-para.text = "CONFIDENTIAL";
-para.font.color = "gray";
-await context.sync();
-```
-
-To insert an equation, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-const equation = para.equations.add();
-equation.text = "E = mc^2";
-await context.sync();
-```
-
-To count words, use the following code:
-```javascript
-let wordCount = 0;
-for (let i = 0; i < doc.paragraphs.items.length; i++) {
-  wordCount += doc.paragraphs.items[i].text.split(" ").length;
+const revisions = doc.revisions;
+for (let i = 0; i < revisions.items.length; i++) {
+  revisions.items[i].accept();
 }
 await context.sync();
 ```
 
-To get readability metrics, use the following code:
+To insert an image, use the following code:
 ```javascript
-const para = doc.paragraphs.getFirst();
-const text = para.text;
-const sentences = text.split(".");
-const words = text.split(" ");
-const flesch = 206.835 - 1
+const para = doc.paragraphs.add();
+const image = para.inlinePictures.add();
+image.src = "https://example.com/image.jpg";
+await context.sync();
+```
+
+To add a watermark to every page, use the following code:
+```javascript
+const sections = doc.sections;
+for (let i = 0; i < sections.items.length; i++) {
+  const section = sections.items[i];
+  const header = section.header.getFirst();
+  const para = header.paragraphs.add();
+  para.text = "CONFIDENTIAL";
+  para.font.color = "gray";
+}
+await context.sync();
+```
+
+To mail merge, use the following code:
+```javascript
+const template = doc;
+const data = [
+  { Name: "Alice", Amount: "100" },
+  { Name: "Bob", Amount: "200" },
+];
+for (let i = 0; i < data.length; i++) {
+  const para = template.paragraphs.getFirst();
+  para.text = para.text.replace("Name", data[i].Name);
+  para.text = para.text.replace("Amount", data[i].Amount);
+}
+await context.sync();
+```
+
+To
