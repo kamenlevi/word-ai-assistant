@@ -1,81 +1,86 @@
-To insert a bullet list, use the following code:
+To insert a heading, use the following code:
+```javascript
+const para = doc.paragraphs.add();
+para.heading = 1;
+para.text = "Quarterly Review";
+await context.sync();
+```
+
+To insert a numbered list, use the following code:
 ```javascript
 const list = [];
-list.push("Apples");
-list.push("Bananas");
-list.push("Cherries");
+list.push("Plan");
+list.push("Execute");
+list.push("Review");
 for (let i = 0; i < list.length; i++) {
   const para = doc.paragraphs.add();
   para.listItem = true;
+  para.listLevel = 0;
   para.text = list[i];
 }
 await context.sync();
 ```
 
-To add page numbers to the footer, use the following code:
+To apply a table style, use the following code:
+```javascript
+const table = doc.tables.getFirst();
+table.style = "Grid Table 4 - Accent 1";
+await context.sync();
+```
+
+To replace text, use the following code:
+```javascript
+const para = doc.paragraphs.getFirst();
+para.text = para.text.replace("Acme", "Globex");
+await context.sync();
+```
+
+To insert a table of contents, use the following code:
+```javascript
+const para = doc.paragraphs.add();
+const toc = para.tablesOfContents.add();
+toc.title = "Table of Contents";
+await context.sync();
+```
+
+To insert a section break, use the following code:
+```javascript
+const section = doc.sections.add();
+section.orientation = "landscape";
+await context.sync();
+```
+
+To insert a watermark, use the following code:
 ```javascript
 const section = doc.sections.getFirst();
-const footer = section.footer.getFirst();
-const para = footer.paragraphs.add();
-para.text = "Page {page}";
-para.alignment = "right";
+const header = section.header.getFirst();
+const para = header.paragraphs.add();
+para.text = "CONFIDENTIAL";
+para.font.color = "gray";
 await context.sync();
 ```
 
-To insert an image, use the following code:
+To insert an equation, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-const image = para.inlinePictures.add();
-image.src = "office-workplace.jpg";
-image.width = 320;
+const equation = para.equations.add();
+equation.text = "E = mc^2";
 await context.sync();
 ```
 
-To apply a template, use the following code:
+To count words, use the following code:
 ```javascript
-const template = "memo";
-const para = doc.paragraphs.add();
-para.text = "To: Team\nFrom: Manager\nSubject: Sprint Recap\nBody: Recap of this sprint follows.";
-await context.sync();
-```
-
-To design a theme, use the following code:
-```javascript
-const theme = {
-  font: "Calibri",
-  color: "blue",
-  size: 12,
-};
+let wordCount = 0;
 for (let i = 0; i < doc.paragraphs.items.length; i++) {
-  doc.paragraphs.items[i].font.name = theme.font;
-  doc.paragraphs.items[i].font.color = theme.color;
-  doc.paragraphs.items[i].font.size = theme.size;
+  wordCount += doc.paragraphs.items[i].text.split(" ").length;
 }
 await context.sync();
 ```
 
-To tweak a theme, use the following code:
+To get readability metrics, use the following code:
 ```javascript
-const theme = {
-  font: "Calibri",
-  color: "blue",
-  size: 12,
-};
-for (let i = 0; i < doc.paragraphs.items.length; i++) {
-  doc.paragraphs.items[i].font.name = theme.font;
-  doc.paragraphs.items[i].font.color = "forestgreen";
-}
-await context.sync();
-```
-
-To insert a citation, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-para.text = "(Smith, 2021)";
-await context.sync();
-```
-
-To insert a bibliography, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-para.text
+const para = doc.paragraphs.getFirst();
+const text = para.text;
+const sentences = text.split(".");
+const words = text.split(" ");
+const flesch = 206.835 - 1
