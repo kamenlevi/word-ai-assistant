@@ -1,20 +1,17 @@
-To make the first paragraph bold and 14pt, use the following code:
+To insert a heading, use the following code:
+```javascript
+const heading = doc.paragraphs.add();
+heading.heading = true;
+heading.headingLevel = 2;
+heading.text = "Methodology";
+await context.sync();
+```
+
+To format a paragraph, use the following code:
 ```javascript
 const para = doc.paragraphs.getFirst();
 para.font.bold = true;
 para.font.size = 14;
-await context.sync();
-```
-
-To add a bullet list, use the following code:
-```javascript
-const list = ["Apples", "Bananas", "Cherries"];
-for (let i = 0; i < list.length; i++) {
-  const para = doc.paragraphs.add();
-  para.listItem = true;
-  para.listLevel = 1;
-  para.text = list[i];
-}
 await context.sync();
 ```
 
@@ -30,12 +27,20 @@ for (let i = 0; i < list.length; i++) {
 await context.sync();
 ```
 
-To accept all revisions, use the following code:
+To apply a table style, use the following code:
 ```javascript
-const revisions = doc.revisions;
-for (let i = 0; i < revisions.items.length; i++) {
-  revisions.items[i].accept();
-}
+const table = doc.tables.getFirst();
+table.style = "Grid Table 4 - Accent 1";
+await context.sync();
+```
+
+To add page numbers to the footer, use the following code:
+```javascript
+const section = doc.sections.getFirst();
+const footer = section.footer.getFirst();
+const para = footer.paragraphs.add();
+para.text = "Page ";
+para.font.alignment = "right";
 await context.sync();
 ```
 
@@ -43,7 +48,8 @@ To insert an image, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
 const image = para.inlinePictures.add();
-image.src = "https://example.com/image.jpg";
+image.src = "https://example.com/office-workplace.jpg";
+image.width = 320;
 await context.sync();
 ```
 
@@ -70,9 +76,4 @@ const data = [
 for (let i = 0; i < data.length; i++) {
   const para = template.paragraphs.getFirst();
   para.text = para.text.replace("Name", data[i].Name);
-  para.text = para.text.replace("Amount", data[i].Amount);
-}
-await context.sync();
-```
-
-To
+  para.text = para.text.replace("Amount", data
