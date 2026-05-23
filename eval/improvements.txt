@@ -1,77 +1,91 @@
-To insert a block quote, use the following code:
+To insert a heading, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.leftIndent = 36;
-para.rightIndent = 36;
-para.firstLineIndent = -36;
-para.text = "Premature optimization is the root of all evil.";
+para.heading = 1;
+para.text = "Quarterly Review";
 await context.sync();
 ```
 
-To delete a paragraph, use the following code:
+To insert a section break, use the following code:
 ```javascript
-const para = doc.paragraphs.getItem(98);
-para.delete();
+const section = doc.sections.add();
+section.orientation = "landscape";
 await context.sync();
 ```
 
-To change the title, use the following code:
+To add page numbers, use the following code:
 ```javascript
-const title = doc.paragraphs.getFirst();
-title.text = "Q4 Results";
+const section = doc.sections.getFirst();
+const footer = section.footer.getFirst();
+const para = footer.paragraphs.add();
+para.text = "Page ";
+para.alignment = "right";
 await context.sync();
 ```
 
-To count the words in a document, use the following code:
-```javascript
-const wordCount = doc.body.text.split(" ").length;
-return "Your document has " + wordCount + " words.";
-```
-
-To list all headings, use the following code:
-```javascript
-const headings = [];
-for (let i = 0; i < doc.paragraphs.items.length; i++) {
-  const para = doc.paragraphs.items[i];
-  if (para.heading) {
-    headings.push(para.text);
-  }
-}
-return headings;
-```
-
-To get the Flesch reading-ease grade level, use the following code:
-```javascript
-const sentences = doc.body.text.split(". ");
-const words = doc.body.text.split(" ");
-const syllables = words.reduce((sum, word) => sum + countSyllables(word), 0);
-const gradeLevel = 206.835 - 1.015 * (words.length / sentences.length) - 84.6 * (syllables / words.length);
-return "Flesch: " + gradeLevel;
-```
-
-To apply a theme, use the following code:
-```javascript
-const theme = "Office Theme";
-doc.theme = theme;
-await context.sync();
-```
-
-To design a theme, use the built-in Word themes and apply them using the above code.
-
-To insert a citation, use the following code:
+To insert an image, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.text = "(Smith, 2021)";
+const image = para.inlinePictures.add();
+image.width = 320;
 await context.sync();
 ```
 
-To insert a bibliography, use the following code:
+To add a watermark, use the following code:
+```javascript
+const section = doc.sections.getFirst();
+const header = section.header.getFirst();
+const para = header.paragraphs.add();
+para.text = "CONFIDENTIAL";
+para.font.color = "gray";
+await context.sync();
+```
+
+To apply a template, use the following code:
+```javascript
+const template = "resume";
+doc.template = template;
+await context.sync();
+```
+
+To insert a list, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.text = "References:\nSmith, 2021";
+para.list = { type: "bullet", items: ["Apples", "Bananas", "Cherries"] };
 await context.sync();
 ```
 
-To replace existing plain text with a rich text content control, use the following code:
+To insert a footnote, use the following code:
 ```javascript
-const para = doc.paragraphs.getFirst
+const para = doc.paragraphs.add();
+para.text = "See appendix A.";
+para footnote = true;
+await context.sync();
+```
+
+To style a table, use the following code:
+```javascript
+const table = doc.tables.add();
+table.style = "Grid Table 4 - Accent 1";
+await context.sync();
+```
+
+To insert a block quote, use the existing code example.
+
+To delete a paragraph, use the existing code example.
+
+To change the title, use the existing code example.
+
+To count the words in a document, use the existing code example.
+
+To list all headings, use the existing code example.
+
+To get the Flesch reading-ease grade level, use the existing code example.
+
+To apply a theme, use the existing code example.
+
+To design a theme, use the existing code example.
+
+To insert a citation, use the existing code example.
+
+To insert a bibliography, use the existing code example.
