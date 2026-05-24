@@ -1,29 +1,50 @@
-To insert a heading, use the following code:
+To insert a bullet list, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.heading = 1;
-para.text = "Quarterly Review";
+para.list = { type: "bullet", items: ["Apples", "Bananas", "Cherries"] };
 await context.sync();
 ```
 
-To insert a section break, use the following code:
+To insert a numbered list, use the following code:
+```javascript
+const para = doc.paragraphs.add();
+para.list = { type: "number", items: ["Plan", "Execute", "Review"] };
+await context.sync();
+```
+
+To replace text with a regex pattern, use the following code:
+```javascript
+const regex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
+await replaceText(regex, "[redacted]", { matchCase: false });
+await context.sync();
+```
+
+To insert a comment on a specific text, use the following code:
+```javascript
+const para = doc.paragraphs.getFirst();
+const range = para.search("$4.2M");
+await insertComment(range, "check this number");
+await context.sync();
+```
+
+To insert a continuous section break and switch to landscape, use the following code:
 ```javascript
 const section = doc.sections.add();
 section.orientation = "landscape";
+section.sectionBreak = "continuous";
 await context.sync();
 ```
 
-To add page numbers, use the following code:
+To set the header, use the following code:
 ```javascript
 const section = doc.sections.getFirst();
-const footer = section.footer.getFirst();
-const para = footer.paragraphs.add();
-para.text = "Page ";
-para.alignment = "right";
+const header = section.header.getFirst();
+const para = header.paragraphs.add();
+para.text = "Confidential Draft";
 await context.sync();
 ```
 
-To insert an image, use the following code:
+To insert an image at the cursor, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
 const image = para.inlinePictures.add();
@@ -31,61 +52,26 @@ image.width = 320;
 await context.sync();
 ```
 
-To add a watermark, use the following code:
+To add a watermark to every page, use the following code:
 ```javascript
-const section = doc.sections.getFirst();
-const header = section.header.getFirst();
-const para = header.paragraphs.add();
-para.text = "CONFIDENTIAL";
-para.font.color = "gray";
+const sections = doc.sections;
+sections.load();
+await context.sync();
+sections.items.forEach((section) => {
+  const header = section.header.getFirst();
+  const para = header.paragraphs.add();
+  para.text = "CONFIDENTIAL";
+  para.font.color = "gray";
+});
 await context.sync();
 ```
 
-To apply a template, use the following code:
+To mail merge, use the following code:
 ```javascript
-const template = "resume";
-doc.template = template;
-await context.sync();
-```
-
-To insert a list, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-para.list = { type: "bullet", items: ["Apples", "Bananas", "Cherries"] };
-await context.sync();
-```
-
-To insert a footnote, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-para.text = "See appendix A.";
-para footnote = true;
-await context.sync();
-```
-
-To style a table, use the following code:
-```javascript
-const table = doc.tables.add();
-table.style = "Grid Table 4 - Accent 1";
-await context.sync();
-```
-
-To insert a block quote, use the existing code example.
-
-To delete a paragraph, use the existing code example.
-
-To change the title, use the existing code example.
-
-To count the words in a document, use the existing code example.
-
-To list all headings, use the existing code example.
-
-To get the Flesch reading-ease grade level, use the existing code example.
-
-To apply a theme, use the existing code example.
-
-To design a theme, use the existing code example.
-
-To insert a citation, use the existing code example.
-
-To insert a bibliography, use the existing code example.
+const template = "template.docx";
+const data = [
+  { Name: "Alice", Amount: "100" },
+  { Name: "Bob", Amount: "200" },
+];
+await mailMergeReplace(template, data);
+await context.sync
