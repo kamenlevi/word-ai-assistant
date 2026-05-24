@@ -1,77 +1,76 @@
-To insert a bullet list, use the following code:
+To insert a heading, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.list = { type: "bullet", items: ["Apples", "Bananas", "Cherries"] };
+para.text = "Methodology";
+para.style = "Heading2";
 await context.sync();
 ```
 
-To insert a numbered list, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-para.list = { type: "number", items: ["Plan", "Execute", "Review"] };
-await context.sync();
-```
-
-To replace text with a regex pattern, use the following code:
-```javascript
-const regex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
-await replaceText(regex, "[redacted]", { matchCase: false });
-await context.sync();
-```
-
-To insert a comment on a specific text, use the following code:
-```javascript
-const para = doc.paragraphs.getFirst();
-const range = para.search("$4.2M");
-await insertComment(range, "check this number");
-await context.sync();
-```
-
-To insert a continuous section break and switch to landscape, use the following code:
-```javascript
-const section = doc.sections.add();
-section.orientation = "landscape";
-section.sectionBreak = "continuous";
-await context.sync();
-```
-
-To set the header, use the following code:
+To add page numbers to the footer, use the following code:
 ```javascript
 const section = doc.sections.getFirst();
-const header = section.header.getFirst();
-const para = header.paragraphs.add();
-para.text = "Confidential Draft";
+const footer = section.footer.getFirst();
+const para = footer.paragraphs.add();
+para.text = "Page {#}";
+para.alignment = "right";
 await context.sync();
 ```
 
-To insert an image at the cursor, use the following code:
+To apply a theme, use the following code:
+```javascript
+const theme = "built-in theme name";
+doc.theme = theme;
+await context.sync();
+```
+
+To insert a citation and bibliography, use the following code:
+```javascript
+const citation = "Smith 2021";
+const para = doc.paragraphs.add();
+para.citations.add(citation);
+const bib = doc.bibliography;
+bib.citations.add(citation);
+await context.sync();
+```
+
+To count words in the document, use the following code:
+```javascript
+const wordCount = doc.body.text.split(" ").length;
+return "Your document has " + wordCount + " words.";
+```
+
+To get the Flesch reading-ease grade level, use the following code:
+```javascript
+const sentences = doc.body.sentences;
+const words = doc.body.text.split(" ");
+const syllables = words.reduce((sum, word) => sum + getSyllableCount(word), 0);
+const flesch = 206.835 - 1.015 * (words.length / sentences.length) - 84.6 * (syllables / words.length);
+return "Flesch: " + flesch;
+```
+
+To list all headings, use the following code:
+```javascript
+const headings = [];
+doc.body.paragraphs.items.forEach((para) => {
+  if (para.style === "Heading1" || para.style === "Heading2" || para.style === "Heading3") {
+    headings.push(para.text);
+  }
+});
+return headings;
+```
+
+To add a block quote, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-const image = para.inlinePictures.add();
-image.width = 320;
+para.text = "'Premature optimization is the root of all evil.'";
+para.style = "Quote";
 await context.sync();
 ```
 
-To add a watermark to every page, use the following code:
+To delete a paragraph, use the following code:
 ```javascript
-const sections = doc.sections;
-sections.load();
-await context.sync();
-sections.items.forEach((section) => {
-  const header = section.header.getFirst();
-  const para = header.paragraphs.add();
-  para.text = "CONFIDENTIAL";
-  para.font.color = "gray";
-});
-await context.sync();
-```
-
-To mail merge, use the following code:
-```javascript
-const template = "template.docx";
-const data = [
-  { Name: "Alice", Amount: "100" },
-  { Name: "Bob", Amount: "200" },
-];
-await mailMergeReplace(template, data);
-await context.sync
+const para = doc.paragraphs.getItem(99);
+if (para) {
+  para.delete();
+} else {
+  throw new Error("Paragraph 99
