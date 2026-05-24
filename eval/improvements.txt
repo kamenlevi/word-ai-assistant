@@ -1,24 +1,62 @@
-To insert a heading, use the following code:
+To insert a bullet list, use the following code:
+```javascript
+const list = [];
+list.push("Apples");
+list.push("Bananas");
+list.push("Cherries");
+const para = doc.paragraphs.add();
+para.listItem = { level: 0, startAt: 1 };
+list.forEach((item) => {
+  const run = para.addRun();
+  run.text = item;
+  run.font.bold = false;
+});
+await context.sync();
+```
+
+To insert an image, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.text = "Methodology";
-para.style = "Heading2";
+const run = para.addRun();
+run.addPicture("healthcare-image.png", {
+  width: 320,
+  height: 240,
+});
 await context.sync();
 ```
 
-To add page numbers to the footer, use the following code:
+To add a watermark, use the following code:
 ```javascript
 const section = doc.sections.getFirst();
-const footer = section.footer.getFirst();
-const para = footer.paragraphs.add();
-para.text = "Page {#}";
-para.alignment = "right";
+const header = section.header.getFirst();
+const para = header.paragraphs.add();
+para.text = "CONFIDENTIAL";
+para.alignment = "center";
+para.font.color = "gray";
 await context.sync();
 ```
 
-To apply a theme, use the following code:
+To insert a date picker content control, use the following code:
 ```javascript
-const theme = "built-in theme name";
+const para = doc.paragraphs.add();
+const contentControl = para.contentControls.add(
+  "DatePicker",
+  { title: "Sign Date", tag: "signDate" }
+);
+await context.sync();
+```
+
+To apply a custom theme, use the following code:
+```javascript
+const theme = {
+  name: "Custom Theme",
+  background: "#f2f2f2",
+  text: "#333",
+  headings: [
+    { level: 1, font: "Arial", size: 24, color: "#00698f" },
+    { level: 2, font: "Arial", size: 18, color: "#008000" },
+  ],
+};
 doc.theme = theme;
 await context.sync();
 ```
@@ -33,7 +71,7 @@ bib.citations.add(citation);
 await context.sync();
 ```
 
-To count words in the document, use the following code:
+To get the word count, use the following code:
 ```javascript
 const wordCount = doc.body.text.split(" ").length;
 return "Your document has " + wordCount + " words.";
@@ -41,36 +79,4 @@ return "Your document has " + wordCount + " words.";
 
 To get the Flesch reading-ease grade level, use the following code:
 ```javascript
-const sentences = doc.body.sentences;
-const words = doc.body.text.split(" ");
-const syllables = words.reduce((sum, word) => sum + getSyllableCount(word), 0);
-const flesch = 206.835 - 1.015 * (words.length / sentences.length) - 84.6 * (syllables / words.length);
-return "Flesch: " + flesch;
-```
-
-To list all headings, use the following code:
-```javascript
-const headings = [];
-doc.body.paragraphs.items.forEach((para) => {
-  if (para.style === "Heading1" || para.style === "Heading2" || para.style === "Heading3") {
-    headings.push(para.text);
-  }
-});
-return headings;
-```
-
-To add a block quote, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-para.text = "'Premature optimization is the root of all evil.'";
-para.style = "Quote";
-await context.sync();
-```
-
-To delete a paragraph, use the following code:
-```javascript
-const para = doc.paragraphs.getItem(99);
-if (para) {
-  para.delete();
-} else {
-  throw new Error("Paragraph 99
+const sentences =
