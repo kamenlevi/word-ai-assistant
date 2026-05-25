@@ -1,70 +1,82 @@
-To find and replace text, use the following code:
-```javascript
-const results = doc.body.search("WARNING", { matchCase: true });
-results.load("font");
-await context.sync();
-results.items.forEach(r => { r.font.bold = true; r.font.color = "#FF0000"; });
-await context.sync();
-```
-
-To add page numbers to the footer, use the following code:
-```javascript
-const section = doc.sections.getFirst();
-const footer = section.footer.getFirst();
-const para = footer.paragraphs.add();
-para.text = "Page {page}";
-para.alignment = "right";
-await context.sync();
-```
-
-To make every instance of text bold and colored, use the existing find and replace code.
-
-To insert a block quote, use the following code:
+To add a Heading 1, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-para.leftIndent = 40;
-para.firstLineIndent = -40;
-para.text = "'Premature optimization is the root of all evil.'";
+para.text = "Quarterly Review";
+para.heading = 1;
 await context.sync();
 ```
 
-To delete a paragraph by index, use the following code:
+To add a bullet list, use the following code:
 ```javascript
-try {
-  const para = doc.paragraphs.getItem(98);
-  para.delete();
-  await context.sync();
-} catch (error) {
-  throw new Error("Paragraph 99 does not exist in the document.");
-}
-```
-
-To change the title, use the following code:
-```javascript
-const para = doc.paragraphs.getFirst();
-para.text = "Q4 Results";
-await context.sync();
-```
-
-To list all headings, use the following code:
-```javascript
-const headings = [];
-doc.paragraphs.load("text, level");
-await context.sync();
-doc.paragraphs.items.forEach((para) => {
-  if (para.level > 0) {
-    headings.push(para.text);
-  }
+const list = [];
+list.push("Apples");
+list.push("Bananas");
+list.push("Cherries");
+const para = doc.paragraphs.add();
+para.listItem = true;
+para.list = { type: "bullet" };
+list.forEach(item => {
+  const run = para.addRun(item);
 });
-return headings;
+await context.sync();
 ```
 
-To get the Flesch reading-ease grade level, note that this is a complex calculation and not directly available through the Word Office.js API.
+To add a numbered list, use the following code:
+```javascript
+const list = [];
+list.push("Plan");
+list.push("Execute");
+list.push("Review");
+const para = doc.paragraphs.add();
+para.listItem = true;
+para.list = { type: "number" };
+list.forEach(item => {
+  const run = para.addRun(item);
+});
+await context.sync();
+```
 
-To apply a theme based on a description, note that this is a complex task and not directly available through the Word Office.js API.
+To add page numbers to the footer, use the existing code.
 
-To insert a citation and bibliography, use the existing code and modify it to fit the specific citation style.
+To insert an image, use the following code:
+```javascript
+const para = doc.paragraphs.add();
+const run = para.addRun();
+run.addPicture("office-workplace.jpg", { width: 320 });
+await context.sync();
+```
 
-To make the active theme darker and swap the accent to a forest green, note that this is a complex task and not directly available through the Word Office.js API.
+To add a watermark, use the following code:
+```javascript
+const section = doc.sections.getFirst();
+const header = section.header.getFirst();
+const para = header.paragraphs.add();
+para.text = "CONFIDENTIAL";
+para.font.color = "#CCCCCC";
+para.font.size = 48;
+await context.sync();
+```
 
-To add a section about today's Apple stock price, use a web search to obtain the current price and then insert it into the document using the existing code.
+To mail merge, use the following code:
+```javascript
+const template = doc;
+const data = [
+  { Name: "Alice", Amount: "100" },
+  { Name: "Bob", Amount: "200" },
+];
+data.forEach(item => {
+  const para = template.paragraphs.add();
+  para.text = `Name: ${item.Name}, Amount: ${item.Amount}`;
+});
+await context.sync();
+```
+
+To apply a theme, note that this is a complex task and not directly available through the Word Office.js API.
+
+To insert a citation and bibliography, use the following code:
+```javascript
+const para = doc.paragraphs.add();
+para.text = "(Smith, 2021)";
+const bib = doc.bibliographies.add();
+bib.citations.add({ author: "Smith", year: 2021, title: "On Foo" });
+await context.sync
