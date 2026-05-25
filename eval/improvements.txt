@@ -1,82 +1,70 @@
-To insert a bullet list, use the following code:
+To find and replace text, use the following code:
 ```javascript
-const list = [];
-list.push("Apples");
-list.push("Bananas");
-list.push("Cherries");
-const para = doc.paragraphs.add();
-para.listItem = { level: 0, startAt: 1 };
-list.forEach((item) => {
-  const run = para.addRun();
-  run.text = item;
-  run.font.bold = false;
-});
+const results = doc.body.search("WARNING", { matchCase: true });
+results.load("font");
+await context.sync();
+results.items.forEach(r => { r.font.bold = true; r.font.color = "#FF0000"; });
 await context.sync();
 ```
 
-To insert an image, use the following code:
-```javascript
-const para = doc.paragraphs.add();
-const run = para.addRun();
-run.addPicture("healthcare-image.png", {
-  width: 320,
-  height: 240,
-});
-await context.sync();
-```
-
-To add a watermark, use the following code:
+To add page numbers to the footer, use the following code:
 ```javascript
 const section = doc.sections.getFirst();
-const header = section.header.getFirst();
-const para = header.paragraphs.add();
-para.text = "CONFIDENTIAL";
-para.alignment = "center";
-para.font.color = "gray";
+const footer = section.footer.getFirst();
+const para = footer.paragraphs.add();
+para.text = "Page {page}";
+para.alignment = "right";
 await context.sync();
 ```
 
-To insert a date picker content control, use the following code:
+To make every instance of text bold and colored, use the existing find and replace code.
+
+To insert a block quote, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
-const contentControl = para.contentControls.add(
-  "DatePicker",
-  { title: "Sign Date", tag: "signDate" }
-);
+para.leftIndent = 40;
+para.firstLineIndent = -40;
+para.text = "'Premature optimization is the root of all evil.'";
 await context.sync();
 ```
 
-To apply a custom theme, use the following code:
+To delete a paragraph by index, use the following code:
 ```javascript
-const theme = {
-  name: "Custom Theme",
-  background: "#f2f2f2",
-  text: "#333",
-  headings: [
-    { level: 1, font: "Arial", size: 24, color: "#00698f" },
-    { level: 2, font: "Arial", size: 18, color: "#008000" },
-  ],
-};
-doc.theme = theme;
+try {
+  const para = doc.paragraphs.getItem(98);
+  para.delete();
+  await context.sync();
+} catch (error) {
+  throw new Error("Paragraph 99 does not exist in the document.");
+}
+```
+
+To change the title, use the following code:
+```javascript
+const para = doc.paragraphs.getFirst();
+para.text = "Q4 Results";
 await context.sync();
 ```
 
-To insert a citation and bibliography, use the following code:
+To list all headings, use the following code:
 ```javascript
-const citation = "Smith 2021";
-const para = doc.paragraphs.add();
-para.citations.add(citation);
-const bib = doc.bibliography;
-bib.citations.add(citation);
+const headings = [];
+doc.paragraphs.load("text, level");
 await context.sync();
+doc.paragraphs.items.forEach((para) => {
+  if (para.level > 0) {
+    headings.push(para.text);
+  }
+});
+return headings;
 ```
 
-To get the word count, use the following code:
-```javascript
-const wordCount = doc.body.text.split(" ").length;
-return "Your document has " + wordCount + " words.";
-```
+To get the Flesch reading-ease grade level, note that this is a complex calculation and not directly available through the Word Office.js API.
 
-To get the Flesch reading-ease grade level, use the following code:
-```javascript
-const sentences =
+To apply a theme based on a description, note that this is a complex task and not directly available through the Word Office.js API.
+
+To insert a citation and bibliography, use the existing code and modify it to fit the specific citation style.
+
+To make the active theme darker and swap the accent to a forest green, note that this is a complex task and not directly available through the Word Office.js API.
+
+To add a section about today's Apple stock price, use a web search to obtain the current price and then insert it into the document using the existing code.
