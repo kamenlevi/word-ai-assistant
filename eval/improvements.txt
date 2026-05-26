@@ -1,85 +1,85 @@
-To add a heading, use the following code:
+To insert a section break and switch the next section to landscape, use the following code:
 ```javascript
-const heading = doc.paragraphs.add();
-heading.styleBuiltIn = "Heading 1";
-heading.text = "Quarterly Review";
+const section = doc.sections.add();
+section.orientation = "landscape";
 await context.sync();
 ```
 
-To make a paragraph bold and 14pt, use the existing code example.
-
-To add a bullet list, use the following code:
-```javascript
-const list = [];
-list.push("Apples");
-list.push("Bananas");
-list.push("Cherries");
-const para = doc.paragraphs.add();
-para.listItem = true;
-para.listFormat.listType = "bullet";
-list.forEach(item => {
-  const run = para.addRun();
-  run.text = item;
-  run.font.size = 12;
-  para.addBreak();
-});
-await context.sync();
-```
-
-To add a numbered list, use the following code:
-```javascript
-const list = [];
-list.push("Plan");
-list.push("Execute");
-list.push("Review");
-const para = doc.paragraphs.add();
-para.listItem = true;
-para.listFormat.listType = "number";
-list.forEach(item => {
-  const run = para.addRun();
-  run.text = item;
-  run.font.size = 12;
-  para.addBreak();
-});
-await context.sync();
-```
-
-To add page numbers to the footer, use the following code:
+To set the header, use the following code:
 ```javascript
 const section = doc.sections.getFirst();
-const footer = section.footer.getFirst();
-const para = footer.paragraphs.add();
-para.alignment = "right";
-para.text = "Page " + section.pageNumbers;
+const header = section.header.getFirst();
+const para = header.paragraphs.add();
+para.text = "Confidential Draft";
 await context.sync();
 ```
 
-To insert an image, use the following code:
+To apply a theme, use the following code:
 ```javascript
-const para = doc.paragraphs.add();
-const run = para.addRun();
-run.addPicture("office-workplace", 320, 200);
+const theme = "Office";
+doc.theme = theme;
 await context.sync();
 ```
 
-To add a watermark to every page, use the existing code example.
-
-To mail merge, use the following code:
+To get the word count, use the following code:
 ```javascript
-const data = [
-  { Name: "Alice", Amount: "100" },
-  { Name: "Bob", Amount: "200" },
-];
-data.forEach(item => {
-  const para = doc.paragraphs.add();
-  para.text = `Name: ${item.Name}, Amount: ${item.Amount}`;
+const wordCount = doc.body.text.split(" ").length;
+return "Your document has " + wordCount + " words.";
+```
+
+To get the readability score, use the following code:
+```javascript
+const sentences = doc.body.text.split(". ");
+const wordCount = doc.body.text.split(" ").length;
+const readability = 206.835 - 1.015 * (wordCount / sentences.length) - 84.6 * (sentences.length / wordCount);
+return "Flesch: " + readability;
+```
+
+To list all headings, use the following code:
+```javascript
+const headings = [];
+doc.body.paragraphs.items.forEach(paragraph => {
+  if (paragraph.styleBuiltIn === "Heading 1" || paragraph.styleBuiltIn === "Heading 2") {
+    headings.push(paragraph.text);
+  }
+});
+return headings;
+```
+
+To delete a paragraph, use the following code:
+```javascript
+try {
+  const paragraph = doc.paragraphs.getItem(99);
+  paragraph.delete();
+  await context.sync();
+} catch (error) {
+  return "Paragraph 99 does not exist in the document.";
+}
+```
+
+To change the title, use the following code:
+```javascript
+const paragraph = doc.paragraphs.getFirst();
+paragraph.text = "Q4 Results";
+await context.sync();
+```
+
+To insert a block quote, use the following code:
+```javascript
+const paragraph = doc.paragraphs.add();
+paragraph.leftIndent = 40;
+paragraph.text = "Premature optimization is the root of all evil.";
+await context.sync();
+```
+
+To set line spacing, use the following code:
+```javascript
+doc.body.paragraphs.items.forEach(paragraph => {
+  paragraph.lineSpacing = 1.5;
 });
 await context.sync();
 ```
 
-To apply a template, use the following code:
+To insert a citation, use the following code:
 ```javascript
-const template = "memo";
-const para = doc.paragraphs.add();
-para.styleBuiltIn = template;
-para.text = `To: Team, From: Manager,
+const paragraph = doc
