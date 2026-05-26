@@ -1,81 +1,85 @@
-To modify the first paragraph, use the following code:
+To add a heading, use the following code:
 ```javascript
-const para = doc.paragraphs.getFirst();
-para.font.bold = true;
-para.font.size = 14;
+const heading = doc.paragraphs.add();
+heading.styleBuiltIn = "Heading 1";
+heading.text = "Quarterly Review";
 await context.sync();
 ```
 
-To add a bullet or numbered list, use the existing code examples.
+To make a paragraph bold and 14pt, use the existing code example.
 
-To apply a table style, use the following code:
+To add a bullet list, use the following code:
 ```javascript
-const table = doc.tables.getFirst();
-table.styleBuiltIn = "Grid Table 4 - Accent 1";
-await context.sync();
-```
-
-To find and replace text, use the following code:
-```javascript
-const results = await context.document.body.search("foo@bar.com", { matchWildcards: true });
-results.forEach(result => {
-  result.font.strikeThrough = true;
-  result.text = "[redacted]";
+const list = [];
+list.push("Apples");
+list.push("Bananas");
+list.push("Cherries");
+const para = doc.paragraphs.add();
+para.listItem = true;
+para.listFormat.listType = "bullet";
+list.forEach(item => {
+  const run = para.addRun();
+  run.text = item;
+  run.font.size = 12;
+  para.addBreak();
 });
 await context.sync();
 ```
 
-To set the header, use the following code:
+To add a numbered list, use the following code:
+```javascript
+const list = [];
+list.push("Plan");
+list.push("Execute");
+list.push("Review");
+const para = doc.paragraphs.add();
+para.listItem = true;
+para.listFormat.listType = "number";
+list.forEach(item => {
+  const run = para.addRun();
+  run.text = item;
+  run.font.size = 12;
+  para.addBreak();
+});
+await context.sync();
+```
+
+To add page numbers to the footer, use the following code:
 ```javascript
 const section = doc.sections.getFirst();
-const header = section.header.getFirst();
-const para = header.paragraphs.add();
-para.text = "Confidential Draft";
+const footer = section.footer.getFirst();
+const para = footer.paragraphs.add();
+para.alignment = "right";
+para.text = "Page " + section.pageNumbers;
 await context.sync();
 ```
 
-To add a watermark to every page, use the following code:
-```javascript
-const sections = doc.sections;
-sections.forEach(section => {
-  const header = section.header.getFirst();
-  const para = header.paragraphs.add();
-  para.text = "CONFIDENTIAL";
-  para.font.color = "#CCCCCC";
-  para.font.size = 48;
-});
-await context.sync();
-```
-
-To mail merge, use the existing code example.
-
-To apply a theme, note that this is a complex task and not directly available through the Word Office.js API. Instead, use the following code to apply a built-in style:
-```javascript
-const para = doc.paragraphs.add();
-para.styleBuiltIn = "Heading 1";
-await context.sync();
-```
-
-To insert a citation and bibliography, use the existing code example.
-
-To insert an equation, use the following code:
+To insert an image, use the following code:
 ```javascript
 const para = doc.paragraphs.add();
 const run = para.addRun();
-run.font.script = "superscript";
-run.text = "E = mc^2";
+run.addPicture("office-workplace", 320, 200);
 await context.sync();
 ```
 
-To count the number of words in a document, use the following code:
+To add a watermark to every page, use the existing code example.
+
+To mail merge, use the following code:
 ```javascript
-const body = doc.body;
-const text = body.getText();
-const wordCount = text.trim().split(/\s+/).length;
+const data = [
+  { Name: "Alice", Amount: "100" },
+  { Name: "Bob", Amount: "200" },
+];
+data.forEach(item => {
+  const para = doc.paragraphs.add();
+  para.text = `Name: ${item.Name}, Amount: ${item.Amount}`;
+});
 await context.sync();
 ```
 
-To get the Flesch reading-ease grade level, use the following code:
+To apply a template, use the following code:
 ```javascript
-const body = doc.body;
-const text = body.getText();
+const template = "memo";
+const para = doc.paragraphs.add();
+para.styleBuiltIn = template;
+para.text = `To: Team, From: Manager,
