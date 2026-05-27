@@ -1,85 +1,84 @@
-To insert a section break and switch the next section to landscape, use the following code:
+To insert a heading, use the following code:
 ```javascript
-const section = doc.sections.add();
-section.orientation = "landscape";
+const paragraph = doc.paragraphs.add();
+paragraph.styleBuiltIn = "Heading 2";
+paragraph.text = "Methodology";
 await context.sync();
 ```
 
-To set the header, use the following code:
+To make a paragraph bold and 14pt, use the following code:
+```javascript
+const paragraph = doc.paragraphs.getFirst();
+paragraph.font.bold = true;
+paragraph.font.size = 14;
+await context.sync();
+```
+
+To add a bullet list, use the following code:
+```javascript
+const paragraph = doc.paragraphs.add();
+paragraph.listItem = true;
+paragraph.listType = "Bullet";
+paragraph.text = "Apples";
+const paragraph2 = doc.paragraphs.add();
+paragraph2.listItem = true;
+paragraph2.listType = "Bullet";
+paragraph2.text = "Bananas";
+const paragraph3 = doc.paragraphs.add();
+paragraph3.listItem = true;
+paragraph3.listType = "Bullet";
+paragraph3.text = "Cherries";
+await context.sync();
+```
+
+To add a numbered list, use the following code:
+```javascript
+const paragraph = doc.paragraphs.add();
+paragraph.listItem = true;
+paragraph.listType = "Number";
+paragraph.text = "Plan";
+const paragraph2 = doc.paragraphs.add();
+paragraph2.listItem = true;
+paragraph2.listType = "Number";
+paragraph2.text = "Execute";
+const paragraph3 = doc.paragraphs.add();
+paragraph3.listItem = true;
+paragraph3.listType = "Number";
+paragraph3.text = "Review";
+await context.sync();
+```
+
+To add page numbers to the footer, use the following code:
+```javascript
+const section = doc.sections.getFirst();
+const footer = section.footer.getFirst();
+const paragraph = footer.paragraphs.add();
+paragraph.text = "Page {page}";
+paragraph.alignment = "right";
+await context.sync();
+```
+
+To insert an image, use the following code:
+```javascript
+const paragraph = doc.paragraphs.add();
+const image = paragraph.inlinePictures.add();
+image.src = "healthcare.jpg";
+image.width = 320;
+await context.sync();
+```
+
+To add a watermark, use the following code:
 ```javascript
 const section = doc.sections.getFirst();
 const header = section.header.getFirst();
-const para = header.paragraphs.add();
-para.text = "Confidential Draft";
+const paragraph = header.paragraphs.add();
+paragraph.text = "CONFIDENTIAL";
+paragraph.font.color = "gray";
+paragraph.font.size = 48;
 await context.sync();
 ```
 
-To apply a theme, use the following code:
+To mail merge, use the following code:
 ```javascript
-const theme = "Office";
-doc.theme = theme;
-await context.sync();
-```
-
-To get the word count, use the following code:
-```javascript
-const wordCount = doc.body.text.split(" ").length;
-return "Your document has " + wordCount + " words.";
-```
-
-To get the readability score, use the following code:
-```javascript
-const sentences = doc.body.text.split(". ");
-const wordCount = doc.body.text.split(" ").length;
-const readability = 206.835 - 1.015 * (wordCount / sentences.length) - 84.6 * (sentences.length / wordCount);
-return "Flesch: " + readability;
-```
-
-To list all headings, use the following code:
-```javascript
-const headings = [];
-doc.body.paragraphs.items.forEach(paragraph => {
-  if (paragraph.styleBuiltIn === "Heading 1" || paragraph.styleBuiltIn === "Heading 2") {
-    headings.push(paragraph.text);
-  }
-});
-return headings;
-```
-
-To delete a paragraph, use the following code:
-```javascript
-try {
-  const paragraph = doc.paragraphs.getItem(99);
-  paragraph.delete();
-  await context.sync();
-} catch (error) {
-  return "Paragraph 99 does not exist in the document.";
-}
-```
-
-To change the title, use the following code:
-```javascript
-const paragraph = doc.paragraphs.getFirst();
-paragraph.text = "Q4 Results";
-await context.sync();
-```
-
-To insert a block quote, use the following code:
-```javascript
-const paragraph = doc.paragraphs.add();
-paragraph.leftIndent = 40;
-paragraph.text = "Premature optimization is the root of all evil.";
-await context.sync();
-```
-
-To set line spacing, use the following code:
-```javascript
-doc.body.paragraphs.items.forEach(paragraph => {
-  paragraph.lineSpacing = 1.5;
-});
-await context.sync();
-```
-
-To insert a citation, use the following code:
-```javascript
-const paragraph = doc
+const table = doc.tables.add();
+table
