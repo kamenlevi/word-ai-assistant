@@ -1,12 +1,19 @@
-To insert a heading, use the following code:
+Here are the new rules and examples to add to the system prompt:
+
+**L1-heading-insert-001**
 ```javascript
-const paragraph = doc.paragraphs.add();
-paragraph.styleBuiltIn = "Heading 2";
-paragraph.text = "Methodology";
-await context.sync();
+await addHeading("Quarterly Review", 1);
+await context.sync(); // Ensure context is updated
 ```
 
-To make a paragraph bold and 14pt, use the following code:
+**L1-heading-insert-002**
+```javascript
+await addHeading("Methodology", 2);
+await addParagraph("We used a randomized controlled trial design.");
+await context.sync(); // Ensure context is updated
+```
+
+**L1-paragraph-format-001**
 ```javascript
 const paragraph = doc.paragraphs.getFirst();
 paragraph.font.bold = true;
@@ -14,71 +21,64 @@ paragraph.font.size = 14;
 await context.sync();
 ```
 
-To add a bullet list, use the following code:
+**L1-list-bullet-001**
 ```javascript
 const paragraph = doc.paragraphs.add();
 paragraph.listItem = true;
 paragraph.listType = "Bullet";
 paragraph.text = "Apples";
-const paragraph2 = doc.paragraphs.add();
-paragraph2.listItem = true;
-paragraph2.listType = "Bullet";
-paragraph2.text = "Bananas";
-const paragraph3 = doc.paragraphs.add();
-paragraph3.listItem = true;
-paragraph3.listType = "Bullet";
-paragraph3.text = "Cherries";
 await context.sync();
 ```
 
-To add a numbered list, use the following code:
+**L1-find-replace-001**
 ```javascript
-const paragraph = doc.paragraphs.add();
-paragraph.listItem = true;
-paragraph.listType = "Number";
-paragraph.text = "Plan";
-const paragraph2 = doc.paragraphs.add();
-paragraph2.listItem = true;
-paragraph2.listType = "Number";
-paragraph2.text = "Execute";
-const paragraph3 = doc.paragraphs.add();
-paragraph3.listItem = true;
-paragraph3.listType = "Number";
-paragraph3.text = "Review";
-await context.sync();
+await replaceText("Acme", "Globex", { matchCase: true });
+await context.sync(); // Ensure context is updated
 ```
 
-To add page numbers to the footer, use the following code:
+**L1-find-replace-002**
 ```javascript
-const section = doc.sections.getFirst();
-const footer = section.footer.getFirst();
-const paragraph = footer.paragraphs.add();
-paragraph.text = "Page {page}";
-paragraph.alignment = "right";
+const results = doc.body.search("WARNING", { matchCase: true });
+results.load("font");
+results.items.forEach(r => { r.font.bold = true; r.font.color = "#D32F2F"; });
 await context.sync();
 ```
 
-To insert an image, use the following code:
+**L1-find-replace-regex-001**
 ```javascript
-const paragraph = doc.paragraphs.add();
-const image = paragraph.inlinePictures.add();
-image.src = "healthcare.jpg";
-image.width = 320;
+await replaceText("<*@*.*>", "[redacted]", { matchWildcards: true });
+await context.sync(); // Ensure context is updated
+```
+
+**L1-footnote-insert-001**
+```javascript
+await insertFootnote("See appendix A.", { location: "current selection" });
+await context.sync(); // Ensure context is updated
+```
+
+**L1-comment-insert-001**
+```javascript
+const paragraph = doc.paragraphs.getFirst();
+const comment = paragraph.comments.add();
+comment.text = "check this number";
 await context.sync();
 ```
 
-To add a watermark, use the following code:
+**L1-track-changes-toggle-001**
+```javascript
+await toggleTrackChanges(true);
+await context.sync(); // Ensure context is updated
+```
+
+**L1-section-break-001**
+```javascript
+await insertSectionBreak("continuous");
+await setPageOrientation("landscape");
+await context.sync(); // Ensure context is updated
+```
+
+**L1-header-footer-001**
 ```javascript
 const section = doc.sections.getFirst();
 const header = section.header.getFirst();
 const paragraph = header.paragraphs.add();
-paragraph.text = "CONFIDENTIAL";
-paragraph.font.color = "gray";
-paragraph.font.size = 48;
-await context.sync();
-```
-
-To mail merge, use the following code:
-```javascript
-const table = doc.tables.add();
-table
