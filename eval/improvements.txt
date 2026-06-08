@@ -1,39 +1,33 @@
-Here are the new rules and examples to add to the system prompt:
-
-**L1-heading-insert-001**
+**L1-list-bullet-001**
 ```javascript
-await addHeading("Quarterly Review", 1);
-await context.sync(); // Ensure context is updated
-```
-
-**L1-heading-insert-002**
-```javascript
-await addHeading("Methodology", 2);
-await addParagraph("We used a randomized controlled trial design.");
-await context.sync(); // Ensure context is updated
-```
-
-**L1-paragraph-format-001**
-```javascript
-const paragraph = doc.paragraphs.getFirst();
-paragraph.font.bold = true;
-paragraph.font.size = 14;
+await addParagraph("Apples, Bananas, Cherries");
 await context.sync();
 ```
 
-**L1-list-bullet-001**
+**L1-list-multilevel-001**
 ```javascript
-const paragraph = doc.paragraphs.add();
-paragraph.listItem = true;
-paragraph.listType = "Bullet";
-paragraph.text = "Apples";
+await addParagraph("Plan");
+await addList(["Execute", "Review"], { level: 1 });
+await context.sync();
+```
+
+**L1-table-create-001**
+```javascript
+await insertTable(4, 3, [["Quarter", "Revenue", "Notes"], ["Q1", 100, ""], ["Q2", 120, ""], ["Q3", 140, ""]], { headerRow: true, style: "Grid Table 4 - Accent 1" });
+await context.sync();
+```
+
+**L1-table-format-001**
+```javascript
+const table = doc.tables.getFirst();
+await applyStyle(table, "Grid Table 4 - Accent 1");
 await context.sync();
 ```
 
 **L1-find-replace-001**
 ```javascript
-await replaceText("Acme", "Globex", { matchCase: true });
-await context.sync(); // Ensure context is updated
+await replaceText("Acme", "Globex");
+await context.sync();
 ```
 
 **L1-find-replace-002**
@@ -47,38 +41,39 @@ await context.sync();
 **L1-find-replace-regex-001**
 ```javascript
 await replaceText("<*@*.*>", "[redacted]", { matchWildcards: true });
-await context.sync(); // Ensure context is updated
+await context.sync();
 ```
 
 **L1-footnote-insert-001**
 ```javascript
 await insertFootnote("See appendix A.", { location: "current selection" });
-await context.sync(); // Ensure context is updated
-```
-
-**L1-comment-insert-001**
-```javascript
-const paragraph = doc.paragraphs.getFirst();
-const comment = paragraph.comments.add();
-comment.text = "check this number";
 await context.sync();
 ```
 
-**L1-track-changes-toggle-001**
+**L1-image-insert-001**
 ```javascript
-await toggleTrackChanges(true);
-await context.sync(); // Ensure context is updated
+await insertImage("office-workplace", ["hospital", "medical"], { width: 320 });
+await context.sync();
 ```
 
-**L1-section-break-001**
+**L1-image-insert-002**
 ```javascript
-await insertSectionBreak("continuous");
-await setPageOrientation("landscape");
-await context.sync(); // Ensure context is updated
+await insertImage("healthcare", ["hospital", "medical"], { width: 360 });
+await context.sync();
 ```
 
-**L1-header-footer-001**
+**L1-watermark-insert-001**
 ```javascript
-const section = doc.sections.getFirst();
-const header = section.header.getFirst();
-const paragraph = header.paragraphs.add();
+await insertWatermark("CONFIDENTIAL");
+await context.sync();
+```
+
+**L1-content-control-001**
+```javascript
+await insertContentControl("datePicker", { title: "Sign Date", tag: "signDate" });
+await context.sync();
+```
+
+**L1-content-control-002**
+```javascript
+await insertContentControl
