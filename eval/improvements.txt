@@ -1,52 +1,74 @@
+**L1-heading-insert-001**
+```javascript
+await addHeading("Quarterly Review", 1);
+await context.sync();
+```
+
+**L1-heading-insert-002**
+```javascript
+await addHeading("Methodology", 2);
+await addParagraph("We used a randomized controlled trial design.");
+await context.sync();
+```
+
+**L1-paragraph-format-001**
+```javascript
+await applyStyle(doc.body.paragraphs[0], "Normal");
+await context.sync();
+await doc.body.paragraphs[0].font.size = 14;
+await context.sync();
+```
+
 **L1-list-bullet-001**
 ```javascript
 await addParagraph("Apples, Bananas, Cherries");
 await context.sync();
-```
-
-**L1-list-multilevel-001**
-```javascript
-await addParagraph("Plan");
-await addList(["Execute", "Review"], { level: 1 });
-await context.sync();
-```
-
-**L1-table-create-001**
-```javascript
-await insertTable(4, 3, [["Quarter", "Revenue", "Notes"], ["Q1", 100, ""], ["Q2", 120, ""], ["Q3", 140, ""]], { headerRow: true, style: "Grid Table 4 - Accent 1" });
-await context.sync();
-```
-
-**L1-table-format-001**
-```javascript
-const table = doc.tables.getFirst();
-await applyStyle(table, "Grid Table 4 - Accent 1");
+await addList(["Apples", "Bananas", "Cherries"], "bullet");
 await context.sync();
 ```
 
 **L1-find-replace-001**
 ```javascript
-await replaceText("Acme", "Globex");
-await context.sync();
-```
-
-**L1-find-replace-002**
-```javascript
-const results = doc.body.search("WARNING", { matchCase: true });
-results.load("font");
-results.items.forEach(r => { r.font.bold = true; r.font.color = "#D32F2F"; });
-await context.sync();
-```
-
-**L1-find-replace-regex-001**
-```javascript
-await replaceText("<*@*.*>", "[redacted]", { matchWildcards: true });
+await replaceText("Acme", "Globex", { matchWildcards: true });
 await context.sync();
 ```
 
 **L1-footnote-insert-001**
 ```javascript
 await insertFootnote("See appendix A.", { location: "current selection" });
+await context.sync();
+```
+
+**L1-track-changes-toggle-001**
+```javascript
+await toggleTrackChanges(true);
+await context.sync();
+```
+
+**L1-toc-generate-001**
+```javascript
+await insertTableOfContents({ minLevel: 1, maxLevel: 3, title: "Table of Contents" }, doc);
+await context.sync();
+```
+
+**L1-header-footer-001**
+```javascript
+await Word.run(async (context) => {
+  await context.document.setHeader("Confidential Draft", { primary: true, alignment: "center", includePageNumber: false });
+  await context.sync();
+});
+```
+
+**L1-header-footer-002**
+```javascript
+await addPageNumbers({ location: "footer", alignment: "right", format: "i" });
+await context.sync();
+```
+
+**L1-columns-001**
+```javascript
+await insertSectionBreak("continuous");
+await insertColumns(2);
 await context.sync();
 ```
 
@@ -62,18 +84,4 @@ await insertImage("healthcare", ["hospital", "medical"], { width: 360 });
 await context.sync();
 ```
 
-**L1-watermark-insert-001**
-```javascript
-await insertWatermark("CONFIDENTIAL");
-await context.sync();
-```
-
-**L1-content-control-001**
-```javascript
-await insertContentControl("datePicker", { title: "Sign Date", tag: "signDate" });
-await context.sync();
-```
-
-**L1-content-control-002**
-```javascript
-await insertContentControl
+**L

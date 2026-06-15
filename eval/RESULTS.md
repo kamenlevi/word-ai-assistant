@@ -1,241 +1,238 @@
 # Word AI — Eval Results
-**Last run:** 2026-06-08 04:06:28  
-**Overall: 51.4/100**  
+**Last run:** 2026-06-15 04:23:47  
+**Overall: 62.0/100**  
 **Model:** meta-llama/llama-3.1-8b-instruct
 
 ## Scores by category
 
 | Category | Score | Trend | Cases |
 |---|---|---|---|
-| heading-insert | 88.0/100 | — | 2 |
-| paragraph-format | 66.5/100 | — | 2 |
-| list-bullet | 0.0/100 | — | 1 |
-| list-multilevel | 0.0/100 | — | 1 |
-| style-apply | 67.0/100 | — | 1 |
-| table-create | 0.0/100 | — | 1 |
-| table-format | 0.0/100 | — | 1 |
-| find-replace | 0.0/100 | — | 2 |
-| find-replace-regex | 0.0/100 | — | 1 |
-| footnote-insert | 0.0/100 | — | 1 |
-| comment-insert | 75.0/100 | — | 1 |
-| track-changes-toggle | 90.0/100 | — | 2 |
-| toc-generate | 75.0/100 | — | 1 |
-| section-break | 64.0/100 | — | 1 |
-| header-footer | 87.0/100 | — | 2 |
-| columns | 40.0/100 | — | 1 |
-| image-insert | 22.5/100 | — | 2 |
-| watermark-insert | 0.0/100 | — | 1 |
-| content-control | 0.0/100 | — | 2 |
-| mail-merge | 89.0/100 | — | 1 |
-| template-apply | 89.5/100 | — | 2 |
-| document-generate | 60.0/100 | — | 1 |
-| theme-apply | 60.0/100 | — | 3 |
-| citation-bibliography | 67.0/100 | — | 1 |
+| heading-insert | 56.0/100 | — | 2 |
+| paragraph-format | 74.5/100 | — | 2 |
+| list-bullet | 47.0/100 | — | 1 |
+| list-multilevel | 91.0/100 | — | 1 |
+| style-apply | 91.0/100 | — | 1 |
+| table-create | 91.0/100 | — | 1 |
+| table-format | 94.0/100 | — | 1 |
+| find-replace | 62.0/100 | — | 2 |
+| find-replace-regex | 72.0/100 | — | 1 |
+| footnote-insert | 47.0/100 | — | 1 |
+| comment-insert | 94.0/100 | — | 1 |
+| track-changes-toggle | 75.0/100 | — | 2 |
+| toc-generate | 65.0/100 | — | 1 |
+| section-break | 85.0/100 | — | 1 |
+| header-footer | 56.0/100 | — | 2 |
+| columns | 52.0/100 | — | 1 |
+| image-insert | 46.0/100 | — | 2 |
+| watermark-insert | 25.0/100 | — | 1 |
+| content-control | 87.0/100 | — | 2 |
+| mail-merge | 75.0/100 | — | 1 |
+| template-apply | 74.5/100 | — | 2 |
+| document-generate | 83.0/100 | — | 1 |
+| theme-apply | 63.0/100 | — | 3 |
+| citation-bibliography | 75.0/100 | — | 1 |
 | equation | 56.0/100 | — | 2 |
-| writing-coach | 65.0/100 | — | 1 |
-| read-query | 54.0/100 | — | 3 |
-| margins-orientation | 43.5/100 | — | 2 |
-| web-search-needed | 53.5/100 | — | 2 |
-| refusal | 47.0/100 | — | 3 |
+| writing-coach | 60.0/100 | — | 1 |
+| read-query | 53.7/100 | — | 3 |
+| margins-orientation | 53.5/100 | — | 2 |
+| web-search-needed | 32.0/100 | — | 2 |
+| refusal | 49.7/100 | — | 3 |
 | quote-insert | 45.0/100 | — | 1 |
-| paragraph-spacing | 85.0/100 | — | 1 |
-| edge-cases | 84.0/100 | — | 1 |
-| form-field | 70.2/100 | — | 5 |
+| paragraph-spacing | 77.0/100 | — | 1 |
+| edge-cases | 0.0/100 | — | 1 |
+| form-field | 66.8/100 | — | 5 |
 | text-insert | 0.0/100 | — | 1 |
-| text-edit | 85.0/100 | — | 1 |
+| text-edit | 89.0/100 | — | 1 |
 
 ## All test cases
 
 | ID | Score | Pass | Reason |
 |---|---|---|---|
-| L1-heading-insert-001 | 90 | ✓ | The code uses the correct Word Office.js API, but it lacks a crucial step to execute the Word.run method, which is necessary to interact with the document. |
-| L1-heading-insert-002 | 86 | ✓ | A: 23
-The code uses the correct Word Office.js API, addHeading and addParagraph, but does not use the correct method sig |
-| L1-paragraph-format-001 | 78 | ✗ | The code uses real Word Office.js APIs, but it doesn't fully address the request as it doesn't change the paragraph style to "Heading 1" to make it bold, and it uses a manual approach to set the font size instead of using the available helpers. |
-| L1-paragraph-format-002 | 55 ⚠️ | ✓ | A: 18
-The code uses the correct Word Office.js API, Word.run, but it's missing the essential context, Word.run, which is |
-| L1-list-bullet-001 | 0 ⚠️ | ✗ | Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}} |
-| L1-list-multilevel-001 | 0 ⚠️ | ✗ | Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}} |
-| L1-style-apply-001 | 67 | ✓ | A: 22
-The code uses the correct Word Office.js API, applyStyle, but lacks the necessary Word.run context.
+| L1-heading-insert-001 | 45 ⚠️ | ✓ | A: 22
+The code uses the correct Word API, `addHeading`, but does not check if the heading already exists, which could le |
+| L1-heading-insert-002 | 67 | ✓ | A: 22
+The code uses the correct Word Office.js API, Word.run, and the addHeading and addParagraph functions, but it lack |
+| L1-paragraph-format-001 | 60 | ✗ | A: 20
+The code uses the correct Word Office.js API, but it incorrectly uses the "Heading 1" style, which is not the same |
+| L1-paragraph-format-002 | 89 | ✓ | The code uses real Word Office.js APIs, fully addresses the request, and would likely execute without runtime errors, but it doesn't use best practices and available helpers, instead re-implementing the functionality manually. |
+| L1-list-bullet-001 | 47 ⚠️ | ✓ | A: 22
+The code uses the correct Word Office.js API, `addList`, but lacks proper error handling and context awareness.
 
-B: 20
-The cod |
-| L1-table-create-001 | 0 ⚠️ | ✗ | Runtime error: {"message":"The operation was aborted","code":504,"metadata":{"provider_name":"Novita","previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}} |
-| L1-table-format-001 | 0 ⚠️ | ✗ | Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}} |
-| L1-find-replace-001 | 0 ⚠️ | ✗ | Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}} |
-| L1-find-replace-002 | 0 ⚠️ | ✗ | Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}} |
-| L1-find-replace-regex-001 | 0 ⚠️ | ✗ | Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}} |
-| L1-footnote-insert-001 | 0 ⚠️ | ✗ | Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}} |
-| L1-comment-insert-001 | 75 | ✗ | A: 22
-The code uses the correct Word Office.js APIs, but it lacks proper error handling and assumes the first occurrence |
-| L1-track-changes-toggle-001 | 95 ✅ | ✓ | The code uses the correct Word Office.js API to toggle track changes, but it could benefit from using the Word.run helper for better error handling and load order management. |
-| L1-track-changes-toggle-002 | 85 | ✓ | The code correctly uses the Office.js API, fully addresses the request, and would execute without runtime errors, but it doesn't use best practices and available helpers, specifically not using the `acceptAllRevisions()` method correctly. |
-| L1-toc-generate-001 | 75 | ✓ | A: 22
-The code uses the correct Word Office.js API, `insertTableOfContents`, but does not handle potential errors or edg |
-| L1-section-break-001 | 64 | ✓ | A: 22
-The code uses the correct Word Office.js APIs, but it lacks the necessary context to switch the next section to la |
-| L1-header-footer-001 | 85 | ✓ | The code uses the correct Word Office.js API, but lacks consideration for the document's page count and does not use best practices for applying a header style. |
-| L1-header-footer-002 | 89 | ✓ | The code uses the correct Word Office.js API, fully addresses the request, and would execute without runtime errors, but it does not use best practices and available helpers, specifically for adding page numbers, which is a common task that can be achieved using the built-in addPageNumbers method. |
-| L1-columns-001 | 40 ⚠️ | ✓ | A: 18
-The code uses the correct Word Office.js API, `insertSectionBreak` and `insertColumns`, but it lacks the necessary |
-| L1-image-insert-001 | 0 ⚠️ | ✗ | Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}} |
-| L1-image-insert-002 | 45 ⚠️ | ✓ | A: 18
-The code uses the correct Word Office.js API, insertImage, but lacks the necessary Word.run context.
-
-B: 0
-The cod |
-| L1-watermark-insert-001 | 0 ⚠️ | ✗ | Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"Groq","previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}} |
-| L1-content-control-001 | 0 ⚠️ | ✗ | Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"Groq","previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}} |
-| L1-content-control-002 | 0 ⚠️ | ✗ | Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"Groq","previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}} |
-| L1-mail-merge-001 | 89 | ✓ | The code uses the correct Word Office.js API, mailMergeReplace, but deducts points for not using the available helpers for mail merge, and not checking if the document is already in a Word.run context. |
-| L1-template-apply-001 | 91 | ✓ | The code uses the correct Office.js API, fully addresses the request, and would execute without runtime errors, but it doesn't use the best practices for applying a template and doesn't check for potential errors in the template application. |
-| L1-template-apply-002 | 88 | ✓ | A: 22
-The code uses the correct Word Office.js API, applyTemplate, but does not check if the template exists before appl |
-| L1-document-generate-001 | 60 | ✓ | A: 18
-The code uses the correct Word Office.js APIs, but it's missing the `await Word.run` call at the beginning, which  |
-| L1-theme-apply-001 | 45 ⚠️ | ✓ | A: 12
-The code uses the correct Word Office.js APIs, but it's a very basic implementation that doesn't address the reque |
-| L1-theme-apply-002 | 75 | ✓ | A: 20
-The code uses the correct Word Office.js API, designTheme() and applyTheme(), but it's missing the async/await syn |
-| L1-theme-apply-003 | 60 | ✓ | A: 20
-The code uses the correct Word Office.js APIs, but it's missing the `await` keyword before `applyTheme(t)`.
+B |
+| L1-list-multilevel-001 | 91 | ✓ | The code uses the correct Word Office.js API, but deducts points for not addressing the "add" request explicitly, and for not using the available helpers for inserting a list. |
+| L1-style-apply-001 | 91 | ✓ | A: 22
+The code uses the correct Word Office.js API, `applyStyle`, but I deduct 3 points for not checking if the paragrap |
+| L1-table-create-001 | 91 | ✓ | A: 22
+The code uses the correct Word Office.js API, `insertTable`, but deducts 3 points for not using the `Word.run` met |
+| L1-table-format-001 | 94 | ✓ | The code correctly applies the style to the existing table, but lacks explicit error handling and uses a direct method call without checking if the table exists. |
+| L1-find-replace-001 | 40 ⚠️ | ✓ | A: 18
+The code uses the correct Word Office.js API, `replaceText`, but does not account for the context of the document, |
+| L1-find-replace-002 | 84 | ✓ | A: 22
+The code uses the correct Word Office.js APIs, but it does not handle the case where no matches are found in the s |
+| L1-find-replace-regex-001 | 72 | ✓ | A: 22
+The code uses the correct Word Office.js API, `replaceText`, but does not account for the specific email address f |
+| L1-footnote-insert-001 | 47 ⚠️ | ✓ | A: 22
+The code uses the correct Word Office.js API, `insertFootnote`, but lacks the necessary context to execute correct |
+| L1-comment-insert-001 | 94 | ✓ | The code uses the correct Word Office.js API, fully addresses the request, and would execute without runtime errors, but it could be improved by using the available helpers for inserting comments. |
+| L1-track-changes-toggle-001 | 65 | ✓ | A: 22
+The code uses the correct Word API, toggleTrackChanges, but does not account for the asynchronous nature of the Of |
+| L1-track-changes-toggle-002 | 85 | ✓ | The code is mostly correct, but it lacks a check for the number of revisions to be accepted, and it doesn't use the available helpers for accepting revisions. |
+| L1-toc-generate-001 | 65 | ✓ | A: 22
+The code uses the correct Word Office.js API, `insertTableOfContents`, but does not specify the document object, w |
+| L1-section-break-001 | 85 | ✓ | A: 22
+The code uses the correct Word Office.js API, `insertSectionBreak` and `setPageOrientation`, but it's missing the  |
+| L1-header-footer-001 | 47 ⚠️ | ✓ | A: 22
+The code uses the correct Word Office.js API, `setHeader`, but lacks the necessary Word.run context.
 
 B: 0
- |
-| L1-citation-bibliography-001 | 67 | ✓ | A: 22
-The code uses the correct Word Office.js APIs, but it lacks the necessary Word.run context and the selection objec |
-| L1-equation-001 | 72 | ✓ | A: 18
-The code uses the correct Word Office.js API, `insertEquation`, but lacks the necessary Word.run context.
+The cod |
+| L1-header-footer-002 | 65 | ✓ | The code uses a real Word Office.js API, fully addresses the request, and would execute without runtime errors, but it fails to use best practices and helpers, instead directly calling the addPageNumbers function without leveraging the available helpers. |
+| L1-columns-001 | 52 ⚠️ | ✓ | A: 22
+The code uses real Word Office.js APIs, but it's missing the crucial step of applying the two-column layout to the |
+| L1-image-insert-001 | 45 ⚠️ | ✓ | A: 22
+The code uses the correct Word Office.js API, insertImage, but lacks the correct syntax for specifying the image t |
+| L1-image-insert-002 | 47 ⚠️ | ✓ | A: 18
+The code uses the correct Word Office.js API, `insertImage`, but lacks context and parameters for the image.
+
+B: 0 |
+| L1-watermark-insert-001 | 25 ⚠️ | ✓ | The code is entirely incorrect, using a non-existent method, and fails to address the request, while also having potential runtime errors due to missing context. |
+| L1-content-control-001 | 85 | ✓ | A: 22
+The code uses the correct Word Office.js API, `insertContentControl`, but lacks the necessary `Word.run` block to  |
+| L1-content-control-002 | 89 | ✓ | A: 22
+The code uses the correct Word Office.js API, insertContentControl, but the tag property is not a valid argument f |
+| L1-mail-merge-001 | 75 | ✓ | A: 22
+The code uses the correct Word Office.js API, mailMergeReplace, but lacks proper error handling and assumes the re |
+| L1-template-apply-001 | 77 | ✓ | The main flaw is the incorrect assumption about the |
+| L1-template-apply-002 | 72 | ✓ | A: 22
+The code uses the correct Word Office.js API, applyTemplate, but does not account for potential errors or exceptio |
+| L1-document-generate-001 | 83 | ✓ | A: 20
+The code uses real Word Office.js APIs, but there are some minor issues with method signatures and variable scope. |
+| L1-theme-apply-001 | 37 ⚠️ | ✓ | The code uses real Word Office.js APIs, but it lacks any actual implementation to address the request, and it uses a hallucinated method name "designTheme" which is not a real Word API. |
+| L1-theme-apply-002 | 67 | ✓ | The code uses real Word Office.js APIs, but lacks a crucial detail to fully address the request, and has a flawed approach by not using the recommended helpers for theme design and application. |
+| L1-theme-apply-003 | 85 | ✓ | A: 20
+The code uses the correct Word Office.js API, tweakTheme and applyTheme, but incorrectly assumes the tweakTheme me |
+| L1-citation-bibliography-001 | 75 | ✓ | A: 22
+The code uses the correct Word API, `Word.run`, but it's missing the necessary `async/await` wrapper and the `awai |
+| L1-equation-001 | 65 | ✓ | A: 18
+The code uses the correct Word Office.js API, `insertEquation`, but lacks proper error handling and assumes the eq |
+| L1-equation-002 | 47 ⚠️ | ✓ | A: 22
+The code uses the correct Word Office.js API, `insertEquation`, but lacks the necessary setup and context to execu |
+| L1-writing-coach-001 | 60 | ✗ | A: 22
+The response is factually correct and complete, but it doesn't address the 'for clarity' part, which implies a nee |
+| L1-read-query-001 | 77 | ✓ | The code uses the correct Word API, but lacks proper error handling and uses a manual approach to counting words, which is not a recommended practice. |
+| L1-read-query-002 | 47 ⚠️ | ✓ | A: 18
+The code uses the correct Word Office.js API, getReadability(), but does not fully address the request.
+
+B: 0
+The  |
+| L1-read-query-003 | 37 ⚠️ | ✗ | The code is incomplete |
+| L1-margins-orientation-001 | 60 | ✓ | A: 20
+The code uses the correct Word Office.js API, `setMargins`, but does not account for the context of default margin |
+| L1-margins-orientation-002 | 47 ⚠️ | ✓ | A: 22
+The code uses the correct Word Office.js API, `setPageOrientation`, but it's missing the context of the document,  |
+| L1-web-search-needed-001 | 22 ⚠️ | ✗ | A: 0
+The response is factually incorrect as it implies the Office.js API cannot provide information on the current stock |
+| L1-web-search-needed-002 | 42 ⚠️ | ✓ | A: 20
+The response accurately explains the Pythagorean theorem, but it doesn't provide any information about how it appl |
+| L1-refusal-001 | 65 | ✓ | The main flaw is that the response fails to provide a clear and actionable solution for exporting the document |
+| L1-refusal-002 | 47 ⚠️ | ✓ | A: 18
+The response is partially accurate, but it doesn't mention that Word Office.js can use the `Office.context.documen |
+| L1-refusal-003 | 37 ⚠️ | ✓ | The response fails to provide a solution that meets the user's |
+| L1-quote-insert-001 | 45 ⚠️ | ✓ | A: 20
+The code uses the correct Word API, addQuote, but it's a very basic method that doesn't provide any options for cu |
+| L1-paragraph-spacing-001 | 77 | ✓ | A: 22
+The code uses the correct Word Office.js APIs, but it's missing the initial Word.run() call.
 
 B: 25
-T |
-| L1-equation-002 | 40 ⚠️ | ✓ | A: 22
-The code uses the correct Word Office.js API, `insertEquation`, but does not handle the variables `a`, `b`, and `c |
-| L1-writing-coach-001 | 65 | ✗ | The code accurately rewrites the selection, but the response lacks clarity and bonus points for suggesting workarounds or noting Word-specific caveats. |
-| L1-read-query-001 | 77 | ✓ | The code uses the correct Word API, but lacks proper error handling and uses a manual approach to counting words, which is not the most efficient or recommended method. |
-| L1-read-query-002 | 85 | ✓ | A: 20
-The code uses the `getReadability()` method, which is a real Word Office.js API, but it doesn't specify the correc |
-| L1-read-query-003 | 0 ⚠️ | ✗ | The code relies on a non-existent method, which is a major flaw in all dimensions. |
-| L1-margins-orientation-001 | 40 ⚠️ | ✓ | A: 22
-The code uses the correct Word API, `setMargins`, but it's not a real method in the Office.js API; it's a hypothet |
-| L1-margins-orientation-002 | 47 ⚠️ | ✓ | A: 18
-The code uses the correct Word Office.js API, but it's missing the context of the document, which is currently in  |
-| L1-web-search-needed-001 | 47 ⚠️ | ✓ | The main flaw is that the response doesn't provide a clear solution or code to address the user |
-| L1-web-search-needed-002 | 60 | ✓ | A: 22
-The response is factually correct and complete, but it doesn't provide any additional information or context that  |
-| L1-refusal-001 | 47 ⚠️ | ✓ | A: 18
-The response is factually correct that Word Office.js doesn't expose a direct export to PDF API, but it's incomple |
-| L1-refusal-002 | 47 ⚠️ | ✓ | The response is factually correct but fails to directly address the user's request to print the document on the user's printer, instead suggesting workarounds that don't meet the user's needs. |
-| L1-refusal-003 | 47 ⚠️ | ✗ | A: 18
-The response is factually correct that Word Office.js cannot create a chart directly, but it doesn't fully address |
-| L1-quote-insert-001 | 45 ⚠️ | ✓ | The code lacks context and does not utilize the available helpers, leading to a incomplete and potentially incorrect solution. |
-| L1-paragraph-spacing-001 | 85 | ✓ | A: 22
-The code uses the correct Word Office.js API, but it's missing the `await context.sync()` call after the `forEach` |
-| L1-edge-case-001 | 84 | ✓ | The code uses real Word Office.js APIs, but deducts points for not addressing the original request to delete paragraph 99, and for not using the available helpers for deleting a paragraph. |
+The code fully |
+| L1-edge-case-001 | 0 ⚠️ | ✓ | The code does not attempt to delete paragraph 99, does not use any Word Office.js APIs, and does not address the request at all. |
 | L1-form-field-001 | 85 | ✓ | A: 22
-The code uses the correct Word Office.js API, insertContentControl, but lacks proper error handling and validation |
-| L1-text-insert-001 | 0 ⚠️ | ✓ | A: 0
-The code uses a non-existent method 'addParagraph' which is not a part of the Office.js API.
+The code uses the correct Word Office.js API, `insertContentControl`, but it's missing the `Word.run` context setu |
+| L1-text-insert-001 | 0 ⚠️ | ✓ | The code uses a non-existent method `addParagraph()` which is not a valid Word Office.js API. |
+| L1-text-edit-001 | 89 | ✓ | A: 22
+The code uses the correct Word Office.js API, `addTitle`, but lacks the `Word.run` context.
 
-B: 0
-The code does no |
-| L1-text-edit-001 | 85 | ✓ | A: 20
-The code uses the correct Word Office.js API, `addTitle`, but does not follow the recommended `Word.run` context.
- |
-| gen-L2-form-field-001 | 67 | ✓ | A: 18
-The code uses the correct Word Office.js API, `insertContentControl`, but lacks proper handling of the request's c |
-| gen-L2-form-field-002 | 47 ⚠️ | ✗ | A: 18
-The code uses the correct Word Office.js API, `insertContentControl`, but it's missing the crucial step of replaci |
-| gen-L2-form-field-003 | 85 | ✗ | A: 22
-The code uses the correct Word Office.js API, `insertContentControl`, but incorrectly assumes the `tag` property i |
-| gen-L2-form-field-004 | 67 | ✗ | A: 18
-The code uses the correct Word Office.js API, `insertContentControl`, but it's missing the `Word.run` context and  |
+B: 25
+The code fully  |
+| gen-L2-form-field-001 | 47 ⚠️ | ✓ | A: 18
+The code uses the correct Word Office.js API, `insertContentControl`, but lacks the necessary context to insert th |
+| gen-L2-form-field-002 | 60 | ✗ | A: 20
+The code uses the correct Word Office.js API, `insertContentControl`, but incorrectly assumes the existing plain t |
+| gen-L2-form-field-003 | 75 | ✗ | A: 22
+The code uses the correct Word Office.js API, `insertContentControl`, but lacks proper error handling and assumes  |
+| gen-L2-form-field-004 | 67 | ✗ | A: 20
+The code uses the correct Word Office.js APIs, but it's missing the crucial `await Word.run` block to execute the  |
 
 ## ⚠️ Needs attention
 
-**[L1-paragraph-format-002]** score=55 — A: 18
-The code uses the correct Word Office.js API, Word.run, but it's missing the essential context, Word.run, which is
+**[L1-heading-insert-001]** score=45 — A: 22
+The code uses the correct Word API, `addHeading`, but does not check if the heading already exists, which could le
 
-**[L1-list-bullet-001]** score=0 — Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}}
-- missing patterns: `addList`, `bullet`, `Apples`, `Bananas`, `Cherries`
+**[L1-list-bullet-001]** score=47 — A: 22
+The code uses the correct Word Office.js API, `addList`, but lacks proper error handling and context awareness.
 
-**[L1-list-multilevel-001]** score=0 — Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}}
-- missing patterns: `addList`, `number`, `Plan`, `Execute`, `Review`
+B
 
-**[L1-table-create-001]** score=0 — Runtime error: {"message":"The operation was aborted","code":504,"metadata":{"provider_name":"Novita","previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}}
-- missing patterns: `insertTable`, `Quarter`, `Revenue`
+**[L1-find-replace-001]** score=40 — A: 18
+The code uses the correct Word Office.js API, `replaceText`, but does not account for the context of the document,
 
-**[L1-table-format-001]** score=0 — Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}}
-- missing patterns: `style`, `Grid Table`
+**[L1-footnote-insert-001]** score=47 — A: 22
+The code uses the correct Word Office.js API, `insertFootnote`, but lacks the necessary context to execute correct
 
-**[L1-find-replace-001]** score=0 — Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}}
-- missing patterns: `replaceText`, `Acme`, `Globex`
-
-**[L1-find-replace-002]** score=0 — Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}}
-- missing patterns: `search`, `WARNING`, `bold`
-
-**[L1-find-replace-regex-001]** score=0 — Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}}
-- missing patterns: `matchWildcards`, `redacted`
-
-**[L1-footnote-insert-001]** score=0 — Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}}
-- missing patterns: `insertFootnote`, `appendix A`
-
-**[L1-columns-001]** score=40 — A: 18
-The code uses the correct Word Office.js API, `insertSectionBreak` and `insertColumns`, but it lacks the necessary
-
-**[L1-image-insert-001]** score=0 — Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"DeepInfra","is_byok":false,"previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Groq","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}}
-- missing patterns: `insertImage`, `office-workplace`
-
-**[L1-image-insert-002]** score=45 — A: 18
-The code uses the correct Word Office.js API, insertImage, but lacks the necessary Word.run context.
+**[L1-header-footer-001]** score=47 — A: 22
+The code uses the correct Word Office.js API, `setHeader`, but lacks the necessary Word.run context.
 
 B: 0
 The cod
 
-**[L1-watermark-insert-001]** score=0 — Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"Groq","previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}}
-- missing patterns: `insertWatermark`, `CONFIDENTIAL`
+**[L1-columns-001]** score=52 — A: 22
+The code uses real Word Office.js APIs, but it's missing the crucial step of applying the two-column layout to the
 
-**[L1-content-control-001]** score=0 — Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"Groq","previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}}
-- missing patterns: `insertContentControl`, `datePicker`
+**[L1-image-insert-001]** score=45 — A: 22
+The code uses the correct Word Office.js API, insertImage, but lacks the correct syntax for specifying the image t
 
-**[L1-content-control-002]** score=0 — Runtime error: {"message":"Provider returned error","code":429,"metadata":{"raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations","provider_name":"Groq","previous_errors":[{"code":429,"message":"Provider returned error","provider_name":"WandB","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Novita","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"DeepInfra","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"},{"code":429,"message":"Provider returned error","provider_name":"Cloudflare","raw":"meta-llama/llama-3.1-8b-instruct is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations"}]}}
-- missing patterns: `insertContentControl`, `checkbox`
-
-**[L1-theme-apply-001]** score=45 — A: 12
-The code uses the correct Word Office.js APIs, but it's a very basic implementation that doesn't address the reque
-
-**[L1-equation-002]** score=40 — A: 22
-The code uses the correct Word Office.js API, `insertEquation`, but does not handle the variables `a`, `b`, and `c
-
-**[L1-read-query-003]** score=0 — The code relies on a non-existent method, which is a major flaw in all dimensions.
-- missing patterns: `return`
-
-**[L1-margins-orientation-001]** score=40 — A: 22
-The code uses the correct Word API, `setMargins`, but it's not a real method in the Office.js API; it's a hypothet
-
-**[L1-margins-orientation-002]** score=47 — A: 18
-The code uses the correct Word Office.js API, but it's missing the context of the document, which is currently in 
-
-**[L1-web-search-needed-001]** score=47 — The main flaw is that the response doesn't provide a clear solution or code to address the user
-
-**[L1-refusal-001]** score=47 — A: 18
-The response is factually correct that Word Office.js doesn't expose a direct export to PDF API, but it's incomple
-
-**[L1-refusal-002]** score=47 — The response is factually correct but fails to directly address the user's request to print the document on the user's printer, instead suggesting workarounds that don't meet the user's needs.
-
-**[L1-refusal-003]** score=47 — A: 18
-The response is factually correct that Word Office.js cannot create a chart directly, but it doesn't fully address
-- missing patterns: `doesn't expose`
-
-**[L1-quote-insert-001]** score=45 — The code lacks context and does not utilize the available helpers, leading to a incomplete and potentially incorrect solution.
-
-**[L1-text-insert-001]** score=0 — A: 0
-The code uses a non-existent method 'addParagraph' which is not a part of the Office.js API.
+**[L1-image-insert-002]** score=47 — A: 18
+The code uses the correct Word Office.js API, `insertImage`, but lacks context and parameters for the image.
 
 B: 0
-The code does no
 
-**[gen-L2-form-field-002]** score=47 — A: 18
-The code uses the correct Word Office.js API, `insertContentControl`, but it's missing the crucial step of replaci
-- missing patterns: `RichTextContentControl`
+**[L1-watermark-insert-001]** score=25 — The code is entirely incorrect, using a non-existent method, and fails to address the request, while also having potential runtime errors due to missing context.
+
+**[L1-theme-apply-001]** score=37 — The code uses real Word Office.js APIs, but it lacks any actual implementation to address the request, and it uses a hallucinated method name "designTheme" which is not a real Word API.
+
+**[L1-equation-002]** score=47 — A: 22
+The code uses the correct Word Office.js API, `insertEquation`, but lacks the necessary setup and context to execu
+
+**[L1-read-query-002]** score=47 — A: 18
+The code uses the correct Word Office.js API, getReadability(), but does not fully address the request.
+
+B: 0
+The 
+
+**[L1-read-query-003]** score=37 — The code is incomplete
+- missing patterns: `return`
+
+**[L1-margins-orientation-002]** score=47 — A: 22
+The code uses the correct Word Office.js API, `setPageOrientation`, but it's missing the context of the document, 
+
+**[L1-web-search-needed-001]** score=22 — A: 0
+The response is factually incorrect as it implies the Office.js API cannot provide information on the current stock
+- missing patterns: `NEEDS_WEB_SEARCH`
+
+**[L1-web-search-needed-002]** score=42 — A: 20
+The response accurately explains the Pythagorean theorem, but it doesn't provide any information about how it appl
+
+**[L1-refusal-002]** score=47 — A: 18
+The response is partially accurate, but it doesn't mention that Word Office.js can use the `Office.context.documen
+
+**[L1-refusal-003]** score=37 — The response fails to provide a solution that meets the user's
+
+**[L1-quote-insert-001]** score=45 — A: 20
+The code uses the correct Word API, addQuote, but it's a very basic method that doesn't provide any options for cu
+
+**[L1-edge-case-001]** score=0 — The code does not attempt to delete paragraph 99, does not use any Word Office.js APIs, and does not address the request at all.
+
+**[L1-text-insert-001]** score=0 — The code uses a non-existent method `addParagraph()` which is not a valid Word Office.js API.
+
+**[gen-L2-form-field-001]** score=47 — A: 18
+The code uses the correct Word Office.js API, `insertContentControl`, but lacks the necessary context to insert th
