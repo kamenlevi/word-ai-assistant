@@ -4,13 +4,6 @@ await addHeading("Quarterly Review", 1);
 await context.sync();
 ```
 
-**L1-heading-insert-002**
-```javascript
-await addHeading("Methodology", 2);
-await addParagraph("We used a randomized controlled trial design.");
-await context.sync();
-```
-
 **L1-paragraph-format-001**
 ```javascript
 await applyStyle(doc.body.paragraphs[0], "Normal");
@@ -21,67 +14,66 @@ await context.sync();
 
 **L1-list-bullet-001**
 ```javascript
-await addParagraph("Apples, Bananas, Cherries");
-await context.sync();
-await addList(["Apples", "Bananas", "Cherries"], "bullet");
-await context.sync();
-```
-
-**L1-find-replace-001**
-```javascript
-await replaceText("Acme", "Globex", { matchWildcards: true });
-await context.sync();
-```
-
-**L1-footnote-insert-001**
-```javascript
-await insertFootnote("See appendix A.", { location: "current selection" });
-await context.sync();
-```
-
-**L1-track-changes-toggle-001**
-```javascript
-await toggleTrackChanges(true);
-await context.sync();
-```
-
-**L1-toc-generate-001**
-```javascript
-await insertTableOfContents({ minLevel: 1, maxLevel: 3, title: "Table of Contents" }, doc);
-await context.sync();
-```
-
-**L1-header-footer-001**
-```javascript
 await Word.run(async (context) => {
-  await context.document.setHeader("Confidential Draft", { primary: true, alignment: "center", includePageNumber: false });
+  await context.document.body.addParagraph("Apples, Bananas, Cherries");
+  await context.sync();
+  await context.document.body.addList(["Apples", "Bananas", "Cherries"], "bullet");
   await context.sync();
 });
 ```
 
-**L1-header-footer-002**
+**L1-find-replace-001**
 ```javascript
-await addPageNumbers({ location: "footer", alignment: "right", format: "i" });
-await context.sync();
+await Word.run(async (context) => {
+  await context.document.body.replaceText("Acme", "Globex", { matchWildcards: true });
+  await context.sync();
+});
+```
+
+**L1-comment-insert-001**
+```javascript
+await Word.run(async (context) => {
+  await context.document.body.findText("$4.2M", { matchWildcards: true });
+  await context.document.body.insertComment(context.document.body.findText("$4.2M", { matchWildcards: true }).items[0].paragraph, "check this number");
+  await context.sync();
+});
+```
+
+**L1-section-break-001**
+```javascript
+await Word.run(async (context) => {
+  await context.document.body.insertSectionBreak("continuous");
+  await context.document.body.setPageOrientation("landscape");
+  await context.sync();
+});
 ```
 
 **L1-columns-001**
 ```javascript
-await insertSectionBreak("continuous");
-await insertColumns(2);
-await context.sync();
+await Word.run(async (context) => {
+  await context.document.body.insertSectionBreak("continuous");
+  await context.document.body.insertColumns(2);
+  await context.sync();
+});
 ```
 
 **L1-image-insert-001**
 ```javascript
-await insertImage("office-workplace", ["hospital", "medical"], { width: 320 });
-await context.sync();
+await Word.run(async (context) => {
+  await context.document.body.insertImage("office-workplace", ["desk","minimal"], { width: 320 });
+  await context.sync();
+});
 ```
 
 **L1-image-insert-002**
 ```javascript
-await insertImage("healthcare", ["hospital", "medical"], { width: 360 });
-await context.sync();
+await Word.run(async (context) => {
+  await context.document.body.insertImage("healthcare", ["hospital","medical"], { width: 360 });
+  await context.sync();
+});
 ```
 
-**L
+**L1-watermark-insert-001**
+```javascript
+await Word.run(async (context) => {
+  await context
