@@ -1,40 +1,15 @@
-**L1-heading-insert-001**
-```javascript
-await addHeading("Quarterly Review", 1);
-await context.sync();
-```
-
-**L1-paragraph-format-001**
-```javascript
-await applyStyle(doc.body.paragraphs[0], "Normal");
-await context.sync();
-await doc.body.paragraphs[0].font.size = 14;
-await context.sync();
-```
-
-**L1-list-bullet-001**
+**L1-find-replace-regex-001**
 ```javascript
 await Word.run(async (context) => {
-  await context.document.body.addParagraph("Apples, Bananas, Cherries");
-  await context.sync();
-  await context.document.body.addList(["Apples", "Bananas", "Cherries"], "bullet");
+  await context.document.body.replaceText(".*?@.*?\\..*", "[redacted]", { matchWildcards: true });
   await context.sync();
 });
 ```
 
-**L1-find-replace-001**
+**L1-footnote-insert-001**
 ```javascript
 await Word.run(async (context) => {
-  await context.document.body.replaceText("Acme", "Globex", { matchWildcards: true });
-  await context.sync();
-});
-```
-
-**L1-comment-insert-001**
-```javascript
-await Word.run(async (context) => {
-  await context.document.body.findText("$4.2M", { matchWildcards: true });
-  await context.document.body.insertComment(context.document.body.findText("$4.2M", { matchWildcards: true }).items[0].paragraph, "check this number");
+  await context.document.body.insertFootnote("See appendix A");
   await context.sync();
 });
 ```
@@ -44,6 +19,15 @@ await Word.run(async (context) => {
 await Word.run(async (context) => {
   await context.document.body.insertSectionBreak("continuous");
   await context.document.body.setPageOrientation("landscape");
+  await context.document.body.sections.getItem(context.document.body.sections.length - 1).setPageOrientation("landscape");
+  await context.sync();
+});
+```
+
+**L1-header-footer-002**
+```javascript
+await Word.run(async (context) => {
+  await context.document.body.addPageNumbers({ location: "footer", alignment: "right", format: "i" });
   await context.sync();
 });
 ```
@@ -53,14 +37,7 @@ await Word.run(async (context) => {
 await Word.run(async (context) => {
   await context.document.body.insertSectionBreak("continuous");
   await context.document.body.insertColumns(2);
-  await context.sync();
-});
-```
-
-**L1-image-insert-001**
-```javascript
-await Word.run(async (context) => {
-  await context.document.body.insertImage("office-workplace", ["desk","minimal"], { width: 320 });
+  await context.document.body.sections.getItem(context.document.body.sections.length - 1).setColumns(2);
   await context.sync();
 });
 ```
@@ -68,7 +45,7 @@ await Word.run(async (context) => {
 **L1-image-insert-002**
 ```javascript
 await Word.run(async (context) => {
-  await context.document.body.insertImage("healthcare", ["hospital","medical"], { width: 360 });
+  await context.document.body.insertImage("healthcare", ["hospital","medical"], { width: 400 });
   await context.sync();
 });
 ```
@@ -76,4 +53,22 @@ await Word.run(async (context) => {
 **L1-watermark-insert-001**
 ```javascript
 await Word.run(async (context) => {
-  await context
+  await context.document.body.insertWatermark("CONFIDENTIAL");
+  await context.document.body.sections.forEach(section => section.insertWatermark("CONFIDENTIAL"));
+  await context.sync();
+});
+```
+
+**L1-theme-apply-001**
+```javascript
+await Word.run(async (context) => {
+  const theme = await designTheme("calm trustworthy theme for a healthcare startup — soft blues and greens, generous spacing, friendly modern sans-serif headings");
+  await applyTheme(theme);
+  await context.sync();
+});
+```
+
+**L1-theme-apply-002**
+```javascript
+await Word.run(async (context) => {
+  const theme = await designTheme("1970s science fiction paperback novel — orange, brown, off
