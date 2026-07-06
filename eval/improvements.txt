@@ -1,3 +1,33 @@
+**L1-paragraph-format-001**
+```javascript
+await applyStyle(doc.body.paragraphs[0], "Heading 1");
+await applyStyle(doc.body.paragraphs[0], { fontSize: 14 });
+```
+
+**L1-list-bullet-001**
+```javascript
+await Word.run(async (context) => {
+  await context.document.body.addList(["Apples", "Bananas", "Cherries"], "bullet");
+  await context.sync();
+});
+```
+
+**L1-list-multilevel-001**
+```javascript
+await Word.run(async (context) => {
+  await context.document.body.addList(["Plan", "Execute", "Review"], "number", { level: 0 });
+  await context.sync();
+});
+```
+
+**L1-find-replace-001**
+```javascript
+await Word.run(async (context) => {
+  await context.document.body.replaceText("Acme", "Globex");
+  await context.sync();
+});
+```
+
 **L1-find-replace-regex-001**
 ```javascript
 await Word.run(async (context) => {
@@ -14,11 +44,18 @@ await Word.run(async (context) => {
 });
 ```
 
+**L1-comment-insert-001**
+```javascript
+await Word.run(async (context) => {
+  await context.document.body.insertComment("Revenue reached $4.2M last quarter.", "check this number");
+  await context.sync();
+});
+```
+
 **L1-section-break-001**
 ```javascript
 await Word.run(async (context) => {
   await context.document.body.insertSectionBreak("continuous");
-  await context.document.body.setPageOrientation("landscape");
   await context.document.body.sections.getItem(context.document.body.sections.length - 1).setPageOrientation("landscape");
   await context.sync();
 });
@@ -36,39 +73,4 @@ await Word.run(async (context) => {
 ```javascript
 await Word.run(async (context) => {
   await context.document.body.insertSectionBreak("continuous");
-  await context.document.body.insertColumns(2);
-  await context.document.body.sections.getItem(context.document.body.sections.length - 1).setColumns(2);
-  await context.sync();
-});
-```
-
-**L1-image-insert-002**
-```javascript
-await Word.run(async (context) => {
-  await context.document.body.insertImage("healthcare", ["hospital","medical"], { width: 400 });
-  await context.sync();
-});
-```
-
-**L1-watermark-insert-001**
-```javascript
-await Word.run(async (context) => {
-  await context.document.body.insertWatermark("CONFIDENTIAL");
-  await context.document.body.sections.forEach(section => section.insertWatermark("CONFIDENTIAL"));
-  await context.sync();
-});
-```
-
-**L1-theme-apply-001**
-```javascript
-await Word.run(async (context) => {
-  const theme = await designTheme("calm trustworthy theme for a healthcare startup — soft blues and greens, generous spacing, friendly modern sans-serif headings");
-  await applyTheme(theme);
-  await context.sync();
-});
-```
-
-**L1-theme-apply-002**
-```javascript
-await Word.run(async (context) => {
-  const theme = await designTheme("1970s science fiction paperback novel — orange, brown, off
+  await context.document.body.sections.getItem(context.document.body.sections.length - 1).setColumns
