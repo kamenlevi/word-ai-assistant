@@ -2,253 +2,253 @@
   "heading-insert": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "paragraph-format": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "list-bullet": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "list-multilevel": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "style-apply": {
     "level": 1,
     "masteredAt": "2026-06-22T04-20-45",
-    "runsAtLevel": 56,
+    "runsAtLevel": 57,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "table-create": {
     "level": 1,
     "masteredAt": "2026-05-24T17-07-40",
-    "runsAtLevel": 55,
+    "runsAtLevel": 56,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "table-format": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "find-replace": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "find-replace-regex": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "footnote-insert": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "comment-insert": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "track-changes-toggle": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "toc-generate": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "section-break": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "header-footer": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "columns": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "image-insert": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "watermark-insert": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "content-control": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "mail-merge": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "template-apply": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "document-generate": {
     "level": 1,
     "masteredAt": "2026-05-17T17-03-56",
-    "runsAtLevel": 56,
+    "runsAtLevel": 57,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "theme-apply": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "citation-bibliography": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "equation": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "writing-coach": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "read-query": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "margins-orientation": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "web-search-needed": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "refusal": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "quote-insert": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "paragraph-spacing": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "edge-cases": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "form-field": {
     "level": 2,
     "masteredAt": "2026-05-15T15-53-35",
-    "runsAtLevel": 56,
+    "runsAtLevel": 57,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "text-insert": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   },
   "text-edit": {
     "level": 1,
     "masteredAt": null,
-    "runsAtLevel": 57,
+    "runsAtLevel": 58,
     "lastScore": 0,
-    "lastRun": "2026-10-26T03-30-25"
+    "lastRun": "2026-11-02T04-43-30"
   }
 }
